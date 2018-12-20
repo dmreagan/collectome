@@ -1,1 +1,6 @@
 frontend/node_modules
+php/vendor
+php/composer.lock
+php/composer.phar
+php/crate-3.1.3.tar.gz
+php/crate-3.1.3

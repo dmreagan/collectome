@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 angular
   .module('utilities')
-  .service('Utilities', ['Api', '$window', '$q', function (Api, $window, $q) {
+  .service('Utilities', ['Api', '$window', '$q', '$location', function (Api, $window, $q, $location) {
     return function () {
       this.initGridsterOpts = () => {
         const opts = {
@@ -30,7 +30,8 @@ angular
         const marginX = (config.layout.margins.XPercent / 100.0) * config.display.tile_x_resolution;
         const marginY = (config.layout.margins.YPercent / 100.0) * config.display.tile_y_resolution;
 
-        opts.margins = [marginX, marginY];
+        // TODO: the misalignment of the grid and the bezels is caused by the opts.margins setting
+        //opts.margins = [marginX, marginY];
 
         opts.rowHeight = config.display.tile_y_resolution;
 
@@ -163,18 +164,6 @@ angular
         return bezelPos;
       };
 
-
-      /**
-       *
-       * @param {id of the div to be taken a snapshot} divId
-       */
-      this.generateSnapshot = (divId) => {
-        html2canvas(document.querySelector(divId)).then((canvas) => {
-          const prefix = 'data:image/png;base64,';
-          return canvas.toDataURL().substring(prefix.length);
-        });
-      };
-
       /**
        *
        * @param {base64 encoded string} snapshot
@@ -206,14 +195,28 @@ angular
         });
       };
 
-      this.submitExhibit = (config, snapshot) => {
-        // const displayPath = '/exhibits';
+      /**
+       *
+       * @param {config file} config
+       * @param {id of the div to be taken a snapshot} divId
+       */
+      this.submitExhibit = async function asyncSubmitExhibit(config, divId) {
+        const path = '/exhibit-create';
+
+        /* generate image snapshot */
+
+        const prefix = 'data:image/png;base64,';
+        const canvas = await html2canvas(document.querySelector(divId));
+        // get base64 encoded string of the snapshot
+        const snapshot = await canvas.toDataURL().substring(prefix.length);
+
+        document.body.appendChild(canvas);
 
         uploadSnapshot(snapshot).then((response) => {
           const snapshotRef = response.data.digest;
           const extra = {};
 
-          extra.authors = config.metadata.authors.filter(name => name_first && name.name_last).join(';');
+          extra.authors = config.metadata.authors.filter(name => name.name_first && name.name_last).join(';');
 
           extra.institutions = config.metadata.institutions.filter(name => name).join(';');
 
@@ -226,14 +229,18 @@ angular
           api.post({ config, extra }).then((resp) => {
             const assignedId = resp.data.id;
 
-            // var protocol = $location.protocol(), host = $location.host(), port = $location.host();
+            /*
+            const protocol = $location.protocol();
+            const host = $location.host();
+            const port = $location.host();
+            url = `${protocol}//${host}:${port}${path}/${assignedId}`;
+            */
 
-            // url = `${protocol}//${host}:${port}${displayPath}/${assignedId}`;
-
-            return assignedId;
+            $location.url(`${path}${assignedId}`);
           }, (e) => {
             console.warn(e);
 
+            // roll back
             deleteSnapshot(snapshotRef);
 
             const message_style = 'alert error one-third float-center';

@@ -3,19 +3,6 @@ angular
   .factory('exhibitConfigFactory', () => {
     const exhibitConfigFactory = {};
 
-    // console.info('In exhibit factory');
-
-    /*
-    $http.get('./assets/config-default.json').then((response) => {
-      exhibitConfigFactory.config = response.data;
-
-      console.info('Successfully loaded config jason for factory');
-      console.info(exhibitConfigFactory.config);
-      const str = JSON.stringify(exhibitConfigFactory.config, null, 4);
-      console.info(str);
-    }, (e) => { console.error(`Cannot load config jason ${e}`); });
-    */
-
     exhibitConfigFactory.config =
    {
      metadata: {
@@ -65,11 +52,12 @@ angular
 
      mapping: [
        { content: 'content1', container: 'container1' },
-       { content: 'content3', container: 'container2' },
-       { content: 'content2', container: 'container3' },
+       { content: 'content2', container: 'container2' },
+       { content: 'content3', container: 'container3' },
      ],
 
 
    };
+
     return exhibitConfigFactory;
   });

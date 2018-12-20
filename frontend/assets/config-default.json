@@ -14,9 +14,9 @@
 
     "content" : [
         { "id" : "content1", "title" : "Information Technology News", "url" : "https://itnews.iu.edu/" },
-        { "id" : "content2", "title" : "Campus Map", "url" : "http://map.iu.edu/iub/index.php" },
-        { "id" : "content3", "title" : "IU Bloomington Newsroom", "url" : "http://newsinfo.iu.edu/" },
-        { "id" : "content4", "title" : "School of Informatics, Computing and Engineering", "url" : "http://www.sice.indiana.edu/" }
+        { "id" : "content2", "title" : "IU UITS", "url" : "https://uits.iu.edu/" },
+        { "id" : "content3", "title" : "School of Informatics, Computing and Engineering", "url" : "http://www.sice.indiana.edu/" },
+        { "id" : "content4", "title" : "MIT", "url" : "http://www.mit.edu/" }
     ],
 
     "display" : {

@@ -27,12 +27,10 @@ angular
       */
 
         this.save = () => {
-          const snapshot = utils.generateSnapshot('avl-preview');
-
-          console.log(snapshot);
-
-          console.info('clicked');
-          // const exhibitId = utils.submitExhibit(this.config, snapshot);
+          const divId = '#avl-preview';
+          //const divId = '#gridster';
+          utils.submitExhibit(this.config, divId);
+          utils.submitExhibit(this.config, snapshot);
 
           // $location.url(`/exhibit-create/${exhibitId}`);
         };
