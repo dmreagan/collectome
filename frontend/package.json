@@ -1,0 +1,32 @@
+{
+  "name": "collectome",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.html",
+  "author": "gruan",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^4.11.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "http-server": "^0.11.1"
+  },
+  "eslintConfig": {
+    "extends": "airbnb-base",
+    "env": {
+      "es6": true,
+      "browser": true,
+      "jasmine": true
+    },
+    "globals": {
+      "angular": false,
+      "Choices": false
+    }
+  },
+  "scripts": {
+    "serve": "http-server"
+  },
+  "dependencies": {
+    "html2canvas": "^1.0.0-alpha.12"
+  }
+}
