@@ -9,8 +9,7 @@ angular
     controller: ['$scope', function avlConfigEditorController($scope) {
       this.$onInit = () => {
         this.model = this.config;
-        //const str = JSON.stringify(this.config, null, 4);
-        //console.info(str);
+
         this.options = {
           mode: 'code',
         };
@@ -21,13 +20,5 @@ angular
           this.onUpdate({ config: newConfig });
         });
       };
-
-      /*
-      this.$onChanges = () => {
-        console.info('onChange');
-        const str = JSON.stringify(this.config, null, 4);
-        console.info(str);
-      };
-      */
     }],
   });

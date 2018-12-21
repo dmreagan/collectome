@@ -39,7 +39,7 @@
     "mapping" : [
         {"content" : "content1", "container" : "container1"},
         {"content" : "content3", "container" : "container2"},
-        {"content" : "content2", "container" : "container3"}
+        {"content" : "content4", "container" : "container3"}
     ]
 
     

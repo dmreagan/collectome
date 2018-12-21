@@ -17,25 +17,30 @@ angular
 
         this.gridsterOpts = utils.calculateGridsterOpts(this.config);
         this.tiles = utils.calculateTiles(this.config);
-
-        // console.info('updatePreview');
       };
 
 
       this.$onInit = () => {
-        // console.info('onInit');
-        updatePreview();
+        // console.log('onInit');
       };
 
 
       this.$onChanges = () => {
-        // console.info('onChange');
-        updatePreview();
+        // console.log('onChange');
+
+        /**
+         * since we load config using async http.get from exhibit-create component,
+         * the first time the onChanges event being called, config is still undefined.
+         * We need to bypass this call and wait for its second invocation when config 
+         * has been initialized properly.
+         */
+        if (this.config !== undefined) {
+          updatePreview();
+        }
       };
 
       this.$postLink = () => {
-        // console.info('onPostLink');
-        updatePreview();
+        // console.log('onPostLink');
       };
     }],
   })

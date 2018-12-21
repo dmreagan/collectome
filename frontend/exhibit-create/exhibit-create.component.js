@@ -2,14 +2,21 @@ angular
   .module('exhibitCreate')
   .component('exhibitCreate', {
     templateUrl: 'exhibit-create/exhibit-create.template.html',
-    controller: ['exhibitConfigFactory', 'Utilities', '$location', '$routeParams',
-      function exhibitCreateController(exhibitConfigFactory, Utilities, $location, $routeParams) {
+    controller: ['exhibitConfigFactory', 'Utilities', '$location', '$routeParams', '$http',
+      function exhibitCreateController(exhibitConfigFactory, Utilities, $location, $routeParams, $http) {
         const utils = new Utilities();
 
         this.exhibitId = $routeParams.exhibitId;
 
         this.$onInit = () => {
-          this.config = exhibitConfigFactory.config;
+          // this.config = exhibitConfigFactory.config;
+
+          const path = './assets/config-default.json';
+
+          $http.get(path).then((response) => {
+            this.config = response.data;
+            // console.log(this.config);
+          });
         };
 
         this.updateConfig = (updatedConfig) => {
@@ -28,7 +35,7 @@ angular
 
         this.save = () => {
           const divId = '#avl-preview';
-          //const divId = '#gridster';
+          // const divId = '#gridster';
           utils.submitExhibit(this.config, divId);
           utils.submitExhibit(this.config, snapshot);
 
