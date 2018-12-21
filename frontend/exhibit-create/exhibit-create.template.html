@@ -1,13 +1,3 @@
-<style>
-  project-create span.required {
-    color: #BD0000;
-  }
-  project-create span.small-right {
-    float: right;
-    font-size: 50%;
-  }
-</style>
-
 <main role="main" class="no-section-nav">
 
   <!--
@@ -18,22 +8,22 @@
   -->
 
   <section class="section">
-      <div class="row pad">
-        <exhibit-config-preview config="$ctrl.config"></exhibit-config-preview>
-        
-        <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)"></exhibit-config-editor>
-        
-      </div>
+    <div class="row pad">
+      <exhibit-config-preview config="$ctrl.config"></exhibit-config-preview>
 
-      
-      <div>
-          <button class="button" ng-click="$ctrl.save()">Save</button>
-      </div>
-      <!--
+      <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)"></exhibit-config-editor>
+
+    </div>
+
+
+    <div>
+      <button class="button" ng-click="$ctrl.save()">Save</button>
+    </div>
+    <!--
       <div>
           <button class="button" ng-click="$ctrl.goToExhibits()">Return to search</button>
       </div>
       -->
-    </section>
+  </section>
 
 </main>
