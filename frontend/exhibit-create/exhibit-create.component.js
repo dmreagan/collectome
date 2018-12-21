@@ -8,13 +8,6 @@ angular
 
         this.exhibitId = $routeParams.exhibitId;
 
-        this.$onInit = () => {
-          const path = './assets/config-default.json';
-
-          // async initialization of this.config
-          utils.initConfig(path, this);
-        };
-
         this.updateConfig = (updatedConfig) => {
           this.config = updatedConfig;
         };
@@ -34,5 +27,10 @@ angular
           // const divId = '#gridster';
           utils.submitExhibit(this.config, divId);
         };
+
+        const path = './assets/config-default.json';
+
+        // async initialization of this.config
+        utils.getConfig(path).then((response) => { this.config = response.data; });
       }],
   });

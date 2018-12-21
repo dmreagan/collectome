@@ -241,5 +241,26 @@ $app->post('/exhibits', function() use ($app)
     
 })->name('post-exhibit');
 
+/**
+ * Get the exhibit for a given id.
+ */
+$app->get('/exhibit/:id', function($id) use ($app)
+{
+   $qry = $app->conn->prepare("SELECT *
+           FROM {$EXHIBITS_TABLE_NAME} AS p
+           WHERE p.id = ?");
+
+   $qry->bindParam(1, $id);
+   $qry->execute();
+
+   $result = $qry->fetch(PDO::FETCH_ASSOC);
+
+   if (!$result) {
+       $app->not_found("Exhibit with id=\"{$id}\" not found");
+   } else {
+       $app->success(200, $result);
+   }
+})->name('exhibit-get');
+
 $app->run();
 ?>

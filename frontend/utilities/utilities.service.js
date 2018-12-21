@@ -3,14 +3,13 @@ angular
   .module('utilities')
   .service('Utilities', ['Api', '$window', '$q', '$location', '$http', function (Api, $window, $q, $location, $http) {
     return function () {
-      /**
-       * set config property on obj through async http
-       */
-      this.initConfig = (path, obj) => {
+      this.getConfig = (path) => {
+        const d = $q.defer();
         $http.get(path).then((response) => {
-          // eslint-disable-next-line no-param-reassign
-          obj.config = response.data;
+          d.resolve(response);
         });
+
+        return d.promise;
       };
 
       this.initGridsterOpts = () => {
@@ -261,6 +260,18 @@ angular
           message_style = 'alert error one-third float-center';
           info_message = `Upload snapshot failed. ${e.data.error}`;
         });
+      };
+
+      this.getExhibit = (exhibitId) => {
+        const d = $q.defer();
+        const api = new Api(`/exhibit/${exhibitId}`);
+        api.get().then((response) => {
+          d.resolve(response);
+        }, (e) => {
+          console.warn(e);
+          d.reject({});
+        });
+        return d.promise;
       };
     };
   }]);

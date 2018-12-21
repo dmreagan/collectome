@@ -1,6 +1,6 @@
-angular.module('exhibitCreate', [
+angular.module('exhibitDetail', [
   'authentication',
   'utilities',
   'exhibitConfigPreview',
-  'exhibitConfigEditor',
+  'exhibitConfigDisplay',
 ]);
