@@ -2,21 +2,17 @@ angular
   .module('exhibitCreate')
   .component('exhibitCreate', {
     templateUrl: 'exhibit-create/exhibit-create.template.html',
-    controller: ['exhibitConfigFactory', 'Utilities', '$location', '$routeParams', '$http',
-      function exhibitCreateController(exhibitConfigFactory, Utilities, $location, $routeParams, $http) {
+    controller: ['Utilities', '$location', '$routeParams',
+      function exhibitCreateController(Utilities, $location, $routeParams) {
         const utils = new Utilities();
 
         this.exhibitId = $routeParams.exhibitId;
 
         this.$onInit = () => {
-          // this.config = exhibitConfigFactory.config;
-
           const path = './assets/config-default.json';
 
-          $http.get(path).then((response) => {
-            this.config = response.data;
-            // console.log(this.config);
-          });
+          // async initialization of this.config
+          utils.initConfig(path, this);
         };
 
         this.updateConfig = (updatedConfig) => {
@@ -37,9 +33,6 @@ angular
           const divId = '#avl-preview';
           // const divId = '#gridster';
           utils.submitExhibit(this.config, divId);
-          utils.submitExhibit(this.config, snapshot);
-
-          // $location.url(`/exhibit-create/${exhibitId}`);
         };
       }],
   });

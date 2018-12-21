@@ -1,8 +1,18 @@
 /* eslint-disable func-names */
 angular
   .module('utilities')
-  .service('Utilities', ['Api', '$window', '$q', '$location', function (Api, $window, $q, $location) {
+  .service('Utilities', ['Api', '$window', '$q', '$location', '$http', function (Api, $window, $q, $location, $http) {
     return function () {
+      /**
+       * set config property on obj through async http
+       */
+      this.initConfig = (path, obj) => {
+        $http.get(path).then((response) => {
+          // eslint-disable-next-line no-param-reassign
+          obj.config = response.data;
+        });
+      };
+
       this.initGridsterOpts = () => {
         const opts = {
           outerMargin: false,
