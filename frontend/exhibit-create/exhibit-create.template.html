@@ -1,11 +1,10 @@
 <main role="main" class="no-section-nav">
 
-  <!--
-  <div ng-show ="$ctrl.exhibitId" ng-class ="$ctrl.message_success">
-        <h5 class="text-center">{{$ctrl.message_content}}</h5>
-        <button class="button success float-center" ng-click="$ctrl.goToCreated()">View new project</button>
+
+  <div ng-show="$ctrl.exhibitId" ng-class="$ctrl.message_success">
+    <h5 class="text-center">{{$ctrl.message_content}}</h5>
+    <button class="button success float-center" ng-click="$ctrl.goToCreated()">View new exhibit</button>
   </div>
-  -->
 
   <section class="section">
     <div class="row pad">
@@ -19,11 +18,11 @@
     <div>
       <button class="button" ng-click="$ctrl.save()">Save</button>
     </div>
-    <!--
-      <div>
-          <button class="button" ng-click="$ctrl.goToExhibits()">Return to search</button>
-      </div>
-      -->
+
+    <div>
+      <button class="button" ng-click="$ctrl.goToExhibits()">Return to search</button>
+    </div>
+
   </section>
 
 </main>

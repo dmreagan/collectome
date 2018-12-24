@@ -1,0 +1,29 @@
+<main role="main" class="no-section-nav">
+
+
+    <div ng-show="$ctrl.exhibitId" ng-class="$ctrl.message_success">
+        <h5 class="text-center">{{$ctrl.message_content}}</h5>
+        <button class="button success float-center" ng-click="$ctrl.goToCreated()">View exhibit</button>
+    </div>
+
+
+    <section class="section">
+        <div class="row pad">
+            <exhibit-config-preview config="$ctrl.config"></exhibit-config-preview>
+
+            <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)"></exhibit-config-editor>
+
+        </div>
+
+
+        <div>
+            <button class="button" ng-click="$ctrl.save()">Submit changes</button>
+        </div>
+
+        <div>
+            <button class="button" ng-click="$ctrl.goToExhibits()">Return to search</button>
+        </div>
+
+    </section>
+
+</main>

@@ -12,15 +12,13 @@ angular
           this.config = updatedConfig;
         };
 
-        // this.goToExhibits = () => $location.url('/exhibits');
+        this.goToExhibits = () => $location.url('/exhibits');
 
-        /*
-      if (this.exhibitId) {
-        this.goToCreated = () => $location.url(`/exhibits/${this.exhibitId}`);
-        this.message_success = 'alert success one-third float-center';
-        this.message_content = 'Exhibit created!';
-      }
-      */
+        if (this.exhibitId) {
+          this.goToCreated = () => $location.url(`/exhibits/${this.exhibitId}`);
+          this.message_success = 'alert success one-third float-center';
+          this.message_content = 'Exhibit created!';
+        }
 
         this.save = () => {
           const divId = '#avl-preview';
