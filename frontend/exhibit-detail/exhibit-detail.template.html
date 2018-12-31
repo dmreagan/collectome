@@ -1,18 +1,53 @@
 <main role="main" class="no-section-nav">
 
-        <section class="section">
-          <div class="row pad">
-            <exhibit-config-preview config="$ctrl.config"></exhibit-config-preview>
-      
-            <exhibit-config-display config="$ctrl.config"></exhibit-config-display>
-      
-          </div>
-      
-      
-          <div>
-            <button class="button" ng-click="$ctrl.delete()">Delete</button>
-          </div>
+  <section class="section">
+    <div class="row pad">
+      <exhibit-config-preview config="$ctrl.config"></exhibit-config-preview>
 
-        </section>
-      
-      </main>
+      <exhibit-config-display config="$ctrl.config"></exhibit-config-display>
+
+    </div>
+
+
+    <div>
+      <button class="button" ng-click="$ctrl.delete()">Delete</button>
+    </div>
+
+    <div class="text-center section bg-gray">
+      <h4>Modify this project</h4>
+      <ul class="button-group">
+        <li>
+          <button class="button invert" ng-click="$ctrl.goToEdit()">Edit</button>
+        </li>
+        <li>
+          <button class="button" ng-click="$ctrl.delete()">Delete</button>
+        </li>
+      </ul>
+      <div ng-show="$ctrl.confirmDelete" ng-class="$ctrl.message_style">
+        <h5 class="text-center">{{$ctrl.info_message}}</h5>
+            <ul class="button-group">
+              <li>
+                <button class="button primary float-center" ng-click="$ctrl.deleteYes()">Yes</button>
+              </li>
+              <li>
+                <button class="button primary float-center" ng-click="$ctrl.deleteNo()">No</button>
+              </li>
+            </ul>
+      </div>
+
+      <div ng-show="$ctrl.acknowledgeDelete" ng-class="$ctrl.message_style">
+        <h5 class="text-center">{{$ctrl.info_message}}</h5>
+            <button class="button success float-center" ng-click="$ctrl.deleteAcknowledge()">Continue...</button>
+      </div>
+
+    </div>
+
+    <div class="section">
+      <div class="row pad">
+        <button class="button invert" ng-click="$ctrl.goToExhibits()">Return to search</button>
+      </div>
+    </div>
+
+  </section>
+
+</main>

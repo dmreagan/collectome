@@ -194,7 +194,7 @@ angular
        *
        * @param {*} snapshotRef
        */
-      const deleteSnapshot = (snapshotRef) => {
+      this.deleteSnapshot = (snapshotRef) => {
         const api = new Api(`/snapshots/${snapshotRef}`);
         api.delete().then((response) => {
           // console.log("Deleted: "+ response);
@@ -326,6 +326,12 @@ angular
           d.reject({});
         });
         return d.promise;
+      };
+
+
+      this.deleteExhibit = (exhibitId) => {
+        const api = new Api(`/exhibits/${exhibitId}`);
+        return api.delete();
       };
     };
   }]);

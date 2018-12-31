@@ -3,6 +3,6 @@ angular.module('exhibitEdit', [
   'authentication',
   'utilities',
   'exhibitConfigPreview',
-  'exhibitConfigDisplay',
+  'exhibitConfigEditor',
 ]);
 
