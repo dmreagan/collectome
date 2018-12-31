@@ -23,7 +23,7 @@ angular
         this.save = () => {
           const divId = '#avl-preview';
           // const divId = '#gridster';
-          utils.submitExhibit(this.config, divId);
+          utils.submitExhibit(this.config, divId, this);
         };
 
         const path = './assets/config-default.json';

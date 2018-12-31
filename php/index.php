@@ -173,7 +173,7 @@ $app->post('/exhibits', function() use ($app)
     $title           = $data->config->metadata->name;
     $description     = $data->config->metadata->description;
     $tags            = $data->config->metadata->tags;
-    $public           = $data->config->metadata->public;
+    $public          = $data->config->metadata->public;
 
     $columns         = $data->config->display->columns;
     $rows            = $data->config->display->rows;
@@ -185,7 +185,7 @@ $app->post('/exhibits', function() use ($app)
     $snapshot_ref    = $data->extra->snapshotRef;
     $people          = $data->extra->authors;
    
-    $create_time     = $data->create_time;
+    $create_time     = $data->createTime;
   
     if (empty($title)) {
       $app->argument_required('Argument "Title" is required');
@@ -206,9 +206,10 @@ $app->post('/exhibits', function() use ($app)
     // $likeCount = 0;
 
     $qry       = $app->conn->prepare("INSERT INTO {$EXHIBITS_TABLE_NAME} (
-      id, title, description, disciplines, institutions, tags, snapshot_ref, people, public, columns, rows, tile_x_resolution, tile_y_resolution, config, create_time
+      id, title, description, disciplines, institutions, tags, snapshot_ref, people, public, columns, rows, 
+      tile_x_resolution, tile_y_resolution, config, create_time, last_modified_time
     ) VALUES (
-      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
     )");
     $qry->bindParam(1, $id);
     $qry->bindParam(2, $title);
@@ -225,6 +226,8 @@ $app->post('/exhibits', function() use ($app)
     $qry->bindParam(13, $tile_y_res);
     $qry->bindParam(14, json_encode($data->config));
     $qry->bindParam(15, $create_time);
+    // last_modified_time is the same as create_time when exhibit is created
+    $qry->bindParam(16, $create_time);
     $state = $qry->execute();
 
     if ($state) {
@@ -240,6 +243,81 @@ $app->post('/exhibits', function() use ($app)
     }
     
 })->name('post-exhibit');
+
+/**
+ * edits an exhibit with a given id.
+ */
+$app->put('/exhibit/:id/edit', function($id) use ($app)
+{
+    $data            = json_decode($app->request->getBody());
+    $title           = $data->config->metadata->name;
+    $description     = $data->config->metadata->description;
+    $tags            = $data->config->metadata->tags;
+    $public          = $data->config->metadata->public;
+
+    $columns         = $data->config->display->columns;
+    $rows            = $data->config->display->rows;
+    $tile_x_res      = $data->config->display->tile_x_resolution;
+    $tile_y_res      = $data->config->display->tile_y_resolution;
+
+    $disciplines     = $data->extra->disciplines;
+    $institutions    = $data->extra->institutions;
+    $snapshot_ref    = $data->extra->snapshotRef;
+    $people          = $data->extra->authors;
+   
+    $last_modified_time     = $data->lastModifiedTime;
+  
+    if (empty($title)) {
+      $app->argument_required('Argument "Title" is required');
+      return;
+    } else if (empty($description)) {
+        $app->argument_required('Argument "Description" is required');
+        return;
+    }else if (empty($institutions)) {
+        $app->argument_required('Argument "Institutions" is required');
+        return;
+    }else if (empty($snapshot_ref)) {
+        $app->argument_required('Argument "Snapshot" is required');
+        return;
+    }
+
+
+    $qry = $app->conn->prepare("UPDATE {$EXHIBITS_TABLE_NAME}
+                                SET title = ?, 
+                                description = ?, 
+                                disciplines = ?, 
+                                institutions = ?, 
+                                tags = ?, 
+                                snapshot_ref = ?, 
+                                people = ?, 
+                                public = ?, 
+                                columns = ?, 
+                                rows = ?, 
+                                tile_x_resolution = ?, 
+                                tile_y_resolution = ?, 
+                                config = ?, 
+                                last_modified_time = ?
+                                WHERE id=?");
+
+    $qry->bindParam(1, $title);
+    $qry->bindParam(2, $description);
+    $qry->bindParam(3, $disciplines);
+    $qry->bindParam(4, $institutions);
+    $qry->bindParam(5, $tags);
+    $qry->bindParam(6, $snapshot_ref);
+    $qry->bindParam(7, $people);
+    $qry->bindParam(8, $public);
+    $qry->bindParam(9, $columns);
+    $qry->bindParam(10, $rows);
+    $qry->bindParam(11, $tile_x_res);
+    $qry->bindParam(12, $tile_y_res);
+    $qry->bindParam(13, json_encode($data->config));
+    $qry->bindParam(14, $last_modified_time);
+    $qry->bindParam(15, $id);
+
+    $state = $qry->execute();
+
+})->name('exhibit-put');
 
 /**
  * Get the exhibit for a given id.

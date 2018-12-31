@@ -15,7 +15,7 @@ angular
         this.save = () => {
           const divId = '#avl-preview';
           // const divId = '#gridster';
-          utils.submitExhibit(this.config, divId);
+          utils.updateExhibit(this.exhibitId, this.config, divId, this);
         };
 
         // async initialization of this.config

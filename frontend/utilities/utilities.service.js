@@ -209,7 +209,7 @@ angular
        * @param {config file} config
        * @param {id of the div to be taken a snapshot} divId
        */
-      this.submitExhibit = async function asyncSubmitExhibit(config, divId) {
+      this.submitExhibit = async function asyncSubmitExhibit(config, divId, self) {
         const path = '/exhibit-create';
 
         /* generate image snapshot */
@@ -235,7 +235,9 @@ angular
 
           const api = new Api('/exhibits');
 
-          api.post({ config, extra }).then((resp) => {
+          const createTime = new Date();
+
+          api.post({ config, extra, createTime }).then((resp) => {
             const assignedId = resp.data.id;
 
             /*
@@ -252,13 +254,65 @@ angular
             // roll back
             deleteSnapshot(snapshotRef);
 
-            const message_style = 'alert error one-third float-center';
-            const info_message = `Upload exhibit failed. ${e.data.error}`;
+            self.message_style = 'alert error one-third float-center';
+            self.info_message = `Upload exhibit failed. ${e.data.error}`;
           });
         }, (e) => {
           console.warn(e);
-          message_style = 'alert error one-third float-center';
-          info_message = `Upload snapshot failed. ${e.data.error}`;
+          self.message_style = 'alert error one-third float-center';
+          self.info_message = `Upload snapshot failed. ${e.data.error}`;
+        });
+      };
+
+
+      /**
+       *
+       * @param {config file} config
+       * @param {id of the div to be taken a snapshot} divId
+       */
+      this.updateExhibit = async function asyncSubmitExhibit(exhibitId, config, divId, self) {
+        /* generate image snapshot */
+
+        const prefix = 'data:image/png;base64,';
+        const canvas = await html2canvas(document.querySelector(divId));
+        // get base64 encoded string of the snapshot
+        const snapshot = await canvas.toDataURL().substring(prefix.length);
+
+        document.body.appendChild(canvas);
+
+        uploadSnapshot(snapshot).then((response) => {
+          const snapshotRef = response.data.digest;
+          const extra = {};
+
+          extra.authors = config.metadata.authors.filter(name => name.name_first && name.name_last).join(';');
+
+          extra.institutions = config.metadata.institutions.filter(name => name).join(';');
+
+          extra.disciplines = config.metadata.disciplines.join(';');
+
+          extra.snapshotRef = snapshotRef;
+
+          const api = new Api(`/exhibit/${exhibitId}/edit`);
+
+          const lastModifiedTime = new Date();
+          api.put({ config, extra, lastModifiedTime }).then((resp) => {
+            self.message_style = 'alert success one-third float-center';
+            self.info_message = 'Post has been successfully edited';
+            this.success = true;
+            console.warn(resp);
+          }, (e) => {
+            console.warn(e);
+
+            // roll back
+            deleteSnapshot(snapshotRef);
+
+            self.message_style = 'alert error one-third float-center';
+            self.info_message = `Update exhibit failed. ${e.data.error}`;
+          });
+        }, (e) => {
+          console.warn(e);
+          self.message_style = 'alert error one-third float-center';
+          self.info_message = `Upload snapshot failed. ${e.data.error}`;
         });
       };
 
