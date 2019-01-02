@@ -5,19 +5,25 @@ require 'vendor/autoload.php';
 
 $config = parse_ini_file('app.ini');
 
-$SNAPSHOTS_BLOB_TABLE_NAME = $config['snapshots_blob_table'];
-
-$EXHIBITS_TABLE_NAME = $config['exhibits_table'];
-
 class CrateResource extends \Slim\Slim
 {
     public $conn;
     public $config;
+    public $SNAPSHOTS_BLOB_TABLE_NAME;
+    public $EXHIBITS_TABLE_NAME;
+
+    public $ERROR_LOG_PATH;
 
     function __construct($config)
     {
         parent::__construct();
         $this->config = $config;
+        
+        $this->SNAPSHOTS_BLOB_TABLE_NAME = $config['snapshots_blob_table'];
+        $this->EXHIBITS_TABLE_NAME = $config['exhibits_table'];
+
+        $this->ERROR_LOG_PATH = $config['error_log_path'];
+
         $dsn = "{$config['db_host']}:{$config['db_port']}";
         $this->conn = new Crate\PDO\PDO($dsn, null, null, null);
     }
@@ -76,7 +82,7 @@ $app->get('/', function() use ($app)
  */
 $app->get('/snapshots', function() use ($app)
 {
-    $qry = $app->conn->prepare("SELECT digest, last_modified FROM blob.{$SNAPSHOTS_BLOB_TABLE_NAME}");
+    $qry = $app->conn->prepare("SELECT digest, last_modified FROM blob.{$app->SNAPSHOTS_BLOB_TABLE_NAME}");
     $qry->execute();
     $result = $qry->fetchAll(PDO::FETCH_ASSOC);
     $app->success(200, $result);
@@ -87,6 +93,8 @@ $app->get('/snapshots', function() use ($app)
  */
 $app->post('/snapshots', function() use ($app)
 {
+    error_log("In post snapshot" . "\n", 3, $app->ERROR_LOG_PATH);
+
     $data = json_decode($app->request->getBody());
 
     if (!isset($data->snapshot)) {
@@ -96,7 +104,12 @@ $app->post('/snapshots', function() use ($app)
 
     $content = base64_decode($data->snapshot);
     $digest  = sha1($content);
-    $ch = curl_init("{$app->config['blob_url']}{$SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}");
+
+    error_log("digest is: {$digest}" . "\n", 3, $app->ERROR_LOG_PATH);
+    error_log("Digest post url: {$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}" . "\n", 
+        3, $app->ERROR_LOG_PATH);
+
+    $ch = curl_init("{$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}");
 
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
     curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
@@ -107,9 +120,14 @@ $app->post('/snapshots', function() use ($app)
 
     // error_log(print_r($info, TRUE) ."\nEnd Info\n\n", 3, "/var/tmp/my-errors.log");
     if ($info['http_code'] != 201) {
+        error_log("Error in posting snapshot" . "\n", 3, $app->ERROR_LOG_PATH);
+        error_log($info['http_code'] . "\n", 3, $app->ERROR_LOG_PATH);
+
         $app->resource_error($info['http_code'], 'The snapshot you generated is being used by another project. Choose a new one', $digest);
         return;
     } else {
+        error_log("Successfully posting snapshot" . "\n", 3, $app->ERROR_LOG_PATH);
+
         $app->success($info['http_code'], array(
             'url' => "/snapshot/{$digest}",
             'digest' => $digest
@@ -127,7 +145,7 @@ $app->get('/snapshot/:digest', function($digest) use ($app)
         return;
     }
 
-    $ch = curl_init("{$app->config['blob_url']}{$SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}");
+    $ch = curl_init("{$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $result = curl_exec($ch);
 
@@ -147,17 +165,26 @@ $app->get('/snapshot/:digest', function($digest) use ($app)
  */
 $app->delete('/snapshot/:digest', function($digest) use ($app)
 {
+    error_log("In delete snapshot" . "\n", 3, $app->ERROR_LOG_PATH);
+
     if (empty($digest)) {
         $app->not_found('Please provide a snapshot digest: /snapshot/<digest>');
         return;
     }
-    $ch = curl_init("{$app->config['blob_url']}{$SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}");
+
+    error_log("Delete snapshot url: {$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}" . "\n",
+        3, $app->ERROR_LOG_PATH);
+    
+    $ch = curl_init("{$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}");
+
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
     $result = curl_exec($ch);
     $info   = curl_getinfo($ch);
     if ($info['http_code'] == 404) {
         $app->not_found("Snapshot with digest=\"{$digest}\" not found");
     } else if ($info['http_code'] == 204) {
+        error_log("Snapshot being deleted successfully, with digest {$digest}" . "\n", 3, $app->ERROR_LOG_PATH);
+
         $app->response->setStatus(204);
     } else {
         $err = curl_error($ch);
@@ -169,6 +196,10 @@ $app->delete('/snapshot/:digest', function($digest) use ($app)
 $app->post('/exhibits', function() use ($app)
 {
   
+    error_log("In post exhibit" . "\n", 3, $app->ERROR_LOG_PATH);
+    error_log("show request body" . "\n", 3, $app->ERROR_LOG_PATH);
+    error_log("{$app->request->getBody()}" . "\n", 3, $app->ERROR_LOG_PATH);
+
     $data            = json_decode($app->request->getBody());
     $title           = $data->config->metadata->name;
     $description     = $data->config->metadata->description;
@@ -186,7 +217,7 @@ $app->post('/exhibits', function() use ($app)
     $people          = $data->extra->authors;
    
     $create_time     = $data->createTime;
-  
+
     if (empty($title)) {
       $app->argument_required('Argument "Title" is required');
       return;
@@ -201,16 +232,17 @@ $app->post('/exhibits', function() use ($app)
         return;
     }
 
-    $id        = uniqid();
-    $now       = time() * 1000;
-    // $likeCount = 0;
+    error_log("Done sanity check" . "\n", 3, $app->ERROR_LOG_PATH);
 
-    $qry       = $app->conn->prepare("INSERT INTO {$EXHIBITS_TABLE_NAME} (
+    $id        = uniqid();
+
+    $qry       = $app->conn->prepare("INSERT INTO {$app->EXHIBITS_TABLE_NAME} (
       id, title, description, disciplines, institutions, tags, snapshot_ref, people, public, columns, rows, 
       tile_x_resolution, tile_y_resolution, config, create_time, last_modified_time
     ) VALUES (
       ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
     )");
+
     $qry->bindParam(1, $id);
     $qry->bindParam(2, $title);
     $qry->bindParam(3, $description);
@@ -228,10 +260,13 @@ $app->post('/exhibits', function() use ($app)
     $qry->bindParam(15, $create_time);
     // last_modified_time is the same as create_time when exhibit is created
     $qry->bindParam(16, $create_time);
+
+    // var_dump($qry);
+
     $state = $qry->execute();
 
     if ($state) {
-        $app->refreshTable($EXHIBITS_TABLE_NAME);
+        $app->refreshTable($app->EXHIBITS_TABLE_NAME);
   
         $result = array(
              "success"=>"Exhibit Created!",
@@ -282,7 +317,7 @@ $app->put('/exhibit/:id/edit', function($id) use ($app)
     }
 
 
-    $qry = $app->conn->prepare("UPDATE {$EXHIBITS_TABLE_NAME}
+    $qry = $app->conn->prepare("UPDATE {$app->EXHIBITS_TABLE_NAME}
                                 SET title = ?, 
                                 description = ?, 
                                 disciplines = ?, 
@@ -325,7 +360,7 @@ $app->put('/exhibit/:id/edit', function($id) use ($app)
 $app->get('/exhibit/:id', function($id) use ($app)
 {
    $qry = $app->conn->prepare("SELECT *
-           FROM {$EXHIBITS_TABLE_NAME} AS p
+           FROM {$app->EXHIBITS_TABLE_NAME} AS p
            WHERE p.id = ?");
 
    $qry->bindParam(1, $id);
@@ -349,7 +384,7 @@ $app->delete('/exhibits/:id', function($id) use ($app)
         $app->not_found('Please provide a post id: /exhibits/<id>');
         return;
     }
-    $qry = $app->conn->prepare("SELECT * FROM {$EXHIBITS_TABLE_NAME} WHERE id = ?");
+    $qry = $app->conn->prepare("SELECT * FROM {$app->EXHIBITS_TABLE_NAME} WHERE id = ?");
     $qry->bindParam(1, $id);
 
     $qry->execute();
@@ -360,7 +395,7 @@ $app->delete('/exhibits/:id', function($id) use ($app)
         return;
     }
 
-    $qry = $app->conn->prepare("DELETE FROM {$EXHIBITS_TABLE_NAME} WHERE id=?");
+    $qry = $app->conn->prepare("DELETE FROM {$app->EXHIBITS_TABLE_NAME} WHERE id=?");
     $qry->bindParam(1, $id);
 
     $state = $qry->execute();

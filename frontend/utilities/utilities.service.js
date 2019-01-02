@@ -183,6 +183,9 @@ angular
         api.post({ snapshot }).then((response) => {
           d.resolve(response);
         }, (response) => {
+          console.log('get resp under error case');
+          console.log(response.status);
+
           if (response.status === 409) {
             d.reject(response);
           }
@@ -194,8 +197,8 @@ angular
        *
        * @param {*} snapshotRef
        */
-      this.deleteSnapshot = (snapshotRef) => {
-        const api = new Api(`/snapshots/${snapshotRef}`);
+      const deleteSnapshot = (snapshotRef) => {
+        const api = new Api(`/snapshot/${snapshotRef}`);
         api.delete().then((response) => {
           // console.log("Deleted: "+ response);
           // console.log(response);
@@ -219,13 +222,17 @@ angular
         // get base64 encoded string of the snapshot
         const snapshot = await canvas.toDataURL().substring(prefix.length);
 
-        document.body.appendChild(canvas);
+        // document.body.appendChild(canvas);
 
         uploadSnapshot(snapshot).then((response) => {
           const snapshotRef = response.data.digest;
+          console.log(snapshotRef);
           const extra = {};
 
-          extra.authors = config.metadata.authors.filter(name => name.name_first && name.name_last).join(';');
+          // eslint-disable-next-line max-len
+          const authors = config.metadata.authors.filter(name => (name.first_name && name.last_name));
+          const filteredAuthors = authors.map(name => `${name.first_name}--${name.last_name}`);
+          extra.authors = filteredAuthors.join(';');
 
           extra.institutions = config.metadata.institutions.filter(name => name).join(';');
 
@@ -236,6 +243,10 @@ angular
           const api = new Api('/exhibits');
 
           const createTime = new Date();
+
+          console.log(config);
+          console.log(extra);
+          console.log(createTime);
 
           api.post({ config, extra, createTime }).then((resp) => {
             const assignedId = resp.data.id;
@@ -255,12 +266,12 @@ angular
             deleteSnapshot(snapshotRef);
 
             self.message_style = 'alert error one-third float-center';
-            self.info_message = `Upload exhibit failed. ${e.data.error}`;
+            self.info_message = 'Upload exhibit failed.';
           });
         }, (e) => {
           console.warn(e);
           self.message_style = 'alert error one-third float-center';
-          self.info_message = `Upload snapshot failed. ${e.data.error}`;
+          self.info_message = 'Upload snapshot failed.';
         });
       };
 
@@ -307,12 +318,12 @@ angular
             deleteSnapshot(snapshotRef);
 
             self.message_style = 'alert error one-third float-center';
-            self.info_message = `Update exhibit failed. ${e.data.error}`;
+            self.info_message = 'Update exhibit failed.';
           });
         }, (e) => {
           console.warn(e);
           self.message_style = 'alert error one-third float-center';
-          self.info_message = `Upload snapshot failed. ${e.data.error}`;
+          self.info_message = 'Upload snapshot failed.';
         });
       };
 
