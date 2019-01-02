@@ -340,5 +340,38 @@ $app->get('/exhibit/:id', function($id) use ($app)
    }
 })->name('exhibit-get');
 
+/**
+ * deletes an exhibit with a given id.
+ */
+$app->delete('/exhibits/:id', function($id) use ($app)
+{
+    if (empty($id)) {
+        $app->not_found('Please provide a post id: /exhibits/<id>');
+        return;
+    }
+    $qry = $app->conn->prepare("SELECT * FROM {$EXHIBITS_TABLE_NAME} WHERE id = ?");
+    $qry->bindParam(1, $id);
+
+    $qry->execute();
+    $result = $qry->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!$result) {
+        $app->not_found("Post with id=\"{$id}\" not found");
+        return;
+    }
+
+    $qry = $app->conn->prepare("DELETE FROM {$EXHIBITS_TABLE_NAME} WHERE id=?");
+    $qry->bindParam(1, $id);
+
+    $state = $qry->execute();
+
+    if ($state) {
+      $app->response->setStatus(204);
+    } else {
+      // nothing deleted?
+      $app->not_found("Post with id=\"{$id}\" not deleted");
+    }
+})->name('exhibit-delete');
+
 $app->run();
 ?>
