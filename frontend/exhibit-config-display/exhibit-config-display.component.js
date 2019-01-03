@@ -5,7 +5,7 @@ angular
       config: '<',
     },
     templateUrl: 'exhibit-config-display/exhibit-config-display.template.html',
-    controller: function avlConfigDisplayController() {
+    controller: function exhibitConfigDisplayController() {
       this.$onInit = () => {
         this.model = this.config;
 
@@ -19,8 +19,6 @@ angular
       };
 
       this.$onChanges = () => {
-        // console.log('onChange');
-
         /**
          * since config on exhibit-create is loaed in an async manner, the first
          * time this function is called this.config is still undefined. Once the promise

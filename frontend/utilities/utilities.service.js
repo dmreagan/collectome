@@ -183,9 +183,6 @@ angular
         api.post({ snapshot }).then((response) => {
           d.resolve(response);
         }, (response) => {
-          console.log('get resp under error case');
-          console.log(response.status);
-
           if (response.status === 409) {
             d.reject(response);
           }
@@ -197,7 +194,7 @@ angular
        *
        * @param {*} snapshotRef
        */
-      const deleteSnapshot = (snapshotRef) => {
+      this.deleteSnapshot = (snapshotRef) => {
         const api = new Api(`/snapshot/${snapshotRef}`);
         api.delete().then((response) => {
           // console.log("Deleted: "+ response);
@@ -226,7 +223,6 @@ angular
 
         uploadSnapshot(snapshot).then((response) => {
           const snapshotRef = response.data.digest;
-          console.log(snapshotRef);
           const extra = {};
 
           // eslint-disable-next-line max-len
@@ -244,10 +240,6 @@ angular
 
           const createTime = new Date();
 
-          console.log(config);
-          console.log(extra);
-          console.log(createTime);
-
           api.post({ config, extra, createTime }).then((resp) => {
             const assignedId = resp.data.id;
 
@@ -263,7 +255,7 @@ angular
             console.warn(e);
 
             // roll back
-            deleteSnapshot(snapshotRef);
+            this.deleteSnapshot(snapshotRef);
 
             self.message_style = 'alert error one-third float-center';
             self.info_message = 'Upload exhibit failed.';
@@ -309,13 +301,13 @@ angular
           api.put({ config, extra, lastModifiedTime }).then((resp) => {
             self.message_style = 'alert success one-third float-center';
             self.info_message = 'Post has been successfully edited';
-            this.success = true;
+            self.success = true;
             console.warn(resp);
           }, (e) => {
             console.warn(e);
 
             // roll back
-            deleteSnapshot(snapshotRef);
+            this.deleteSnapshot(snapshotRef);
 
             self.message_style = 'alert error one-third float-center';
             self.info_message = 'Update exhibit failed.';

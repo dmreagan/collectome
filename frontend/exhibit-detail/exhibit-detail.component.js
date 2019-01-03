@@ -8,12 +8,10 @@ angular
 
         this.exhibitId = $routeParams.exhibitId;
 
-        console.log(this.exhibitId);
-
         // async initialization of this.config
         // eslint-disable-next-line max-len
         utils.getExhibit(this.exhibitId).then((response) => {
-          this.config = response.data.config;
+          this.config = JSON.parse(response.data.config);
           this.snapshotRef = response.data.snapshot_ref;
         });
 

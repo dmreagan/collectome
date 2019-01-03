@@ -6,7 +6,7 @@ angular
       onUpdate: '&',
     },
     templateUrl: 'exhibit-config-editor/exhibit-config-editor.template.html',
-    controller: ['$scope', function avlConfigEditorController($scope) {
+    controller: ['$scope', function exhibitConfigEditorController($scope) {
       this.$onInit = () => {
         this.model = this.config;
 

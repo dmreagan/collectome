@@ -1,4 +1,6 @@
 angular.module('collectomeApp', [
-    'ngRoute',
-    'exhibitCreate',
-  ]);
+  'ngRoute',
+  'exhibitCreate',
+  'exhibitDetail',
+  'exhibitEdit',
+]);
