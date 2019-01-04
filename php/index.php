@@ -12,6 +12,9 @@ class CrateResource extends \Slim\Slim
     public $SNAPSHOTS_BLOB_TABLE_NAME;
     public $EXHIBITS_TABLE_NAME;
 
+    public $GITHUB_CLIENT_ID;
+    public $GITHUB_CLIENT_SECRET;
+
     public $ERROR_LOG_PATH;
 
     function __construct($config)
@@ -21,6 +24,9 @@ class CrateResource extends \Slim\Slim
         
         $this->SNAPSHOTS_BLOB_TABLE_NAME = $config['snapshots_blob_table'];
         $this->EXHIBITS_TABLE_NAME = $config['exhibits_table'];
+
+        $this->GITHUB_CLIENT_ID = getenv($config['git_client_id_env']);
+        $this->GITHUB_CLIENT_SECRET = getenv($config['git_client_secret_env']);
 
         $this->ERROR_LOG_PATH = $config['error_log_path'];
 
@@ -105,7 +111,31 @@ $app->post('/snapshots', function() use ($app)
     $content = base64_decode($data->snapshot);
     $digest  = sha1($content);
 
-    error_log("digest is: {$digest}" . "\n", 3, $app->ERROR_LOG_PATH);
+    error_log("Calculated snapshot digest is: {$digest}" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    /////////////////////////////////////////////////////////////////////////
+    // check if digest is already in db, if yes, no need to do the insertion
+    /////////////////////////////////////////////////////////////////////////
+    $qry = $app->conn->prepare("SELECT digest FROM blob.{$app->SNAPSHOTS_BLOB_TABLE_NAME} WHERE digest = ?");
+    $qry->bindParam(1, $digest);
+
+    $qry->execute();
+    $result = $qry->fetchAll(PDO::FETCH_ASSOC);
+
+    if ($result) {
+        error_log("Digest {$result[0]['digest']} already in database, skip insertion" . "\n", 3, $app->ERROR_LOG_PATH);
+        
+        $app->success(201, array(
+            'url' => "/snapshot/{$digest}",
+            'digest' => $digest
+        ));
+
+        return;
+    }
+    
+    /////////////////////////////////////////////////
+    // digest not in db, go ahead insert the snapshot
+    /////////////////////////////////////////////////
     error_log("Digest post url: {$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}" . "\n", 
         3, $app->ERROR_LOG_PATH);
 
@@ -118,12 +148,14 @@ $app->post('/snapshots', function() use ($app)
     $result = curl_exec($ch);
     $info   = curl_getinfo($ch);
 
+    curl_close($ch);
+
     // error_log(print_r($info, TRUE) ."\nEnd Info\n\n", 3, "/var/tmp/my-errors.log");
     if ($info['http_code'] != 201) {
         error_log("Error in posting snapshot" . "\n", 3, $app->ERROR_LOG_PATH);
-        error_log($info['http_code'] . "\n", 3, $app->ERROR_LOG_PATH);
+        error_log("Error code: {$info['http_code']}" . "\n", 3, $app->ERROR_LOG_PATH);
 
-        $app->resource_error($info['http_code'], 'The snapshot you generated is being used by another project. Choose a new one', $digest);
+        $app->resource_error($info['http_code'], 'Failed to post snapshot', $digest);
         return;
     } else {
         error_log("Successfully posting snapshot" . "\n", 3, $app->ERROR_LOG_PATH);
@@ -158,6 +190,8 @@ $app->get('/snapshot/:digest', function($digest) use ($app)
         $app->response->setStatus(200);
         $app->response->write($result);
     }
+
+    curl_close($ch);
 })->name('snapshot-get');
 
 /**
@@ -190,6 +224,8 @@ $app->delete('/snapshot/:digest', function($digest) use ($app)
         $err = curl_error($ch);
         $app->resource_error(500, "Could not delete snapshot: {$err}");
     }
+
+    curl_close($ch);
 })->name('snapshot-delete');
 
 
@@ -284,6 +320,10 @@ $app->post('/exhibits', function() use ($app)
  */
 $app->put('/exhibit/:id/edit', function($id) use ($app)
 {
+    error_log("In update exhibit" . "\n", 3, $app->ERROR_LOG_PATH);
+    error_log("show request body" . "\n", 3, $app->ERROR_LOG_PATH);
+    error_log("{$app->request->getBody()}" . "\n", 3, $app->ERROR_LOG_PATH);
+
     $data            = json_decode($app->request->getBody());
     $title           = $data->config->metadata->name;
     $description     = $data->config->metadata->description;
@@ -316,6 +356,7 @@ $app->put('/exhibit/:id/edit', function($id) use ($app)
         return;
     }
 
+    error_log("Done sanity check" . "\n", 3, $app->ERROR_LOG_PATH);
 
     $qry = $app->conn->prepare("UPDATE {$app->EXHIBITS_TABLE_NAME}
                                 SET title = ?, 
@@ -407,6 +448,95 @@ $app->delete('/exhibits/:id', function($id) use ($app)
       $app->not_found("Post with id=\"{$id}\" not deleted");
     }
 })->name('exhibit-delete');
+
+/**
+ * get collectome web app client id of github
+ */
+$app->get('/github', function() use ($app)
+{
+    error_log("In github get app client id" . "\n", 3, $app->ERROR_LOG_PATH);
+    error_log("{$app->GITHUB_CLIENT_ID}" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    if (!$app->GITHUB_CLIENT_ID) {
+        $app->not_found("Cannot find Github client id");
+        return;
+    }
+
+    $app->success(200, $app->GITHUB_CLIENT_ID);
+
+})->name('git-app-clientid');
+
+/**
+ * inserts a snapshots
+ */
+$app->post('/github', function() use ($app)
+{
+    error_log("In github get user email" . "\n", 3, $app->ERROR_LOG_PATH);
+    
+    if (!$app->GITHUB_CLIENT_ID || !$app->GITHUB_CLIENT_SECRET) {
+        $app->not_found("Cannot find Github client id/secret");
+        return;
+    }
+
+    $data = json_decode($app->request->getBody());
+    $code = $data->code;
+
+    /******** get access token **********/
+
+    error_log("$code" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $url = "https://github.com/login/oauth/access_token";
+
+    $params = "client_id={$app->GITHUB_CLIENT_ID}&client_secret={$app->GITHUB_CLIENT_SECRET}&code={$code}";
+
+    error_log("{$params}" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    curl_setopt($ch, CURLOPT_POST, true);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+
+    $result = curl_exec($ch);
+
+    curl_close($ch);
+ 
+    error_log("$result" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $data = json_decode($result);
+    $access_token = $data->access_token;
+
+    error_log("Get access token from github: '{$access_token}'" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    /******** get user email **********/
+
+    $url = "https://api.github.com/user";
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.120 Safari/537.36";
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: token ${access_token}", "User-Agent: ${user_agent}"));
+
+    $result = curl_exec($ch);
+
+    curl_close($ch);
+
+    error_log("$result" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $app->success(200, $result);
+
+})->name('git-user-email');
 
 $app->run();
 ?>

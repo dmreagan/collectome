@@ -40,7 +40,7 @@ angular
         const marginY = (config.layout.margins.YPercent / 100.0) * config.display.tile_y_resolution;
 
         // TODO: the misalignment of the grid and the bezels is caused by the opts.margins setting
-        //opts.margins = [marginX, marginY];
+        // opts.margins = [marginX, marginY];
 
         opts.rowHeight = config.display.tile_y_resolution;
 
@@ -281,7 +281,7 @@ angular
         // get base64 encoded string of the snapshot
         const snapshot = await canvas.toDataURL().substring(prefix.length);
 
-        document.body.appendChild(canvas);
+        // document.body.appendChild(canvas);
 
         uploadSnapshot(snapshot).then((response) => {
           const snapshotRef = response.data.digest;
@@ -335,6 +335,32 @@ angular
       this.deleteExhibit = (exhibitId) => {
         const api = new Api(`/exhibits/${exhibitId}`);
         return api.delete();
+      };
+
+      this.getAppGitHubClientId = () => {
+        const d = $q.defer();
+
+        const api = new Api('/github');
+        api.get().then((response) => {
+          d.resolve(response);
+        }, (e) => {
+          console.warn(e);
+          d.reject({});
+        });
+        return d.promise;
+      };
+
+      this.getUserGitHubEmail = (code) => {
+        const d = $q.defer();
+
+        const api = new Api('/github');
+        api.post({ code }).then((response) => {
+          d.resolve(response);
+        }, (e) => {
+          console.warn(e);
+          d.reject({});
+        });
+        return d.promise;
       };
     };
   }]);

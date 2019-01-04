@@ -4,10 +4,13 @@ angular
     templateUrl: 'exhibit-edit/exhibit-edit.template.html',
     controller: ['Utilities', '$location', '$routeParams',
       function exhibitEditController(Utilities, $location, $routeParams) {
-        console.log('exhibitEditController');
         const utils = new Utilities();
 
         this.exhibitId = $routeParams.exhibitId;
+
+        this.updateConfig = (updatedConfig) => {
+          this.config = updatedConfig;
+        };
 
         this.goToExhibits = () => $location.url('/exhibits');
 

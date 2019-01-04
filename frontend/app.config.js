@@ -27,6 +27,9 @@ angular
         .when('/exhibit-create/:exhibitId', {
           template: '<exhibit-create></exhibit-create>',
         })
+        .when('/login', {
+          template: '<login-button></login-button>',
+        })
         .otherwise('/exhibits');
     },
   ]);
