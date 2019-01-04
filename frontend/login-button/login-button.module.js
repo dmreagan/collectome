@@ -1,1 +1,1 @@
-angular.module('loginButton', ['authentication', 'api', 'utilities']);
+angular.module('loginButton', ['authentication', 'utilities']);

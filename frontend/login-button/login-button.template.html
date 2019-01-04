@@ -1,7 +1,7 @@
 <span ng-if="!$ctrl.authentication.isAuthorized">
     <button class="button right" ng-click="$ctrl.authenticateAsGitHubUser()">Log in via GitHub</button>
-  </span>
-  <span ng-if="$ctrl.authentication.isAuthorized">
+</span>
+<span ng-if="$ctrl.authentication.isAuthorized">
     <span>Logged in as {{$ctrl.username}}</span>
     <button class="button right invert" ng-click="$ctrl.goToExhibitCreate()">Create new project</button>
-  </span>
+</span>

@@ -12,7 +12,13 @@
 </head>
 
 <body>
-    <h4>Hello Collectome Project</h4>
+    <header class="site-header" itemscope="itemscope" itemtype="http://schema.org/CollegeOrUniversity" role="banner">
+            <div class="row pad">
+              <h4><a class="title" href="exhibits/" itemprop="department">Hello Collectome</a></h4>
+              <login-button class="float-right"></login-button>
+            </div>
+    </header>
+
     <div ng-view autoscroll="true"></div>
 </body>
 

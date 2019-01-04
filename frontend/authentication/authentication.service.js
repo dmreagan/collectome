@@ -3,3 +3,4 @@ angular
   .service('Authentication', function () {
     this.isAuthorized = false;
   });
+

@@ -2,18 +2,26 @@ angular
   .module('loginButton')
   .component('loginButton', {
     templateUrl: 'login-button/login-button.template.html',
-    controller: ['Authentication', '$window', '$location', 'Api', 'Utilities', function LoginButtonController(Authentication, $window, $location, Api, Utilities) {
+    controller: ['Authentication', '$window', '$location', 'Utilities', function LoginButtonController(Authentication, $window, $location, Utilities) {
       this.authentication = Authentication;
       this.useremail = '';
       const utils = new Utilities();
       const gitOAuthURL = 'https://github.com/login/oauth/authorize';
       const githubScope = 'user:email';
+      const baseURL = 'http://127.0.0.1:8080/#!';
 
       this.authenticateAsGitHubUser = () => {
         if (!this.authentication.isAuthorized) {
           utils.getAppGitHubClientId().then((response) => {
             const clientId = response.data;
-            $window.location.assign(`${gitOAuthURL}?scope=${githubScope}&client_id=${clientId}`);
+
+            const redirectURI = $location.path();
+
+            const url = `${gitOAuthURL}?scope=${githubScope}&client_id=${clientId}&redirect_uri=${baseURL}${redirectURI}`;
+
+            console.log(url);
+
+            $window.location.assign(url);
           });
         }
       };

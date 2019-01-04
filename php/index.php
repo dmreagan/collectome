@@ -512,6 +512,12 @@ $app->post('/github', function() use ($app)
     $data = json_decode($result);
     $access_token = $data->access_token;
 
+    if (empty($access_token)) {
+        error_log("Cannot get access token from github" . "\n", 3, $app->ERROR_LOG_PATH);
+        $app->not_found("Cannot get GitHub access token!");
+        return;
+    }
+
     error_log("Get access token from github: '{$access_token}'" . "\n", 3, $app->ERROR_LOG_PATH);
 
     /******** get user email **********/
@@ -534,7 +540,11 @@ $app->post('/github', function() use ($app)
 
     error_log("$result" . "\n", 3, $app->ERROR_LOG_PATH);
 
-    $app->success(200, $result);
+    if (!$result) {
+        $app->not_found("Cannot find user GitHub profile!");
+    } else {
+        $app->success(200, $result);
+    }
 
 })->name('git-user-email');
 
