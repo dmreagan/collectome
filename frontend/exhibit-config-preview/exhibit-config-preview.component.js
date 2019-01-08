@@ -31,7 +31,7 @@ angular
         /**
          * since we load config using async http.get from exhibit-create component,
          * the first time the onChanges event being called, config is still undefined.
-         * We need to bypass this call and wait for its second invocation when config 
+         * We need to bypass this call and wait for its second invocation when config
          * has been initialized properly.
          */
         if (this.config !== undefined) {
@@ -49,3 +49,15 @@ angular
       return $sce.trustAsResourceUrl(url);
     };
   }]);
+//   .directive('scale', () => {
+//     return {
+//       restrict: 'A',
+//       link: function(scope, elem, attr) {
+//           elem.on('load', function() {
+//              const tile = elem.parent().parent();            
+//              console.log(tile.clientWidth);
+//              //console.log(tile.style.height);
+//           });
+//       }
+//     };
+//  });
