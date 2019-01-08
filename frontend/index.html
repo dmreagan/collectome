@@ -2,9 +2,8 @@
 <html class="no-js ie9" itemscope="itemscope" itemtype="http://schema.org/Webpage" lang="en" ng-app="collectomeApp">
 
 <head prefix="og: http://ogp.me/ns# profile: http://ogp.me/ns/profile# article: http://ogp.me/ns/article#">
-    <!-- <base href="/" /> -->
-    <!--<base href="/avl-showcase/frontend/" /> -->
-    <!-- production -->
+    <base href="/" /> <!-- dev -->
+    <!--<base href="/avl-showcase/frontend/" /> --><!-- production -->
 
     <link rel="stylesheet" href="https://unpkg.com/angular-gridster@0.13.14/dist/angular-gridster.min.css" />
     <link rel="stylesheet" href="assets/common.css" />
@@ -13,10 +12,10 @@
 
 <body>
     <header class="site-header" itemscope="itemscope" itemtype="http://schema.org/CollegeOrUniversity" role="banner">
-            <div class="row pad">
-              <h4><a class="title" href="exhibits/" itemprop="department">Hello Collectome</a></h4>
-              <login-button class="float-right"></login-button>
-            </div>
+        <div class="row pad">
+            <h4><a class="title" href="exhibits/" itemprop="department">Hello Collectome</a></h4>
+            <login-button class="float-right"></login-button>
+        </div>
     </header>
 
     <div ng-view autoscroll="true"></div>
