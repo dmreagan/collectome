@@ -32,8 +32,8 @@
   body {
     margin: 50px;
     padding: 0px;
-    overflow: hidden;
-    background-color: #82786F;
+    /* overflow: hidden; */
+    background-color: rgb(255, 255, 255);
   }   
 
   /* shadow CSS from http://timnew.me/blog/2014/08/16/material-design-shadow-in-html/ */

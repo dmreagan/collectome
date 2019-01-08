@@ -40,7 +40,8 @@ angular
         const marginY = (config.layout.margins.YPercent / 100.0) * config.display.tile_y_resolution;
 
         // TODO: the misalignment of the grid and the bezels is caused by the opts.margins setting
-        // opts.margins = [marginX, marginY];
+        opts.margins = [marginX, marginY];
+        // opts.margins = [100, 100];
 
         opts.rowHeight = config.display.tile_y_resolution;
 
