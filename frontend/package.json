@@ -5,11 +5,14 @@
   "main": "index.html",
   "author": "gruan",
   "license": "ISC",
+  "dependencies": {
+    "browser-sync": "^2.26.3",
+    "connect-history-api-fallback": "1.6.0"
+  },
   "devDependencies": {
-    "eslint": "^4.11.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "http-server": "^0.11.1"
+    "eslint": "^5.12.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
   },
   "eslintConfig": {
     "extends": "airbnb-base",
@@ -19,14 +22,10 @@
       "jasmine": true
     },
     "globals": {
-      "angular": false,
-      "Choices": false
+      "angular": false
     }
   },
   "scripts": {
-    "serve": "http-server"
-  },
-  "dependencies": {
-    "html2canvas": "^1.0.0-alpha.12"
+    "serve": "node dev-server.js"
   }
 }
