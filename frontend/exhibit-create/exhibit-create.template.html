@@ -8,13 +8,14 @@
 
   <section class="section">
     <div class="row pad">
-      <exhibit-config-preview config="$ctrl.config"></exhibit-config-preview>
+      <exhibit-config-preview config="$ctrl.config" showfigcap="$ctrl.showfigcap"></exhibit-config-preview>
 
       <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)"></exhibit-config-editor>
     </div>
 
     <div class="content">
       <div class="text-center section bg-gray" ng-if="$ctrl.authentication.isAuthorized">
+
         <h4>Create this exhibit</h4>
 
         <button class="button" ng-click="$ctrl.save()">Submit</button>

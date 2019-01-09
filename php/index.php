@@ -344,6 +344,7 @@ $app->put('/exhibit/:id/edit', function($id) use ($app)
     $people          = $data->extra->authors;
    
     $last_modified_time     = $data->lastModifiedTime;
+    $owner = $data->owner;
   
     if (empty($title)) {
       $app->argument_required('Argument "Title" is required');
@@ -375,7 +376,8 @@ $app->put('/exhibit/:id/edit', function($id) use ($app)
                                 tile_x_resolution = ?, 
                                 tile_y_resolution = ?, 
                                 config = ?, 
-                                last_modified_time = ?
+                                last_modified_time = ?,
+                                owner = ?
                                 WHERE id=?");
 
     $qry->bindParam(1, $title);
@@ -392,7 +394,8 @@ $app->put('/exhibit/:id/edit', function($id) use ($app)
     $qry->bindParam(12, $tile_y_res);
     $qry->bindParam(13, json_encode($data->config));
     $qry->bindParam(14, $last_modified_time);
-    $qry->bindParam(15, $id);
+    $qry->bindParam(15, $owner);
+    $qry->bindParam(16, $id);
 
     $state = $qry->execute();
 

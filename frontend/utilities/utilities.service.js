@@ -216,9 +216,12 @@ angular
         /* generate image snapshot */
 
         const prefix = 'data:image/png;base64,';
+
         const canvas = await html2canvas(document.querySelector(divId));
         // get base64 encoded string of the snapshot
         const snapshot = await canvas.toDataURL().substring(prefix.length);
+
+        // console.log(snapshot);
 
         // document.body.appendChild(canvas);
 
@@ -251,7 +254,7 @@ angular
             url = `${protocol}//${host}:${port}${path}/${assignedId}`;
             */
 
-            $location.url(`${path}${assignedId}`);
+            $location.url(`${path}/${assignedId}`);
           }, (e) => {
             console.warn(e);
 
@@ -274,7 +277,7 @@ angular
        * @param {config file} config
        * @param {id of the div to be taken a snapshot} divId
        */
-      this.updateExhibit = async function asyncSubmitExhibit(exhibitId, config, divId, self) {
+      this.updateExhibit = async function asyncSubmitExhibit(exhibitId, config, divId, self, owner) {
         /* generate image snapshot */
 
         const prefix = 'data:image/png;base64,';
@@ -299,7 +302,7 @@ angular
           const api = new Api(`/exhibit/${exhibitId}/edit`);
 
           const lastModifiedTime = new Date();
-          api.put({ config, extra, lastModifiedTime }).then((resp) => {
+          api.put({ config, extra, lastModifiedTime, owner }).then((resp) => {
             self.message_style = 'alert success one-third float-center';
             self.info_message = 'Post has been successfully edited';
             self.success = true;

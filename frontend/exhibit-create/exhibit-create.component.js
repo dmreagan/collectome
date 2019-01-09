@@ -7,8 +7,10 @@ angular
         const utils = new Utilities();
 
         this.authentication = Authentication;
-        
+
         this.exhibitId = $routeParams.exhibitId;
+
+        this.showfigcap = true;
 
         this.updateConfig = (updatedConfig) => {
           this.config = updatedConfig;
@@ -22,7 +24,7 @@ angular
           this.message_content = 'Exhibit created!';
         }
 
-        this.save = () => {
+        this.save = async function asyncSubmitExhibit() {
           // check github login id is available
           if (this.authentication.userProfile.login === undefined) {
             this.message_style = 'alert error one-third float-center';
@@ -31,10 +33,12 @@ angular
           }
 
           const owner = this.authentication.userProfile.login;
-          console.log(owner);
 
           // const divId = '#avl-preview';
           const divId = '#gridster';
+
+          // this.showfigcap = false;
+
           utils.submitExhibit(this.config, divId, this, owner);
         };
 
