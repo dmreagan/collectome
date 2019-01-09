@@ -8,7 +8,7 @@ angular
       const utils = new Utilities();
       const gitOAuthURL = 'https://github.com/login/oauth/authorize';
       const githubScope = 'user:email';
-      const baseURL = 'http://127.0.0.1:8080/#!';
+      const baseURL = 'http://127.0.0.1:3000';
 
       this.authenticateAsGitHubUser = () => {
         if (!this.authentication.isAuthorized) {
