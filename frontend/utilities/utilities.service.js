@@ -210,7 +210,7 @@ angular
        * @param {config file} config
        * @param {id of the div to be taken a snapshot} divId
        */
-      this.submitExhibit = async function asyncSubmitExhibit(config, divId, self) {
+      this.submitExhibit = async function asyncSubmitExhibit(config, divId, self, owner) {
         const path = '/exhibit-create';
 
         /* generate image snapshot */
@@ -241,7 +241,7 @@ angular
 
           const createTime = new Date();
 
-          api.post({ config, extra, createTime }).then((resp) => {
+          api.post({ config, extra, createTime, owner }).then((resp) => {
             const assignedId = resp.data.id;
 
             /*
@@ -351,7 +351,7 @@ angular
         return d.promise;
       };
 
-      this.getUserGitHubEmail = (code) => {
+      this.getUserGitHubProfile = (code) => {
         const d = $q.defer();
 
         const api = new Api('/github');

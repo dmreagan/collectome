@@ -13,13 +13,21 @@
       <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)"></exhibit-config-editor>
     </div>
 
+    <div class="content">
+      <div class="text-center section bg-gray" ng-if="$ctrl.authentication.isAuthorized">
+        <h4>Create this exhibit</h4>
 
-    <div>
-      <button class="button" ng-click="$ctrl.save()">Save</button>
-    </div>
+        <button class="button" ng-click="$ctrl.save()">Submit</button>
 
-    <div>
-      <button class="button" ng-click="$ctrl.goToExhibits()">Return to search</button>
+        <div ng-class="$ctrl.message_style">
+          <p>{{$ctrl.info_message}}</p>
+        </div>
+      </div>
+      <div class="section">
+        <div class="row pad">
+          <button class="button invert" ng-click="$ctrl.goToExhibits()">Return to search</button>
+        </div>
+      </div>
     </div>
 
   </section>

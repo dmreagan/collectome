@@ -2,10 +2,12 @@ angular
   .module('exhibitCreate')
   .component('exhibitCreate', {
     templateUrl: 'exhibit-create/exhibit-create.template.html',
-    controller: ['Utilities', '$location', '$routeParams',
-      function exhibitCreateController(Utilities, $location, $routeParams) {
+    controller: ['Authentication', 'Utilities', '$location', '$routeParams',
+      function exhibitCreateController(Authentication, Utilities, $location, $routeParams) {
         const utils = new Utilities();
 
+        this.authentication = Authentication;
+        
         this.exhibitId = $routeParams.exhibitId;
 
         this.updateConfig = (updatedConfig) => {
@@ -21,9 +23,19 @@ angular
         }
 
         this.save = () => {
-          const divId = '#avl-preview';
-          // const divId = '#gridster';
-          utils.submitExhibit(this.config, divId, this);
+          // check github login id is available
+          if (this.authentication.userProfile.login === undefined) {
+            this.message_style = 'alert error one-third float-center';
+            this.info_message = 'Cannot obtain github login id.';
+            return;
+          }
+
+          const owner = this.authentication.userProfile.login;
+          console.log(owner);
+
+          // const divId = '#avl-preview';
+          const divId = '#gridster';
+          utils.submitExhibit(this.config, divId, this, owner);
         };
 
         const path = './assets/config-default.json';

@@ -36,7 +36,8 @@ CREATE TABLE exhibits (
     tile_y_resolution INTEGER,
     config STRING,
     create_time STRING,
-    last_modified_time STRING
+    last_modified_time STRING,
+    owner STRING
 ) WITH (number_of_replicas = 0);
 
 -- snapshots blob table

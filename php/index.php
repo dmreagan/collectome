@@ -254,6 +254,8 @@ $app->post('/exhibits', function() use ($app)
    
     $create_time     = $data->createTime;
 
+    $owner = $data->owner;
+
     if (empty($title)) {
       $app->argument_required('Argument "Title" is required');
       return;
@@ -274,9 +276,9 @@ $app->post('/exhibits', function() use ($app)
 
     $qry       = $app->conn->prepare("INSERT INTO {$app->EXHIBITS_TABLE_NAME} (
       id, title, description, disciplines, institutions, tags, snapshot_ref, people, public, columns, rows, 
-      tile_x_resolution, tile_y_resolution, config, create_time, last_modified_time
+      tile_x_resolution, tile_y_resolution, config, create_time, last_modified_time, owner
     ) VALUES (
-      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
     )");
 
     $qry->bindParam(1, $id);
@@ -296,6 +298,7 @@ $app->post('/exhibits', function() use ($app)
     $qry->bindParam(15, $create_time);
     // last_modified_time is the same as create_time when exhibit is created
     $qry->bindParam(16, $create_time);
+    $qry->bindParam(17, $owner);
 
     // var_dump($qry);
 

@@ -27,4 +27,3 @@ angular
         utils.getExhibit(this.exhibitId).then((response) => { this.config = JSON.parse(response.data.config); });
       }],
   });
-
