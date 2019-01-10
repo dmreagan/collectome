@@ -63,7 +63,7 @@ angular
         elem.on('load', function() {
             const src = elem.attr('src');
 
-            console.log(src);
+            // console.log(src);
 
             const grids = elem.parent().parent().parent(); 
             const htmlStr = grids.html();
@@ -88,7 +88,7 @@ angular
 
             const width = parseInt(htmlStr.substring(closestMathIdx + 1 + strKey.length, i), 10);
 
-            console.log(width);
+            // console.log(width);
 
             strKey = 'px; height:';
             const startIdx = i + strKey.length + 1;
@@ -97,7 +97,7 @@ angular
 
             const height = parseInt(htmlStr.substring(startIdx, i), 10);
 
-            console.log(height);
+            // console.log(height);
 
             const matchURL = (obj) => {
               if (obj.url === src) {
@@ -111,18 +111,18 @@ angular
 
             const scale = matchedRecord[0].scale;
 
-            console.log(scale);
+            // console.log(scale);
 
             const scaleWidth = width / scale;
             const scaleHeight = height / scale;
 
-            console.log(scaleWidth);
-            console.log(scaleHeight);
+            // console.log(scaleWidth);
+            // console.log(scaleHeight);
 
             elem.css('width', `${scaleWidth}px`);
             elem.css('height', `${scaleHeight}px`);
+            elem.css('transform-origin', 'top left');
             elem.css('transform', `scale3d(${scale}, ${scale}, 1)`);
-
           });
       }
     };

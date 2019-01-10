@@ -13,10 +13,10 @@
     },
 
     "content" : [
-        { "id" : "content1", "title" : "Information Technology News", "url" : "https://itnews.iu.edu/", "scale" : 1 },
+        { "id" : "content1", "title" : "Information Technology News", "url" : "https://itnews.iu.edu/", "scale" : 2 },
         { "id" : "content2", "title" : "IU UITS", "url" : "https://uits.iu.edu/", "scale" : 1 },
         { "id" : "content3", "title" : "School of Informatics, Computing and Engineering", "url" : "http://www.sice.indiana.edu/", "scale" : 1 },
-        { "id" : "content4", "title" : "MIT", "url" : "http://www.mit.edu/", "scale" : 1 }
+        { "id" : "content4", "title" : "MIT", "url" : "http://www.mit.edu/", "scale" : 2 }
     ],
 
     "display" : {

@@ -67,11 +67,10 @@ angular
             * also refer to this snapshot, if yes, then no deletion.
             */
             utils.getSnapshotCount(this.snapshotRef).then((response) => {
-              console.log(response);
               const snapshotCount = response.data.count;
 
-              console.log('snapshotCount');
-              console.log(snapshotCount);
+              // console.log('snapshotCount');
+              // console.log(snapshotCount);
 
               if (snapshotCount <= 1) {
                 utils.deleteSnapshot(this.snapshotRef);
