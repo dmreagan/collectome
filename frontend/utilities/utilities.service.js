@@ -205,6 +205,31 @@ angular
         });
       };
 
+      this.snapshotRollback = (snapshotRef, self, msg) => {
+        /**
+          * before roll back we need to check whether other exhibits
+          * also refer to this snapshot, if yes, then no deletion.
+        */
+        const api = new Api(`/snapshotcount/${snapshotRef}`);
+        api.get().then((response) => {
+          const snapshotCount = response.data.count;
+
+          // console.log('snapshotCount');
+          // console.log(snapshotCount);
+
+          if (snapshotCount === 0) {
+            this.deleteSnapshot(snapshotRef);
+
+            self.message_style = 'alert error one-third float-center';
+            self.info_message = msg;
+          }
+        }, (e) => {
+          console.warn(e);
+          self.message_style = 'alert error one-third float-center';
+          self.info_message = msg;
+        });
+      };
+
       /**
        *
        * @param {config file} config
@@ -247,22 +272,13 @@ angular
           api.post({ config, extra, createTime, owner }).then((resp) => {
             const assignedId = resp.data.id;
 
-            /*
-            const protocol = $location.protocol();
-            const host = $location.host();
-            const port = $location.host();
-            url = `${protocol}//${host}:${port}${path}/${assignedId}`;
-            */
-
             $location.url(`${path}/${assignedId}`);
           }, (e) => {
             console.warn(e);
 
             // roll back
-            this.deleteSnapshot(snapshotRef);
-
-            self.message_style = 'alert error one-third float-center';
-            self.info_message = 'Upload exhibit failed.';
+            const msg = 'Upload exhibit failed.';
+            this.snapshotRollback = (snapshotRef, self, msg);
           });
         }, (e) => {
           console.warn(e);
@@ -311,10 +327,8 @@ angular
             console.warn(e);
 
             // roll back
-            this.deleteSnapshot(snapshotRef);
-
-            self.message_style = 'alert error one-third float-center';
-            self.info_message = 'Update exhibit failed.';
+            const msg = 'Update exhibit failed.';
+            this.snapshotRollback = (snapshotRef, self, msg);
           });
         }, (e) => {
           console.warn(e);
@@ -359,6 +373,19 @@ angular
 
         const api = new Api('/github');
         api.post({ code }).then((response) => {
+          d.resolve(response);
+        }, (e) => {
+          console.warn(e);
+          d.reject({});
+        });
+        return d.promise;
+      };
+
+      this.getSnapshotCount = (snapshotRef) => {
+        const d = $q.defer();
+
+        const api = new Api(`/snapshotcount/${snapshotRef}`);
+        api.get().then((response) => {
           d.resolve(response);
         }, (e) => {
           console.warn(e);

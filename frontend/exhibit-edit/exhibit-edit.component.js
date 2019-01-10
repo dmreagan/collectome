@@ -25,11 +25,11 @@ angular
             return;
           }
 
-          const owner = this.authentication.userProfile.login;
+          const loginUser = this.authentication.userProfile.login;
 
-          if (this.exhibitOwner !== owner) {
-            const msg = `exhibit owner ${this.exhibitOwner} not same as login user ${owner}`;
-            
+          if (this.exhibitOwner !== loginUser) {
+            const msg = `exhibit owner ${this.exhibitOwner} not same as login user ${loginUser}`;
+
             this.message_style = 'alert error one-third float-center';
             this.info_message = msg;
 
@@ -40,12 +40,12 @@ angular
 
           // const divId = '#avl-preview';
           const divId = '#gridster';
-          utils.updateExhibit(this.exhibitId, this.config, divId, this, owner);
+          utils.updateExhibit(this.exhibitId, this.config, divId, this, loginUser);
         };
 
         // async initialization of this.config
         // eslint-disable-next-line max-len
-        utils.getExhibit(this.exhibitId).then((response) => { 
+        utils.getExhibit(this.exhibitId).then((response) => {
           this.config = JSON.parse(response.data.config);
           this.exhibitOwner = response.data.owner;
         });

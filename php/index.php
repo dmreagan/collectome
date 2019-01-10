@@ -68,6 +68,27 @@ class CrateResource extends \Slim\Slim
         $this->response->write(json_encode($result));
     }
 
+    function getSnapshotRefCount($digest)
+    {
+        error_log("In getSnapshotRefCount" . "\n", 3, $this->ERROR_LOG_PATH);
+
+        $colName = 'cnt';
+        $qry = $this->conn->prepare("SELECT COUNT(snapshot_ref) AS {$colName} FROM {$this->EXHIBITS_TABLE_NAME} WHERE snapshot_ref = ?");
+        $qry->bindParam(1, $digest);
+    
+        $qry->execute();
+        $result = $qry->fetchAll(PDO::FETCH_ASSOC);
+    
+        if (!$result) {
+            error_log("Cannot retrieve snapshot count whose digest=\"{$digest}\" in table {$this->EXHIBITS_TABLE_NAME}" . "\n", 3, $this->ERROR_LOG_PATH);
+            return -1;
+        } else {
+            $cnt = $result[0][$colName];
+            error_log("Count of digest {$digest} is {$cnt}" . "\n", 3, $this->ERROR_LOG_PATH);
+            return $cnt;
+        }
+    }
+
 }
 
 $app = new CrateResource($config);
@@ -114,7 +135,8 @@ $app->post('/snapshots', function() use ($app)
     error_log("Calculated snapshot digest is: {$digest}" . "\n", 3, $app->ERROR_LOG_PATH);
 
     /////////////////////////////////////////////////////////////////////////
-    // check if digest is already in db, if yes, no need to do the insertion
+    // check if digest is already in db, if yes, no need to do the insertion.
+    // note that a snaphot can be shared by multiple exhibits
     /////////////////////////////////////////////////////////////////////////
     $qry = $app->conn->prepare("SELECT digest FROM blob.{$app->SNAPSHOTS_BLOB_TABLE_NAME} WHERE digest = ?");
     $qry->bindParam(1, $digest);
@@ -166,6 +188,32 @@ $app->post('/snapshots', function() use ($app)
         ));
     }
 })->name('snapshot-post');
+
+/**
+ * returns the snapshot count in table 'EXHIBITS_TABLE_NAME' for a given digest.
+ */
+$app->get('/snapshotcount/:digest', function($digest) use ($app)
+{
+    if (empty($digest)) {
+        $app->not_found('Please provide a snapshot digest: /snapshotcount/<digest>');
+        return;
+    }
+
+    $cnt = $app->getSnapshotRefCount($digest);
+
+    if ($cnt === -1) {
+        
+        $app->resource_error(500, "Cannot retrieve snapshot count whose digest=\"{$digest}\" in table {$this->EXHIBITS_TABLE_NAME}");
+
+        return;
+    } else {
+        $app->success(200, array(
+            'count' => $cnt
+        ));
+        return;
+    }
+
+})->name('snapshot-count-get');
 
 /**
  * returns the snapshot for a given digest.
@@ -311,6 +359,7 @@ $app->post('/exhibits', function() use ($app)
              "success"=>"Exhibit Created!",
              "id" => $id
          );
+
         $app->success(201, $result, $id);
     } else {
         $app->resource_error(500, $app->conn->errorInfo());
