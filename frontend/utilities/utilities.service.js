@@ -246,8 +246,11 @@ angular
         // get base64 encoded string of the snapshot
         const snapshot = await canvas.toDataURL().substring(prefix.length);
 
+        /**
+         * set figure caption visibility back once we captured the layout snapshot
+         */
         self.showfigcap = true;
-        
+
         // console.log(snapshot);
 
         // document.body.appendChild(canvas);
@@ -303,6 +306,9 @@ angular
         // get base64 encoded string of the snapshot
         const snapshot = await canvas.toDataURL().substring(prefix.length);
 
+        /**
+         * set figure caption visibility back once we captured the layout snapshot
+         */
         self.showfigcap = true;
 
         // document.body.appendChild(canvas);
