@@ -32,14 +32,28 @@ angular
             return;
           }
 
-          const owner = this.authentication.userProfile.login;
+          const loginUser = this.authentication.userProfile.login;
 
           // const divId = '#avl-preview';
           const divId = '#gridster';
 
-          // this.showfigcap = false;
+          this.showfigcap = false;
 
-          utils.submitExhibit(this.config, divId, this, owner);
+          /**
+           * Before we do the snapshot, we want to hide figurecaption in
+           * 'exhibit-config-preview.template.html' since html2canvas has
+           * issues capturing the text.
+           * 
+           * 'this.showfigcap' will trigue the event to set figcaption's
+           * ng-show property to false to make the figure caption be invisible.
+           * However, the will take place AFTER html2canvas lib tries to capture
+           * the snapshot. The workaround here is to synchronouslly sleep a while
+           * to wait ng-show take effects.
+           */
+          const milliseconds = 500;
+          utils.sleep(milliseconds).then(() => {
+            utils.submitExhibit(this.config, divId, this, loginUser);
+          });
         };
 
         const path = './assets/config-default.json';

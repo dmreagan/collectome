@@ -246,6 +246,8 @@ angular
         // get base64 encoded string of the snapshot
         const snapshot = await canvas.toDataURL().substring(prefix.length);
 
+        self.showfigcap = true;
+        
         // console.log(snapshot);
 
         // document.body.appendChild(canvas);
@@ -300,6 +302,8 @@ angular
         const canvas = await html2canvas(document.querySelector(divId));
         // get base64 encoded string of the snapshot
         const snapshot = await canvas.toDataURL().substring(prefix.length);
+
+        self.showfigcap = true;
 
         // document.body.appendChild(canvas);
 
@@ -392,6 +396,10 @@ angular
           d.reject({});
         });
         return d.promise;
+      };
+
+      this.sleep = (milliseconds) => {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
       };
     };
   }]);

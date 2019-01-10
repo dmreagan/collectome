@@ -10,6 +10,8 @@ angular
 
         this.exhibitId = $routeParams.exhibitId;
 
+        this.showfigcap = true;
+
         this.updateConfig = (updatedConfig) => {
           this.config = updatedConfig;
         };
@@ -40,7 +42,24 @@ angular
 
           // const divId = '#avl-preview';
           const divId = '#gridster';
-          utils.updateExhibit(this.exhibitId, this.config, divId, this, loginUser);
+
+          this.showfigcap = false;
+
+          /**
+           * Before we do the snapshot, we want to hide figurecaption in
+           * 'exhibit-config-preview.template.html' since html2canvas has
+           * issues capturing the text.
+           * 
+           * 'this.showfigcap' will trigue the event to set figcaption's
+           * ng-show property to false to make the figure caption be invisible.
+           * However, the will take place AFTER html2canvas lib tries to capture
+           * the snapshot. The workaround here is to synchronouslly sleep a while
+           * to wait ng-show take effects.
+           */
+          const milliseconds = 500;
+          utils.sleep(milliseconds).then(() => {
+            utils.updateExhibit(this.exhibitId, this.config, divId, this, loginUser);
+          });
         };
 
         // async initialization of this.config
