@@ -18,6 +18,16 @@ angular
 
         this.goToExhibits = () => $location.url('/exhibits');
 
+        this.containerIdOnOffSwitch = false;
+
+        this.switchContainerId = () => {
+          if (!this.containerIdOnOffSwitch) {
+            this.containerIdOnOffSwitch = true;
+          } else {
+            this.containerIdOnOffSwitch = false;
+          }
+        };
+
         if (this.exhibitId) {
           this.goToCreated = () => $location.url(`/exhibits/${this.exhibitId}`);
           this.message_success = 'alert success one-third float-center';
@@ -38,6 +48,7 @@ angular
           const divId = '#gridster';
 
           this.showfigcap = false;
+          this.containerIdOnOffSwitch = false;
 
           /**
            * Before we do the snapshot, we want to hide figurecaption in

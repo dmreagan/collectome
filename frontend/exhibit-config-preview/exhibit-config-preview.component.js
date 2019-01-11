@@ -7,6 +7,7 @@ angular
     bindings: {
       config: '<',
       showfigcap: '<',
+      idswitch: '<',
     },
     templateUrl: 'exhibit-config-preview/exhibit-config-preview.template.html',
     controller: ['Utilities', function exhibitConfigPreviewController(Utilities) {

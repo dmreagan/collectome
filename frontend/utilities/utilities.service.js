@@ -84,6 +84,7 @@ angular
 
         for (let i = 0, l = layout.containers.length; i < l; i += 1) {
           const item = {};
+          item.id = layout.containers[i].id;
           item.col = layout.containers[i].originX;
           item.row = layout.containers[i].originY;
 
@@ -330,7 +331,7 @@ angular
           const lastModifiedTime = new Date();
           api.put({ config, extra, lastModifiedTime, owner }).then((resp) => {
             self.message_style = 'alert success one-third float-center';
-            self.info_message = 'Post has been successfully edited';
+            self.info_message = 'Exhibit has been successfully edited';
             self.success = true;
             console.warn(resp);
           }, (e) => {

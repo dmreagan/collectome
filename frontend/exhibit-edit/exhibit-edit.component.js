@@ -12,6 +12,16 @@ angular
 
         this.showfigcap = true;
 
+        this.containerIdOnOffSwitch = false;
+
+        this.switchContainerId = () => {
+          if (!this.containerIdOnOffSwitch) {
+            this.containerIdOnOffSwitch = true;
+          } else {
+            this.containerIdOnOffSwitch = false;
+          }
+        };
+
         this.updateConfig = (updatedConfig) => {
           this.config = updatedConfig;
         };
@@ -44,6 +54,7 @@ angular
           const divId = '#gridster';
 
           this.showfigcap = false;
+          this.containerIdOnOffSwitch = false;
 
           /**
            * Before we do the snapshot, we want to hide figurecaption in

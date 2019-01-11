@@ -2,6 +2,14 @@
   #gridster {
     margin: 50px;
   }
+
+  #over {
+    font-size: 15em;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 2
+  }
 </style>
 
 <div id="avl-shim">
@@ -15,12 +23,12 @@
           <figure>
 
             <iframe ng-src="{{tile.url | trusted}}" scale="$ctrl.config"></iframe>
+            <div id="over" ng-show="$ctrl.idswitch">{{tile.id}}</div>
 
-            <div ng-show="$ctrl.showfigcap">
-              <figcaption>
-                <h4>{{tile.title}}</h4>
-              </figcaption>
-            </div>
+            <figcaption ng-show="$ctrl.showfigcap">
+              <h4>{{tile.title}}</h4>
+            </figcaption>
+
           </figure>
 
         </li>

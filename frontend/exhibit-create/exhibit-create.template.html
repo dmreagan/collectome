@@ -8,9 +8,15 @@
 
   <section class="section">
     <div class="row pad">
-      <exhibit-config-preview config="$ctrl.config" showfigcap="$ctrl.showfigcap"></exhibit-config-preview>
+      <exhibit-config-preview config="$ctrl.config" showfigcap="$ctrl.showfigcap" idswitch="$ctrl.containerIdOnOffSwitch"></exhibit-config-preview>
 
       <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)"></exhibit-config-editor>
+
+      <div class="row pad">
+        <h5>Show container identification</h5>
+
+        <button class="button" ng-click="$ctrl.switchContainerId()">On/Off</button>
+      </div>
     </div>
 
     <div class="content">
