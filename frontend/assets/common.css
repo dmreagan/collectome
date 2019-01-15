@@ -55,11 +55,7 @@
   .shadow-5 {
       box-shadow: 0 40px 77px 0 rgba(0, 0, 0, 0.22), 0 27px 24px 0 rgba(0, 0, 0, 0.2);
   }
-
-  li {
-    background: rgba(174,167,159,1);
-  }
-
+  
   iframe, figure {
   height: 100%;
   width: 100%;
