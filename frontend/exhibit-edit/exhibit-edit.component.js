@@ -54,7 +54,7 @@ angular
             return;
           }
 
-          const divId = '#avl-preview';
+          const divId = '#avl-shim';
           // const divId = '#gridster';
 
           this.showfigcap = false;

@@ -10,6 +10,11 @@
     left: 20px;
     z-index: 2
   }
+
+  .gridlist {
+    background: rgba(174, 167, 159, 1);
+    z-index: -1
+  }
 </style>
 
 <div id="avl-shim">
@@ -17,7 +22,7 @@
 
     <div id="gridster" gridster="$ctrl.gridsterOpts">
       <ul id="tiles">
-        <li class="shadow-3" gridster-item row="tile.row" col="tile.col" size-x="tile.sizeX" size-y="tile.sizeY"
+        <li class="shadow-3 gridlist" gridster-item row="tile.row" col="tile.col" size-x="tile.sizeX" size-y="tile.sizeY"
           ng-repeat="tile in $ctrl.tiles">
 
           <figure>

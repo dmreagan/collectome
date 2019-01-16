@@ -44,7 +44,7 @@ angular
 
           const loginUser = this.authentication.userProfile.login;
 
-          const divId = '#avl-preview';
+          const divId = '#avl-shim';
           // const divId = '#gridster';
 
           this.showfigcap = false;

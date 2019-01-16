@@ -11,12 +11,7 @@
 </head>
 
 <body>
-    <header class="site-header" itemscope="itemscope" itemtype="http://schema.org/CollegeOrUniversity" role="banner">
-        <div class="row pad">
-            <h4><a class="title" href="exhibits/" itemprop="department">Hello Collectome</a></h4>
-            <login-button class="float-right"></login-button>
-        </div>
-    </header>
+    <index-header></index-header>
 
     <div ng-view autoscroll="true"></div>
 </body>
@@ -34,6 +29,8 @@
 <script type="application/javascript" src="api-host/api-host.value.js"></script>
 <script type="application/javascript" src="api/api.module.js"></script>
 <script type="application/javascript" src="api/api.service.js"></script>
+<script type="application/javascript" src="index-header/index-header.module.js"></script>
+<script type="application/javascript" src="index-header/index-header.component.js"></script>
 <script type="application/javascript" src="authentication/authentication.module.js"></script>
 <script type="application/javascript" src="authentication/authentication.service.js"></script>
 <script type="application/javascript" src="login-button/login-button.module.js"></script>

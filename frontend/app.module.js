@@ -4,6 +4,5 @@ angular.module('collectomeApp', [
   'exhibitDetail',
   'exhibitDisplay',
   'exhibitEdit',
-  'loginButton',
-  'authentication',
+  'indexHeader',
 ]);
