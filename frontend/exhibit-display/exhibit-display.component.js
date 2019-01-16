@@ -2,11 +2,9 @@ angular
   .module('exhibitDisplay')
   .component('exhibitDisplay', {
     templateUrl: 'exhibit-display/exhibit-display.template.html',
-    controller: ['Authentication', 'Utilities', '$routeParams', '$location',
-      function exhibitDetailController(Authentication, Utilities, $routeParams, $location) {
+    controller: ['Utilities', '$routeParams',
+      function exhibitDetailController(Utilities, $routeParams) {
         const utils = new Utilities();
-
-        this.authentication = Authentication;
 
         this.exhibitId = $routeParams.exhibitId;
 
@@ -19,9 +17,9 @@ angular
           this.snapshotRef = response.data.snapshot_ref;
           this.exhibitOwner = response.data.owner;
           this.exhibitIsPublic = response.data.public;
-          this.exhibitIsPublic = response.data.public;
-        });
 
-        this.goToExhibits = () => $location.url('/exhibits');
+          this.gridsterOpts = utils.calculateGridsterOpts(this.config);
+          this.tiles = utils.calculateTiles(this.config);
+        });
       }],
   });

@@ -5,16 +5,23 @@
     </section>
 
     <section class="section" ng-if="$ctrl.exhibitIsPublic">
-        <div class="row pad">
-            <exhibit-config-preview config="$ctrl.config"></exhibit-config-preview>
-        </div>
+        <div class="container">
+            <div id="gridster" gridster="$ctrl.gridsterOpts">
+                <ul id="tiles">
+                    <li class="shadow-3" gridster-item row="tile.row" col="tile.col" size-x="tile.sizeX" size-y="tile.sizeY"
+                        ng-repeat="tile in $ctrl.tiles">
 
-        <div class="section">
-            <div class="row pad">
-                <button class="button invert" ng-click="$ctrl.goToExhibits()">Return to search</button>
+                        <figure>
+                            <iframe ng-src="{{tile.url | trusted}}" contentid="{{tile.contentId}}" scale="$ctrl.config"></iframe>
+                            <figcaption>
+                                <h4>{{tile.title}}</h4>
+                            </figcaption>
+                        </figure>
+
+                    </li>
+                </ul>
             </div>
         </div>
-
     </section>
 
 </main>
