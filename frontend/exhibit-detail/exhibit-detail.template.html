@@ -1,6 +1,10 @@
 <main role="main" class="no-section-nav">
 
-  <section class="section">
+  <section class="section" ng-if="!$ctrl.exhibitIsPublic">
+    <h4>This exhibit is not public.</h4>
+  </section>
+
+  <section class="section" ng-if="$ctrl.exhibitIsPublic">
     <div class="row pad">
       <exhibit-config-preview config="$ctrl.config"></exhibit-config-preview>
 
@@ -13,7 +17,7 @@
     </div>
 
     <div class="text-center section bg-gray" ng-if="$ctrl.authentication.isAuthorized">
-      <h4>Modify this project</h4>
+      <h4>Modify this exhibit</h4>
       <ul class="button-group">
         <li>
           <button class="button invert" ng-click="$ctrl.goToEdit()">Edit</button>
@@ -24,19 +28,19 @@
       </ul>
       <div ng-show="$ctrl.confirmDelete" ng-class="$ctrl.message_style">
         <h5 class="text-center">{{$ctrl.info_message}}</h5>
-            <ul class="button-group">
-              <li>
-                <button class="button primary float-center" ng-click="$ctrl.deleteYes()">Yes</button>
-              </li>
-              <li>
-                <button class="button primary float-center" ng-click="$ctrl.deleteNo()">No</button>
-              </li>
-            </ul>
+        <ul class="button-group">
+          <li>
+            <button class="button primary float-center" ng-click="$ctrl.deleteYes()">Yes</button>
+          </li>
+          <li>
+            <button class="button primary float-center" ng-click="$ctrl.deleteNo()">No</button>
+          </li>
+        </ul>
       </div>
 
       <div ng-show="$ctrl.acknowledgeDelete" ng-class="$ctrl.message_style">
         <h5 class="text-center">{{$ctrl.info_message}}</h5>
-            <button class="button success float-center" ng-click="$ctrl.deleteAcknowledge()">Continue...</button>
+        <button class="button success float-center" ng-click="$ctrl.deleteAcknowledge()">Continue...</button>
       </div>
 
     </div>

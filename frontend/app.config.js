@@ -26,6 +26,9 @@ angular
         .when('/exhibit-create/:exhibitId', {
           template: '<exhibit-create></exhibit-create>',
         })
+        .when('/exhibit-display/:exhibitId', {
+          template: '<exhibit-display></exhibit-display>',
+        })
         .otherwise('/exhibits');
     },
   ]);

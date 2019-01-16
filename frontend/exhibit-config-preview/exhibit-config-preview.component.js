@@ -62,13 +62,12 @@ angular
      },
       link: function(scope, elem, attr) {
         elem.on('load', function() {
-            const src = elem.attr('src');
-
-            // console.log(src);
+            const contentId = elem.attr('contentId');
+            // console.log(contentId);
 
             const grids = elem.parent().parent().parent(); 
             const htmlStr = grids.html();
-            const idx = htmlStr.indexOf(src);
+            const idx = htmlStr.indexOf(contentId);
 
             let strKey = 'width:';
             const re = new RegExp(strKey, 'g');
@@ -100,15 +99,15 @@ angular
 
             // console.log(height);
 
-            const matchURL = (obj) => {
-              if (obj.url === src) {
+            const matchId = (obj) => {
+              if (obj.id === contentId) {
                 return true;
               }
     
               return false;
             };
 
-            const matchedRecord = scope.config.content.filter(matchURL);
+            const matchedRecord = scope.config.content.filter(matchId);
 
             const scale = matchedRecord[0].scale;
 

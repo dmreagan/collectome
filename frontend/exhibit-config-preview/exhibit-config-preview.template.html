@@ -22,7 +22,7 @@
 
           <figure>
 
-            <iframe ng-src="{{tile.url | trusted}}" scale="$ctrl.config"></iframe>
+            <iframe ng-src="{{tile.url | trusted}}" contentid="{{tile.contentId}}" scale="$ctrl.config"></iframe>
             <div id="over" ng-show="$ctrl.idswitch">{{tile.id}}</div>
 
             <figcaption ng-show="$ctrl.showfigcap">

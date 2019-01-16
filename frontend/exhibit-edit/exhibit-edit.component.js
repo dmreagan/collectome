@@ -10,6 +10,10 @@ angular
 
         this.exhibitId = $routeParams.exhibitId;
 
+        this.exhibitIsPublic = false;
+
+        this.exhibitEditPageCanbeDisplayed = false;
+
         this.showfigcap = true;
 
         this.containerIdOnOffSwitch = false;
@@ -73,11 +77,61 @@ angular
           });
         };
 
+        this.sanitycheck = () => {
+          if (this.authentication.isAuthorized) {
+            const loginUser = this.authentication.userProfile.login;
+            if (this.exhibitOwner === loginUser) {
+              /**
+               * login user can edit since she is the owner, regardless whether
+               * the exhibit is set to be public or private.
+               */
+              this.exhibitEditPageCanbeDisplayed = true;
+
+              console.log('branch 1');
+            } else if (this.exhibitIsPublic) {
+              /**
+               * login user is not the owner, however since the exhibit is set
+               * to be public, login user can still view the exhibit but just
+               * not allowed to make any edit.
+               */
+              this.exhibitEditPageCanbeDisplayed = true;
+              console.log('branch 2');
+            }
+          } else if (this.exhibitIsPublic) {
+            /**
+             * when user is not logged in, if the exhibit is set to be public, then
+             * can be displayed, otherwise not.
+             */
+            this.exhibitEditPageCanbeDisplayed = true;
+            console.log('branch 3');
+          }
+        };
+
         // async initialization of this.config
         // eslint-disable-next-line max-len
-        utils.getExhibit(this.exhibitId).then((response) => {
-          this.config = JSON.parse(response.data.config);
-          this.exhibitOwner = response.data.owner;
+        // utils.getExhibit(this.exhibitId).then((response) => {
+        //   this.config = JSON.parse(response.data.config);
+        //   this.exhibitOwner = response.data.owner;
+        //   this.exhibitIsPublic = response.data.public;
+
+        //   const milliseconds = 500;
+        //   utils.sleep(milliseconds).then(() => {
+        //     this.sanitycheck();
+        //   });
+        // });
+
+        /**
+         * sleep a while to make sure that authentication component
+         * which is async is ready.
+         */
+        const milliseconds = 15;
+        utils.sleep(milliseconds).then(() => {
+          utils.getExhibit(this.exhibitId).then((response) => {
+            this.config = JSON.parse(response.data.config);
+            this.exhibitOwner = response.data.owner;
+            this.exhibitIsPublic = response.data.public;
+            this.sanitycheck();
+          });
         });
       }],
   });

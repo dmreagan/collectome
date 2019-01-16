@@ -93,14 +93,17 @@ angular
           // following default values are used when no matching can be found
           item.title = '';
           item.url = '';
+          item.contentId = '';
 
           id = layout.containers[i].id;
 
-          record = mapping.filter(matchMappingRecord);
+          const record = mapping.filter(matchMappingRecord);
 
           if (record.length > 0) {
             // get content id
             id = record[0].content;
+
+            item.contentId = record[0].content;
 
             matchedContent = content.filter(matchID);
 
@@ -164,11 +167,11 @@ angular
         const columnWidth = config.display.tile_x_resolution;
         const rowHeight = config.display.tile_y_resolution;
 
-        for (let i = 1; i < (config.display.columns); i += 1) {
+        for (let i = 0; i < (config.display.columns) + 1; i += 1) {
           bezelPos.bezelPosHorizontal.push(i * columnWidth);
         }
 
-        for (let j = 1; j < (config.display.rows); j += 1) {
+        for (let j = 0; j < (config.display.rows) + 1; j += 1) {
           bezelPos.bezelPosVertical.push(j * rowHeight);
         }
 

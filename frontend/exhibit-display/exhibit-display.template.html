@@ -1,0 +1,20 @@
+<main role="main" class="no-section-nav">
+
+    <section class="section" ng-if="!$ctrl.exhibitIsPublic">
+        <h4>This exhibit is not public.</h4>
+    </section>
+
+    <section class="section" ng-if="$ctrl.exhibitIsPublic">
+        <div class="row pad">
+            <exhibit-config-preview config="$ctrl.config"></exhibit-config-preview>
+        </div>
+
+        <div class="section">
+            <div class="row pad">
+                <button class="button invert" ng-click="$ctrl.goToExhibits()">Return to search</button>
+            </div>
+        </div>
+
+    </section>
+
+</main>

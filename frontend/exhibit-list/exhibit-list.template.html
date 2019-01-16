@@ -1,0 +1,62 @@
+<main role="main" class="no-section-nav">
+    <section class="section">
+        <div class="row pad" id="search">
+            <form>
+                <div class="form-item">
+                    <div class="form-item-label">
+                        <label for="search">Search for projects</label>
+                    </div>
+                    <div class="form-item-input">
+                        <input type="text" name="search" id="search" ng-model="$ctrl.searchString" ng-change="$ctrl.updateSearch()"
+                            placeholder="Search projects">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="row pad">
+            <div class="grid">
+                <div class="grid-item">
+                    <div class="two-thirds">
+                        <h2 class="section-title">
+                            <span ng-show="$ctrl.searchString.length > 0">Search Results: </span>{{
+                            $ctrl.projects.length }}
+                            <ng-pluralize count="$ctrl.projects.length" when="{'0': 'Projects', 'one':'Project', 'other': 'Projects'}"></ng-pluralize>
+                        </h2>
+                    </div>
+                    <div class="one-third">
+                        <select class="form-control" ng-model="$ctrl.sortBy">
+                            <option value="-_score">Relevance</option>
+                            <option value="title">Title</option>
+                            <option value="year">Year</option>
+                            <option value="-create_time">Recently updated</option>
+                        </select>
+                        <!-- <button type="button" ng-click="$ctrl.isReverse = !$ctrl.isReverse">Toggle Order</button> -->
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-warning" ng-if="$ctrl.projects.length === 0 && $ctrl.searchString.length > 0">
+                No projects found for "{{ $ctrl.searchString }}"
+            </div>
+            <div class="grid thirds">
+                
+                <div class="grid-item" id="project-{{ project.id }}" ng-repeat="project in $ctrl.projects | orderBy:$ctrl.sortBy track by project.id">
+                    <div class="panel--interactive">
+                        <a href="projects/{{ project.id }}">
+                            <figure class="media image">
+                                <img id="image-thumbnail" ng-if="!project.image_ref" alt="" src="https://placehold.it/160x120">
+                                <img id="image-thumbnail" ng-if="project.image_ref" ng-style="{'background-image':'url({{$ctrl.apiHost}}/image/{{ project.image_ref }})'}">
+                            </figure>
+                            <h2 class="title">{{ project.title }}</h2>
+                            <p>
+                                {{ project.description | limitTo: 60 }}{{project.description.length > 20 ? '...' : ''}}
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

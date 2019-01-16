@@ -10,12 +10,15 @@ angular
 
         this.exhibitId = $routeParams.exhibitId;
 
+        this.exhibitIsPublic = false;
+
         // async initialization of this.config
         // eslint-disable-next-line max-len
         utils.getExhibit(this.exhibitId).then((response) => {
           this.config = JSON.parse(response.data.config);
           this.snapshotRef = response.data.snapshot_ref;
           this.exhibitOwner = response.data.owner;
+          this.exhibitIsPublic = response.data.public;
         });
 
         this.goToExhibits = () => $location.url('/exhibits');
