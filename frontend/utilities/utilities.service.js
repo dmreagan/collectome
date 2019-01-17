@@ -237,61 +237,6 @@ angular
         });
       };
 
-      this.submitExhibitTest = (config, divId, self, owner) => {
-
-        // const opts = {};
-
-        // opts.onclone = (clonedDoc) => {
-        //   for (let i = 0; i < config.layout.containers.length; i += 1) {
-        //     const containerId = config.layout.containers[i].id;
-        //     console.log(containerId);
-
-        //     const elem = clonedDoc.getElementById(containerId);
-
-        //     elem.innerHTML = '';
-        //     //figElem.style.display = 'none';
-
-
-        //     console.log(elem.innerHTML);
-        //   }
-        // };
-
-        const elemToCapture = document.querySelector(divId);
-
-        html2canvas(elemToCapture).then(canvas => {
-          const prefix = 'data:image/png;base64,';
-          const snapshot = canvas.toDataURL().substring(prefix.length);
-
-          console.log(snapshot);
-
-          //self.showfig = true;
-
-          //console.log(self.showfig);
-        }).catch(function (error) {
-          /* This is fired when the promise executes without the DOM */  
-          
-          console.log(error);
-      });
-
-        // const milliseconds = 5000;
-        //   this.sleep(milliseconds).then(() => {
-            
-        //     console.log(elemToCapture);
-        //     html2canvas(elemToCapture, opts).then(canvas => {
-        //       const prefix = 'data:image/png;base64,';
-        //       const snapshot = canvas.toDataURL().substring(prefix.length);
-  
-        //       console.log(snapshot);
-        //     }).catch(function (error) {
-        //       /* This is fired when the promise executes without the DOM */  
-              
-        //       console.log(error);
-        //   });
-        // });
-
-      };
-      
-
       /**
        *
        * @param {config file} config
