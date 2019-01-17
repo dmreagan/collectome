@@ -200,13 +200,16 @@ angular
        * @param {*} snapshotRef
        */
       this.deleteSnapshot = (snapshotRef) => {
+        const d = $q.defer();
+
         const api = new Api(`/snapshot/${snapshotRef}`);
         api.delete().then((response) => {
-          // console.log("Deleted: "+ response);
-          // console.log(response);
+          d.resolve(response);
         }, (e) => {
           console.warn(e);
+          d.reject({});
         });
+        return d.promise;
       };
 
       this.snapshotRollback = (snapshotRef, self, msg) => {
@@ -234,6 +237,61 @@ angular
         });
       };
 
+      this.submitExhibitTest = (config, divId, self, owner) => {
+
+        // const opts = {};
+
+        // opts.onclone = (clonedDoc) => {
+        //   for (let i = 0; i < config.layout.containers.length; i += 1) {
+        //     const containerId = config.layout.containers[i].id;
+        //     console.log(containerId);
+
+        //     const elem = clonedDoc.getElementById(containerId);
+
+        //     elem.innerHTML = '';
+        //     //figElem.style.display = 'none';
+
+
+        //     console.log(elem.innerHTML);
+        //   }
+        // };
+
+        const elemToCapture = document.querySelector(divId);
+
+        html2canvas(elemToCapture).then(canvas => {
+          const prefix = 'data:image/png;base64,';
+          const snapshot = canvas.toDataURL().substring(prefix.length);
+
+          console.log(snapshot);
+
+          //self.showfig = true;
+
+          //console.log(self.showfig);
+        }).catch(function (error) {
+          /* This is fired when the promise executes without the DOM */  
+          
+          console.log(error);
+      });
+
+        // const milliseconds = 5000;
+        //   this.sleep(milliseconds).then(() => {
+            
+        //     console.log(elemToCapture);
+        //     html2canvas(elemToCapture, opts).then(canvas => {
+        //       const prefix = 'data:image/png;base64,';
+        //       const snapshot = canvas.toDataURL().substring(prefix.length);
+  
+        //       console.log(snapshot);
+        //     }).catch(function (error) {
+        //       /* This is fired when the promise executes without the DOM */  
+              
+        //       console.log(error);
+        //   });
+        // });
+
+      };
+      
+
       /**
        *
        * @param {config file} config
@@ -246,16 +304,20 @@ angular
 
         const prefix = 'data:image/png;base64,';
 
-        const canvas = await html2canvas(document.querySelector(divId));
-        // get base64 encoded string of the snapshot
-        const snapshot = await canvas.toDataURL().substring(prefix.length);
+        let canvas = null;
+        let snapshot = null;
 
-        /**
-         * set figure caption visibility back once we captured the layout snapshot
-         */
-        self.showfigcap = true;
+        try {
+          canvas = await html2canvas(document.querySelector(divId));
 
-        // console.log(snapshot);
+          // get base64 encoded string of the snapshot
+          snapshot = await canvas.toDataURL().substring(prefix.length);
+        } catch (err) {
+          console.log(err); // TypeError: failed to fetch
+          throw err;
+        }
+
+        console.log(snapshot);
 
         // document.body.appendChild(canvas);
 
@@ -297,23 +359,24 @@ angular
       };
 
 
-      /**
-       *
-       * @param {config file} config
-       * @param {id of the div to be taken a snapshot} divId
-       */
-      this.updateExhibit = async function asyncSubmitExhibit(exhibitId, config, divId, self, owner) {
+      const uploadExhibit = async function asyncUploadExhibit(exhibitId, config, divId, self, owner) {
         /* generate image snapshot */
 
         const prefix = 'data:image/png;base64,';
-        const canvas = await html2canvas(document.querySelector(divId));
-        // get base64 encoded string of the snapshot
-        const snapshot = await canvas.toDataURL().substring(prefix.length);
+        let canvas = null;
+        let snapshot = null;
 
-        /**
-         * set figure caption visibility back once we captured the layout snapshot
-         */
-        self.showfigcap = true;
+        try {
+          canvas = await html2canvas(document.querySelector(divId));
+
+          // get base64 encoded string of the snapshot
+          snapshot = await canvas.toDataURL().substring(prefix.length);
+        } catch (err) {
+          console.log(err); // TypeError: failed to fetch
+          throw err;
+        }
+
+        console.log(snapshot);
 
         // document.body.appendChild(canvas);
 
@@ -333,9 +396,9 @@ angular
 
           const lastModifiedTime = new Date();
           api.put({ config, extra, lastModifiedTime, owner }).then((resp) => {
-            self.message_style = 'alert success one-third float-center';
-            self.info_message = 'Exhibit has been successfully edited';
-            self.success = true;
+          self.message_style = 'alert success one-third float-center';
+          self.info_message = 'Exhibit has been successfully edited';
+          self.success = true;
             console.warn(resp);
           }, (e) => {
             console.warn(e);
@@ -348,6 +411,29 @@ angular
           console.warn(e);
           self.message_style = 'alert error one-third float-center';
           self.info_message = 'Upload snapshot failed.';
+        });
+      };
+
+      /**
+       *
+       * @param {config file} config
+       * @param {id of the div to be taken a snapshot} divId
+       */
+      this.updateExhibit = (exhibitId, snapshotRef, config, divId, self, owner) => {
+        /* delete old snapshot first */
+        this.getSnapshotCount(snapshotRef).then((response) => {
+          const snapshotCount = response.data.count;
+
+          // console.log('snapshotCount');
+          // console.log(snapshotCount);
+
+          if (snapshotCount <= 1) {
+            this.deleteSnapshot(snapshotRef).then((response) => {
+              uploadExhibit(exhibitId, config, divId, self, owner);
+            });
+          } else {
+            uploadExhibit(exhibitId, config, divId, self, owner);
+          }
         });
       };
 

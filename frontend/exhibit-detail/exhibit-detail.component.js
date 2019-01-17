@@ -12,6 +12,8 @@ angular
 
         this.exhibitIsPublic = false;
 
+        this.showfig = true;
+
         // async initialization of this.config
         // eslint-disable-next-line max-len
         utils.getExhibit(this.exhibitId).then((response) => {

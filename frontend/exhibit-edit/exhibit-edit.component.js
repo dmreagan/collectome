@@ -14,7 +14,7 @@ angular
 
         this.exhibitEditPageCanbeDisplayed = false;
 
-        this.showfigcap = true;
+        this.showfig = true;
 
         this.containerIdOnOffSwitch = false;
 
@@ -57,23 +57,24 @@ angular
           const divId = '#avl-shim';
           // const divId = '#gridster';
 
-          this.showfigcap = false;
+          this.showfig = false;
           this.containerIdOnOffSwitch = false;
 
           /**
-           * Before we do the snapshot, we want to hide figurecaption in
+           * Before we do the snapshot, we want to hide <figure></figure> in
            * 'exhibit-config-preview.template.html' since html2canvas has
-           * issues capturing the text.
+           * issues capturing the iframe.
            * 
-           * 'this.showfigcap' will trigue the event to set figcaption's
-           * ng-show property to false to make the figure caption be invisible.
+           * 'this.showfig' will trigue the event to set figure tag's
+           * ng-if property to false to make the figures off.
            * However, the will take place AFTER html2canvas lib tries to capture
            * the snapshot. The workaround here is to synchronouslly sleep a while
-           * to wait ng-show take effects.
+           * to wait ng-if take effects.
            */
-          const milliseconds = 500;
+
+          const milliseconds = 10;
           utils.sleep(milliseconds).then(() => {
-            utils.updateExhibit(this.exhibitId, this.config, divId, this, loginUser);
+            utils.updateExhibit(this.exhibitId, this.snapshotRef, this.config, divId, this, loginUser);
           });
         };
 
@@ -87,7 +88,7 @@ angular
                */
               this.exhibitEditPageCanbeDisplayed = true;
 
-              console.log('branch 1');
+              // console.log('branch 1');
             } else if (this.exhibitIsPublic) {
               /**
                * login user is not the owner, however since the exhibit is set
@@ -95,7 +96,7 @@ angular
                * not allowed to make any edit.
                */
               this.exhibitEditPageCanbeDisplayed = true;
-              console.log('branch 2');
+              // console.log('branch 2');
             }
           } else if (this.exhibitIsPublic) {
             /**
@@ -103,22 +104,9 @@ angular
              * can be displayed, otherwise not.
              */
             this.exhibitEditPageCanbeDisplayed = true;
-            console.log('branch 3');
+            // console.log('branch 3');
           }
         };
-
-        // async initialization of this.config
-        // eslint-disable-next-line max-len
-        // utils.getExhibit(this.exhibitId).then((response) => {
-        //   this.config = JSON.parse(response.data.config);
-        //   this.exhibitOwner = response.data.owner;
-        //   this.exhibitIsPublic = response.data.public;
-
-        //   const milliseconds = 500;
-        //   utils.sleep(milliseconds).then(() => {
-        //     this.sanitycheck();
-        //   });
-        // });
 
         /**
          * sleep a while to make sure that authentication component
@@ -128,6 +116,7 @@ angular
         utils.sleep(milliseconds).then(() => {
           utils.getExhibit(this.exhibitId).then((response) => {
             this.config = JSON.parse(response.data.config);
+            this.snapshotRef = response.data.snapshot_ref;
             this.exhibitOwner = response.data.owner;
             this.exhibitIsPublic = response.data.public;
             this.sanitycheck();

@@ -19,6 +19,7 @@ angular
           this.exhibitIsPublic = response.data.public;
 
           this.gridsterOpts = utils.calculateGridsterOpts(this.config);
+
           this.tiles = utils.calculateTiles(this.config);
         });
       }],

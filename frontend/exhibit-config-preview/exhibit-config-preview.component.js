@@ -6,7 +6,7 @@ angular
   .component('exhibitConfigPreview', {
     bindings: {
       config: '<',
-      showfigcap: '<',
+      showfig: '<',
       idswitch: '<',
     },
     templateUrl: 'exhibit-config-preview/exhibit-config-preview.template.html',
@@ -29,6 +29,9 @@ angular
         // console.log('onInit');
       };
 
+      this.$doCheck = () => {
+        // console.log('doCheck');
+      };
 
       this.$onChanges = () => {
         // console.log('onChange');

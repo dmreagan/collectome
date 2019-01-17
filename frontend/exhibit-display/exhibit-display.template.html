@@ -1,10 +1,9 @@
-<main role="main" class="no-section-nav">
-
     <section class="section" ng-if="!$ctrl.exhibitIsPublic">
         <h4>This exhibit is not public.</h4>
     </section>
 
     <section class="section" ng-if="$ctrl.exhibitIsPublic">
+
         <div class="container">
             <div id="gridster" gridster="$ctrl.gridsterOpts">
                 <ul id="tiles">
@@ -23,5 +22,3 @@
             </div>
         </div>
     </section>
-
-</main>

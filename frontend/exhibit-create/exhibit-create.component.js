@@ -10,7 +10,7 @@ angular
 
         this.exhibitId = $routeParams.exhibitId;
 
-        this.showfigcap = true;
+        this.showfig = true;
 
         this.updateConfig = (updatedConfig) => {
           this.config = updatedConfig;
@@ -47,21 +47,22 @@ angular
           const divId = '#avl-shim';
           // const divId = '#gridster';
 
-          this.showfigcap = false;
+          this.showfig = false;
           this.containerIdOnOffSwitch = false;
 
           /**
-           * Before we do the snapshot, we want to hide figurecaption in
+           * Before we do the snapshot, we want to hide <figure></figure> in
            * 'exhibit-config-preview.template.html' since html2canvas has
-           * issues capturing the text.
+           * issues capturing the iframe.
            * 
-           * 'this.showfigcap' will trigue the event to set figcaption's
-           * ng-show property to false to make the figure caption be invisible.
+           * 'this.showfig' will trigue the event to set figure tag's
+           * ng-if property to false to make the figures off.
            * However, the will take place AFTER html2canvas lib tries to capture
            * the snapshot. The workaround here is to synchronouslly sleep a while
-           * to wait ng-show take effects.
+           * to wait ng-if take effects.
            */
-          const milliseconds = 500;
+
+          const milliseconds = 10;
           utils.sleep(milliseconds).then(() => {
             utils.submitExhibit(this.config, divId, this, loginUser);
           });

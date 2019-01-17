@@ -22,15 +22,15 @@
 
     <div id="gridster" gridster="$ctrl.gridsterOpts">
       <ul id="tiles">
-        <li class="shadow-3 gridlist" gridster-item row="tile.row" col="tile.col" size-x="tile.sizeX" size-y="tile.sizeY"
-          ng-repeat="tile in $ctrl.tiles">
+        <li id="{{tile.id}}" class="shadow-3 gridlist" gridster-item row="tile.row" col="tile.col" size-x="tile.sizeX"
+          size-y="tile.sizeY" ng-repeat="tile in $ctrl.tiles">
 
-          <figure>
+          <figure ng-if="$ctrl.showfig">
 
             <iframe ng-src="{{tile.url | trusted}}" contentid="{{tile.contentId}}" scale="$ctrl.config"></iframe>
-            <div id="over" ng-show="$ctrl.idswitch">{{tile.id}}</div>
+            <div id="over" ng-if="$ctrl.idswitch">{{tile.id}}</div>
 
-            <figcaption ng-show="$ctrl.showfigcap">
+            <figcaption>
               <h4>{{tile.title}}</h4>
             </figcaption>
 
