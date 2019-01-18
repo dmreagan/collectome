@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 angular
   .module('utilities')
-  .service('Utilities', ['Api', '$window', '$q', '$location', '$http', function (Api, $window, $q, $location, $http) {
+  .service('Utilities', ['Api', '$window', '$q', '$location', '$http', '$route', function (Api, $window, $q, $location, $http, $route) {
     return function () {
       this.getConfig = (path) => {
         const d = $q.defer();
@@ -207,7 +207,7 @@ angular
           d.resolve(response);
         }, (e) => {
           console.warn(e);
-          d.reject({});
+          d.reject(e);
         });
         return d.promise;
       };
@@ -341,10 +341,28 @@ angular
 
           const lastModifiedTime = new Date();
           api.put({ config, extra, lastModifiedTime, owner }).then((resp) => {
-          self.message_style = 'alert success one-third float-center';
-          self.info_message = 'Exhibit has been successfully edited';
-          self.success = true;
-            console.warn(resp);
+            self.message_style = 'alert success one-third float-center';
+            self.info_message = 'Exhibit has been successfully edited';
+            self.success = true;
+
+            // console.warn(resp);
+
+            const params = $location.search();
+
+            if (params.status) {
+              if (params.status === 'success') {
+                /**
+                 * come from a previous successful edit page
+                 */
+                $route.reload();
+              }
+            } else {
+              /**
+               * come from a plain edit page
+               */
+              // add paramter and then reload
+              $location.search('status', 'success');
+            }
           }, (e) => {
             console.warn(e);
 
@@ -389,7 +407,7 @@ angular
           d.resolve(response);
         }, (e) => {
           console.warn(e);
-          d.reject({});
+          d.reject(e);
         });
         return d.promise;
       };
@@ -408,7 +426,7 @@ angular
           d.resolve(response);
         }, (e) => {
           console.warn(e);
-          d.reject({});
+          d.reject(e);
         });
         return d.promise;
       };
@@ -421,7 +439,7 @@ angular
           d.resolve(response);
         }, (e) => {
           console.warn(e);
-          d.reject({});
+          d.reject(e);
         });
         return d.promise;
       };
@@ -434,7 +452,7 @@ angular
           d.resolve(response);
         }, (e) => {
           console.warn(e);
-          d.reject({});
+          d.reject(e);
         });
         return d.promise;
       };
@@ -450,7 +468,7 @@ angular
           d.resolve(response);
         }, (e) => {
           console.warn(e);
-          d.reject({});
+          d.reject(e);
         });
         return d.promise;
       };
@@ -462,7 +480,19 @@ angular
           d.resolve(response);
         }, (e) => {
           console.warn(e);
-          d.reject({});
+          d.reject(e);
+        });
+        return d.promise;
+      };
+
+      this.getSiteHeader = (url) => {
+        const d = $q.defer();
+        const api = new Api('/header');
+        api.post({ url }).then((response) => {
+          d.resolve(response);
+        }, (e) => {
+          console.warn(e);
+          d.reject(e);
         });
         return d.promise;
       };

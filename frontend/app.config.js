@@ -29,6 +29,9 @@ angular
         .when('/exhibit-display/:exhibitId', {
           template: '<exhibit-display></exhibit-display>',
         })
+        .when('/sameorigin-check/', {
+          template: '<sameorigin-check></sameorigin-check>',
+        })
         .otherwise('/exhibits');
     },
   ]);

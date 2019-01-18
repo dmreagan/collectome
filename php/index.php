@@ -616,5 +616,42 @@ $app->post('/github', function() use ($app)
 
 })->name('git-user-email');
 
+$app->post('/header', function() use ($app)
+{
+    error_log("In get header" . "\n", 3, $app->ERROR_LOG_PATH);
+    
+
+    $data = json_decode($app->request->getBody());
+    $url = $data->url;
+
+    if (empty($url)) {
+        $app->argument_required('Argument url is required');
+        return;
+      }
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+
+    curl_setopt($ch, CURLOPT_HEADER, true);
+
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $result = curl_exec($ch);
+
+    curl_close($ch);
+
+    error_log("$result" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    if (!$result) {
+        $app->not_found("Cannot get header from {$url}");
+    } else {
+        $app->success(200, $result);
+    }
+
+})->name('header');
+
 $app->run();
 ?>

@@ -18,6 +18,18 @@ angular
 
         this.containerIdOnOffSwitch = false;
 
+        const params = $location.search();
+
+        console.log(params);
+
+        if (params.status) {
+          if (params.status === 'success') {
+            this.message_style = 'alert success one-third float-center';
+            this.info_message = 'Exhibit has been successfully edited';
+            this.success = true;
+          }
+        }
+
         this.switchContainerId = () => {
           if (!this.containerIdOnOffSwitch) {
             this.containerIdOnOffSwitch = true;
