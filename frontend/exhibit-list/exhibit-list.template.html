@@ -3,13 +3,37 @@
         <div class="row pad" id="search">
             <form>
                 <div class="form-item">
+
+                    <!-- <fieldset> -->
                     <div class="form-item-label">
-                        <label for="search">Search for projects</label>
+                        <label for="search">Search for exhibits</label>
                     </div>
                     <div class="form-item-input">
                         <input type="text" name="search" id="search" ng-model="$ctrl.searchString" ng-change="$ctrl.updateSearch()"
-                            placeholder="Search projects">
+                            placeholder="Search exhibits">
                     </div>
+
+                    <div>
+                        <label for="rowsearch">Number of rows (1-100):</label>
+                    </div>
+                    <div>
+                        <input type="number" id="rowsearch" name="rowsearch" ng-model="$ctrl.rowSearch" min="1" max="100"
+                            placeholder="#" ng-change="$ctrl.updateSearch()">
+                    </div>
+
+                    <div>
+                        <label for="colearch">Number of columns (1-100):</label>
+                    </div>
+                    <div>
+                        <input type="number" id="colearch" name="colearch" ng-model="$ctrl.colSearch" min="1" max="100"
+                            placeholder="#" ng-change="$ctrl.updateSearch()">
+                    </div>
+
+                    <!-- <div>
+                            <button class="button" ng-click="$ctrl.updateSearch()">Search</button>
+                        </div> -->
+
+                    <!-- </fieldset> -->
                 </div>
             </form>
         </div>
@@ -22,36 +46,42 @@
                     <div class="two-thirds">
                         <h2 class="section-title">
                             <span ng-show="$ctrl.searchString.length > 0">Search Results: </span>{{
-                            $ctrl.projects.length }}
-                            <ng-pluralize count="$ctrl.projects.length" when="{'0': 'Projects', 'one':'Project', 'other': 'Projects'}"></ng-pluralize>
+                            $ctrl.exhibits.length }}
+                            <ng-pluralize count="$ctrl.exhibits.length" when="{'0': 'Exhibits', 'one':'Exhibit', 'other': 'Exhibits'}"></ng-pluralize>
                         </h2>
                     </div>
                     <div class="one-third">
                         <select class="form-control" ng-model="$ctrl.sortBy">
                             <option value="-_score">Relevance</option>
                             <option value="title">Title</option>
-                            <option value="year">Year</option>
-                            <option value="-create_time">Recently updated</option>
+                            <option value="-last_modified_time">Recently updated</option>
+                            <option value="-create_time">Creation time</option>
                         </select>
-                        <!-- <button type="button" ng-click="$ctrl.isReverse = !$ctrl.isReverse">Toggle Order</button> -->
                     </div>
                 </div>
             </div>
-            <div class="alert alert-warning" ng-if="$ctrl.projects.length === 0 && $ctrl.searchString.length > 0">
-                No projects found for "{{ $ctrl.searchString }}"
+            <div class="alert alert-warning" ng-if="$ctrl.exhibits.length === 0 && ($ctrl.searchString.length > 0 || $ctrl.rowSearch || $ctrl.colSearch)">
+                No exhibits found for criteria:
+                
+                <div class="alert alert-warning" ng-if="$ctrl.searchString.length > 0">search string: "{{$ctrl.searchString}}"</div>
+                <div class="alert alert-warning" ng-if="$ctrl.rowSearch"># of rows: "{{$ctrl.rowSearch}}"</div>
+                <div class="alert alert-warning" ng-if="$ctrl.colSearch">#: "{{$ctrl.colSearch}}"</div>
+
             </div>
             <div class="grid thirds">
-                
-                <div class="grid-item" id="project-{{ project.id }}" ng-repeat="project in $ctrl.projects | orderBy:$ctrl.sortBy track by project.id">
+
+                <div class="grid-item" id="exhibit-{{ exhibit.id }}" ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id">
                     <div class="panel--interactive">
-                        <a href="projects/{{ project.id }}">
-                            <figure class="media image">
+                        <a href="exhibits/{{ exhibit.id }}">
+
+                            <!-- <figure class="media image">
                                 <img id="image-thumbnail" ng-if="!project.image_ref" alt="" src="https://placehold.it/160x120">
                                 <img id="image-thumbnail" ng-if="project.image_ref" ng-style="{'background-image':'url({{$ctrl.apiHost}}/image/{{ project.image_ref }})'}">
-                            </figure>
-                            <h2 class="title">{{ project.title }}</h2>
+                            </figure> -->
+
+                            <h2 class="title">{{ exhibit.title }}</h2>
                             <p>
-                                {{ project.description | limitTo: 60 }}{{project.description.length > 20 ? '...' : ''}}
+                                {{ exhibit.description | limitTo: 60 }}{{exhibit.description.length > 20 ? '...' : ''}}
                             </p>
                         </a>
                     </div>

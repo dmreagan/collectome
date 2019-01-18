@@ -504,6 +504,19 @@ $app->delete('/exhibits/:id', function($id) use ($app)
     }
 })->name('exhibit-delete');
 
+
+/**
+ * Get a list of all exhibits.
+ */
+$app->get('/exhibits', function() use ($app)
+{
+    $qry = $app->conn->prepare("SELECT p.*
+            FROM {$app->EXHIBITS_TABLE_NAME} AS p");
+    $qry->execute();
+    $result = $qry->fetchAll(PDO::FETCH_ASSOC);
+    $app->success(200, $result);
+})->name('exhibits-get');
+
 /**
  * get collectome web app client id of github
  */

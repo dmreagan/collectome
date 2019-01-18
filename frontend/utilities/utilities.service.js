@@ -442,5 +442,29 @@ angular
       this.sleep = (milliseconds) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
       };
+
+      this.getExhibits = () => {
+        const d = $q.defer();
+        const api = new Api('/exhibits');
+        api.get().then((response) => {
+          d.resolve(response);
+        }, (e) => {
+          console.warn(e);
+          d.reject({});
+        });
+        return d.promise;
+      };
+
+      this.searchExhibits = (query) => {
+        const d = $q.defer();
+        const api = new Api('/search');
+        api.post(query).then((response) => {
+          d.resolve(response);
+        }, (e) => {
+          console.warn(e);
+          d.reject({});
+        });
+        return d.promise;
+      };
     };
   }]);
