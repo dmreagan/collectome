@@ -22,7 +22,12 @@ angular
         };
 
         const searchExhibits = () => {
-          const query = { query_string: this.searchString };
+          const query = {
+            query_string: this.searchString,
+            row: this.rowSearch,
+            col: this.colSearch,
+          };
+
           utils.searchExhibits(query).then((response) => {
             this.exhibits = response.data;
             this.sortBy = '-_score';

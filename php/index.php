@@ -17,6 +17,12 @@ class CrateResource extends \Slim\Slim
 
     public $ERROR_LOG_PATH;
 
+    public $SEARCH_MATCH_TYPE_ARRAY = array('best_fields', 'most_fields', 'cross_fields', 'phrase', 'phrase_prefix');
+
+    public $SEARCH_MATCH_TYPE;
+
+    public $DEFAULT_SEARCH_MATCH_TYPE_INDEX = 0;
+
     function __construct($config)
     {
         parent::__construct();
@@ -31,6 +37,15 @@ class CrateResource extends \Slim\Slim
         $this->ERROR_LOG_PATH = $config['error_log_path'];
 
         $dsn = "{$config['db_host']}:{$config['db_port']}";
+
+        $index = $config['search_match_type_index'];
+
+        if (($index < 0) || ($index > 4)) {
+            $this->SEARCH_MATCH_TYPE = $this->SEARCH_MATCH_TYPE_ARRAY[$this->DEFAULT_SEARCH_MATCH_TYPE_INDEX];
+        } else {
+            $this->SEARCH_MATCH_TYPE = $this->SEARCH_MATCH_TYPE_ARRAY[$index];
+        }
+
         $this->conn = new Crate\PDO\PDO($dsn, null, null, null);
     }
 
@@ -652,6 +667,24 @@ $app->post('/header', function() use ($app)
     }
 
 })->name('header');
+
+$app->post('/search', function() use ($app)
+{
+    error_log("In search" . "\n", 3, $app->ERROR_LOG_PATH);
+    
+    $data = json_decode($app->request->getBody());
+    $query_string = $data->query_string;
+    $row = $data->row;
+    $col = $data->col;
+
+    if (empty($query_string) && empty($row) && empty($col)) {
+        $app->argument_required('At least one of search string/row/col is required');
+        return;
+    }
+
+    error_log("Using search type {$app->SEARCH_MATCH_TYPE}" . "\n", 3, $app->ERROR_LOG_PATH);
+
+})->name('search');
 
 $app->run();
 ?>

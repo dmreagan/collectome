@@ -8,7 +8,11 @@ angular
 
         this.exhibitId = $routeParams.exhibitId;
 
-        this.exhibitIsPublic = false;
+        this.exhibitIsPublic = true;
+
+        const body = document.querySelector('body');
+
+        body.style.margin = '0px';
 
         // async initialization of this.config
         // eslint-disable-next-line max-len
@@ -17,6 +21,8 @@ angular
           this.snapshotRef = response.data.snapshot_ref;
           this.exhibitOwner = response.data.owner;
           this.exhibitIsPublic = response.data.public;
+
+          utils.calculateSize('#avl-shim', '#avl-preview', this.config);
 
           this.gridsterOpts = utils.calculateGridsterOpts(this.config);
 
