@@ -2,18 +2,20 @@ angular
   .module('exhibitList')
   .component('exhibitList', {
     templateUrl: 'exhibit-list/exhibit-list.template.html',
-    controller: ['Utilities',
-      function exhibitCreateController(Utilities) {
+    controller: ['Utilities', 'apiHost',
+      function exhibitCreateController(Utilities, apiHost) {
         const utils = new Utilities();
+        this.apiHost = apiHost;
 
         this.exhibits = [];
-        this.searchString = '';
+        this.searchString = null;
         this.rowSearch = null;
         this.colSearch = null;
 
         const loadExhibits = () => {
           utils.getExhibits().then((response) => {
             this.exhibits = response.data;
+            console.log(this.exhibits);
             this.sortBy = 'create_time';
           }, (e) => {
             console.warn(e);
@@ -38,6 +40,7 @@ angular
         };
 
         this.updateSearch = () => {
+          console.log(this.searchString);
           console.log(this.rowSearch);
           console.log(this.colSearch);
 

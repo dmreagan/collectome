@@ -26,7 +26,7 @@ CREATE TABLE exhibits (
     description STRING INDEX USING FULLTEXT WITH (analyzer = 'myanalyzer'),
     disciplines STRING INDEX USING FULLTEXT WITH (analyzer = 'myanalyzer'),
     institutions STRING INDEX USING FULLTEXT WITH (analyzer = 'myanalyzer'),
-    tags ARRAY(STRING),
+    tags STRING INDEX USING FULLTEXT WITH (analyzer = 'myanalyzer'),
     snapshot_ref STRING,
     people STRING INDEX USING FULLTEXT WITH (analyzer = 'myanalyzer'),
     public BOOLEAN,

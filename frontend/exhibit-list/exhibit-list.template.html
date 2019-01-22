@@ -45,7 +45,7 @@
                 <div class="grid-item">
                     <div class="two-thirds">
                         <h2 class="section-title">
-                            <span ng-show="$ctrl.searchString.length > 0">Search Results: </span>{{
+                            <span ng-show="$ctrl.searchString.length > 0 || $ctrl.rowSearch || $ctrl.colSearch">Search Results: </span>{{
                             $ctrl.exhibits.length }}
                             <ng-pluralize count="$ctrl.exhibits.length" when="{'0': 'Exhibits', 'one':'Exhibit', 'other': 'Exhibits'}"></ng-pluralize>
                         </h2>
@@ -65,20 +65,21 @@
                 
                 <div class="alert alert-warning" ng-if="$ctrl.searchString.length > 0">search string: "{{$ctrl.searchString}}"</div>
                 <div class="alert alert-warning" ng-if="$ctrl.rowSearch"># of rows: "{{$ctrl.rowSearch}}"</div>
-                <div class="alert alert-warning" ng-if="$ctrl.colSearch">#: "{{$ctrl.colSearch}}"</div>
+                <div class="alert alert-warning" ng-if="$ctrl.colSearch"># of columns: "{{$ctrl.colSearch}}"</div>
 
             </div>
             <div class="grid thirds">
 
-                <div class="grid-item" id="exhibit-{{ exhibit.id }}" ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id">
+                <div class="grid-item" id="exhibit-{{exhibit.id}}" ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id">
                     <div class="panel--interactive">
                         <a href="exhibits/{{ exhibit.id }}">
 
-                            <!-- <figure class="media image">
-                                <img id="image-thumbnail" ng-if="!project.image_ref" alt="" src="https://placehold.it/160x120">
-                                <img id="image-thumbnail" ng-if="project.image_ref" ng-style="{'background-image':'url({{$ctrl.apiHost}}/image/{{ project.image_ref }})'}">
-                            </figure> -->
+                            <figure class="media image">
+                                <img id="image-thumbnail" ng-if="!exhibit.snapshot_ref" alt="" src="https://placehold.it/160x120">
+                                <img id="image-thumbnail" ng-if="exhibit.snapshot_ref" ng-style="{'background-image':'url({{$ctrl.apiHost}}/snapshot/{{exhibit.snapshot_ref}})'}">
+                            </figure>
 
+                            <!-- <h2 class="url">{{$ctrl.apiHost}}/snapshot/{{exhibit.snapshot_ref}}</h2> -->
                             <h2 class="title">{{ exhibit.title }}</h2>
                             <p>
                                 {{ exhibit.description | limitTo: 60 }}{{exhibit.description.length > 20 ? '...' : ''}}

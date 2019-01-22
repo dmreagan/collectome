@@ -76,3 +76,124 @@
   margin-left: 1em;
   font-family: sans-serif;
   }
+
+
+.float-alert{
+  /*position:absolute;
+  margin:15% 00% 0% 40%;
+  z-index:200;*/
+}
+
+#image-thumbnail {
+  width:  100%;
+  height: 10rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.image-thumbnail-detailed{
+  width:100%;
+}
+
+/****************************   IU BRAND OVERRIDE  *******************************/
+#branding-bar {
+  position: initial;
+}
+
+/* choices override */
+div .choices__list--multiple .choices__item {
+  background-color: #008264;
+  border-color: #008264;
+}
+
+/* how to change selected color? */
+/* div .choices__list--multiple .choices__item is-highlighted{
+  background-color: #171A1A;
+  border-color: #008264;
+} */
+
+.choices[data-type*="select-multiple"] .choices__button, .choices[data-type*="text"] .choices__button {
+  border-left: 0px none;
+}
+
+.choices__input {
+  background-color: #fefefe;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 100% !important;
+  padding: .5rem;
+  margin: 0 0 1rem;
+}
+
+div .choices__inner {
+  background-color: white;
+  border: 0;
+  padding: 0;
+}
+
+.float-center{
+  margin-top:20px;
+  margin-bottom:0px;
+  padding-top:10px;
+  padding-bottom:10px;
+  float:none;
+}
+
+.font-white{
+  color:white;
+}
+
+.font-smaller{
+  font-family: "BentonSansRegular", "Helvetica Neue", Helvetica, sans-serif;
+
+  font-size:.875rem;
+  text-transform: initial;
+}
+
+.font-normal{
+  font-weight: 100;
+}
+
+.full-width{
+  width:100%;
+}
+
+.text-disabled {
+  color: #ACA39A;
+}
+
+.featured{
+  border-radius: .5rem;
+  padding:.2rem .4rem;
+  min-height: 1rem;
+}
+.featured .content{
+  padding:.3rem 0rem;
+  transform: translate(0%, 25%);
+}
+.featured h6{
+  margin-bottom:0rem;
+}
+.featured p{
+  font-size: 1rem;
+  margin-bottom:0rem;
+}
+.featured.majestic{
+  background-color:#512A44;
+}
+.featured.mint{
+  background-color:#008264;
+}
+.featured.midnight{
+  background-color:#006298;
+}
+.featured.gold{
+  background-color:#DC8823;
+}
+.featured img{
+  padding:.5rem 0rem;
+  margin-right:.9rem;
+  /* transform: translate(0%, 25%); */
+  max-width:15%;
+}

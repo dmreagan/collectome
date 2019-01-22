@@ -23,6 +23,8 @@ class CrateResource extends \Slim\Slim
 
     public $DEFAULT_SEARCH_MATCH_TYPE_INDEX = 0;
 
+    public $MAX_EXPANSIONS;
+
     function __construct($config)
     {
         parent::__construct();
@@ -36,7 +38,7 @@ class CrateResource extends \Slim\Slim
 
         $this->ERROR_LOG_PATH = $config['error_log_path'];
 
-        $dsn = "{$config['db_host']}:{$config['db_port']}";
+        $this->MAX_EXPANSIONS = $config['max_expansions'];
 
         $index = $config['search_match_type_index'];
 
@@ -45,6 +47,8 @@ class CrateResource extends \Slim\Slim
         } else {
             $this->SEARCH_MATCH_TYPE = $this->SEARCH_MATCH_TYPE_ARRAY[$index];
         }
+
+        $dsn = "{$config['db_host']}:{$config['db_port']}";
 
         $this->conn = new Crate\PDO\PDO($dsn, null, null, null);
     }
@@ -240,7 +244,13 @@ $app->get('/snapshot/:digest', function($digest) use ($app)
         return;
     }
 
-    $ch = curl_init("{$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}");
+    error_log("In get snapshot, with digest {$digest}" . "\n", 3, $app->ERROR_LOG_PATH);
+    
+    $url = "{$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}";
+    
+    error_log("$url" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $result = curl_exec($ch);
 
@@ -252,6 +262,10 @@ $app->get('/snapshot/:digest', function($digest) use ($app)
         $app->response->headers->set("Content-Length", strlen($result));
         $app->response->setStatus(200);
         $app->response->write($result);
+
+        error_log("Successfully retrieved snapshot for digest {$digest}" . "\n", 3, $app->ERROR_LOG_PATH);
+
+        // error_log("$result" . "\n", 3, $app->ERROR_LOG_PATH);
     }
 
     curl_close($ch);
@@ -302,7 +316,6 @@ $app->post('/exhibits', function() use ($app)
     $data            = json_decode($app->request->getBody());
     $title           = $data->config->metadata->name;
     $description     = $data->config->metadata->description;
-    $tags            = $data->config->metadata->tags;
     $public          = $data->config->metadata->public;
 
     $columns         = $data->config->display->columns;
@@ -314,6 +327,7 @@ $app->post('/exhibits', function() use ($app)
     $institutions    = $data->extra->institutions;
     $snapshot_ref    = $data->extra->snapshotRef;
     $people          = $data->extra->authors;
+    $tags            = $data->extra->tags;
    
     $create_time     = $data->createTime;
 
@@ -683,6 +697,58 @@ $app->post('/search', function() use ($app)
     }
 
     error_log("Using search type {$app->SEARCH_MATCH_TYPE}" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $sql_statement = "SELECT p.*, p._score as _score FROM {$app->EXHIBITS_TABLE_NAME} AS p";
+
+    if (!empty($query_string)) {
+        error_log("$query_string" . "\n", 3, $app->ERROR_LOG_PATH);
+
+        $statement = sprintf("WHERE match((p.title, p.description, p.disciplines, p.institutions, p.people, p.tags), '%s')", $query_string);
+
+        $sql_statement = $sql_statement . " " . $statement;
+
+        $statement = "USING {$app->SEARCH_MATCH_TYPE}";
+
+        if ($app->SEARCH_MATCH_TYPE === 'phrase_prefix') {
+            $statement = $statement . " " . "WITH (max_expansions = {$app->MAX_EXPANSIONS})";
+        }
+
+        $sql_statement = $sql_statement . " " . $statement;
+    }
+
+    if (!empty($row)) {
+        if (!empty($query_string)) {
+            $statement = "OR {$row} = p.rows";
+        } else {
+            $statement = "WHERE {$row} = p.rows";
+        }
+
+        $sql_statement = $sql_statement . " " . $statement;
+    }
+
+    if (!empty($col)) {
+        if (!empty($query_string)) {
+            $statement = "OR {$col} = p.columns";
+        } elseif (empty($row)) {
+            $statement = "WHERE {$col} = p.columns";
+        } else {
+            $statement = "OR {$col} = p.columns";
+        }
+
+        $sql_statement = $sql_statement . " " . $statement;
+    }
+
+    $sql_statement = $sql_statement . " " . "ORDER BY _score DESC";
+
+    error_log("$sql_statement" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $qry = $app->conn->prepare("{$sql_statement}");
+
+    $qry->execute();
+    $result = $qry->fetchAll(PDO::FETCH_ASSOC);
+
+    error_log("{$result}" . "\n", 3, $app->ERROR_LOG_PATH);
+    $app->success(200, $result);
 
 })->name('search');
 

@@ -279,6 +279,8 @@ angular
 
           extra.disciplines = config.metadata.disciplines.join(';');
 
+          extra.tags = config.metadata.tags.join(';');
+
           extra.snapshotRef = snapshotRef;
 
           const api = new Api('/exhibits');
@@ -335,6 +337,8 @@ angular
 
           extra.disciplines = config.metadata.disciplines.join(';');
 
+          extra.tags = config.metadata.tags.join(';');
+          
           extra.snapshotRef = snapshotRef;
 
           const api = new Api(`/exhibit/${exhibitId}/edit`);
