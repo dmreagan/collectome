@@ -408,7 +408,6 @@ $app->put('/exhibit/:id/edit', function($id) use ($app)
     $data            = json_decode($app->request->getBody());
     $title           = $data->config->metadata->name;
     $description     = $data->config->metadata->description;
-    $tags            = $data->config->metadata->tags;
     $public          = $data->config->metadata->public;
 
     $columns         = $data->config->display->columns;
@@ -420,6 +419,7 @@ $app->put('/exhibit/:id/edit', function($id) use ($app)
     $institutions    = $data->extra->institutions;
     $snapshot_ref    = $data->extra->snapshotRef;
     $people          = $data->extra->authors;
+    $tags            = $data->extra->tags;
    
     $last_modified_time     = $data->lastModifiedTime;
     $owner = $data->owner;

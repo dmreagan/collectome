@@ -14,7 +14,11 @@ angular
 
         this.exhibitEditPageCanbeDisplayed = false;
 
+        this.isOwner = false;
+
         this.showfig = true;
+
+        this.exhibitIdIsValid = true;
 
         this.containerIdOnOffSwitch = false;
 
@@ -47,27 +51,17 @@ angular
         this.goToCreated = () => $location.url(`/exhibits/${this.exhibitId}`);
 
         this.save = () => {
-          if (this.authentication.userProfile.login === undefined) {
+          if (this.authentication.userProfile === null) {
             this.message_style = 'alert error one-third float-center';
             this.info_message = 'Cannot obtain github login id.';
             return;
           }
 
+          console.log(this.config);
+
           const loginUser = this.authentication.userProfile.login;
 
-          if (this.exhibitOwner !== loginUser) {
-            const msg = `exhibit owner ${this.exhibitOwner} not same as login user ${loginUser}`;
-
-            this.message_style = 'alert error one-third float-center';
-            this.info_message = msg;
-
-            // console.log(msg);
-
-            return;
-          }
-
           const divId = '#avl-shim';
-          // const divId = '#gridster';
 
           this.showfig = false;
           this.containerIdOnOffSwitch = false;
@@ -93,14 +87,18 @@ angular
         this.sanitycheck = () => {
           if (this.authentication.isAuthorized) {
             const loginUser = this.authentication.userProfile.login;
+
+            console.log(loginUser);
+
             if (this.exhibitOwner === loginUser) {
               /**
                * login user can edit since she is the owner, regardless whether
                * the exhibit is set to be public or private.
                */
               this.exhibitEditPageCanbeDisplayed = true;
+              this.isOwner = true;
 
-              // console.log('branch 1');
+              console.log('branch 1');
             } else if (this.exhibitIsPublic) {
               /**
                * login user is not the owner, however since the exhibit is set
@@ -108,31 +106,41 @@ angular
                * not allowed to make any edit.
                */
               this.exhibitEditPageCanbeDisplayed = true;
-              // console.log('branch 2');
+              console.log('branch 2');
+            } else {
+              /* not the owner and the exhibit is not public */
+              this.exhibitEditPageCanbeDisplayed = false;
+              console.log('branch 3');
             }
-          } else if (this.exhibitIsPublic) {
-            /**
-             * when user is not logged in, if the exhibit is set to be public, then
-             * can be displayed, otherwise not.
-             */
-            this.exhibitEditPageCanbeDisplayed = true;
-            // console.log('branch 3');
           }
         };
 
-        /**
-         * sleep a while to make sure that authentication component
-         * which is async is ready.
-         */
-        const milliseconds = 15;
-        utils.sleep(milliseconds).then(() => {
-          utils.getExhibit(this.exhibitId).then((response) => {
-            this.config = JSON.parse(response.data.config);
-            this.snapshotRef = response.data.snapshot_ref;
-            this.exhibitOwner = response.data.owner;
-            this.exhibitIsPublic = response.data.public;
-            this.sanitycheck();
+        const getExhibit = () => {
+          // only need to retrieve the exhibit when user logged in
+          if (this.authentication.isAuthorized) {
+            utils.getExhibit(this.exhibitId).then((response) => {
+              this.config = JSON.parse(response.data.config);
+              this.snapshotRef = response.data.snapshot_ref;
+              this.exhibitOwner = response.data.owner;
+              this.exhibitIsPublic = response.data.public;
+              this.sanitycheck();
+            }, (e) => {
+              console.warn(e);
+              this.exhibitIdIsValid = false;
+              this.message_style = 'alert error one-third float-center';
+              this.info_message = `Cannot obtain exhibit with id ${this.exhibitId}`;
+            });
+          }
+        };
+
+        if (this.authentication.isAuthorized) {
+          getExhibit();
+        } else {
+          // wait a while till async login is ready (if the login is clicked)
+          const milliseconds = 1000;
+          utils.sleep(milliseconds).then(() => {
+            getExhibit();
           });
-        });
+        }
       }],
   });

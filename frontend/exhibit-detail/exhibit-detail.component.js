@@ -2,8 +2,8 @@ angular
   .module('exhibitDetail')
   .component('exhibitDetail', {
     templateUrl: 'exhibit-detail/exhibit-detail.template.html',
-    controller: ['Authentication', 'Utilities', '$routeParams', '$location', '$window',
-      function exhibitDetailController(Authentication, Utilities, $routeParams, $location, $window) {
+    controller: ['Authentication', 'Utilities', '$routeParams', '$location',
+      function exhibitDetailController(Authentication, Utilities, $routeParams, $location) {
         const utils = new Utilities();
 
         this.authentication = Authentication;
@@ -18,61 +18,11 @@ angular
 
         this.showfig = true;
 
-        // async initialization of this.config
-        // eslint-disable-next-line max-len
-        utils.getExhibit(this.exhibitId).then((response) => {
-          this.config = JSON.parse(response.data.config);
-          this.snapshotRef = response.data.snapshot_ref;
-          this.exhibitOwner = response.data.owner;
-          this.exhibitIsPublic = response.data.public;
-
-          /**
-           * since 'login-button' module uses async approach to
-           * retrieve user profile via code parameter in the redirect case,
-           * we need to wait util the process is done. Otherwise
-           * the 'userProfile' is still null.
-           */
-          if ($window.location.search) {
-            /* in a redirect case,  wait and then check */
-
-            console.log('redirect case');
-
-            const milliseconds = 1000;
-            utils.sleep(milliseconds).then(() => {
-              console.log(this.authentication);
-
-              const loginUser = this.authentication.userProfile.login;
-              console.log(loginUser);
-              if (loginUser === this.exhibitOwner) {
-                this.isOwner = true;
-                console.log('Is Owner');
-              }
-            });
-          } else if (this.authentication.userProfile !== null) {
-            /* not in a redirect case,  directly check */
-
-            console.log('direct case');
-
-            const loginUser = this.authentication.userProfile.login;
-            console.log(loginUser);
-            if (loginUser === this.exhibitOwner) {
-              this.isOwner = true;
-            }
-          }
-        }, (e) => {
-          console.warn(e);
-          this.exhibitIdIsValid = false;
-          this.message_style = 'alert error one-third float-center';
-          this.info_message = `Cannot obtain exhibit with id ${this.exhibitId}`;
-        });
-
         this.goToExhibits = () => $location.url('/exhibits');
 
         this.sanityCheck = () => {
-          console.log(this.authentication);
-          if (this.authentication.userProfile === null) {
-            console.log('haha');
-            this.hasError = true;
+          if (this.authentication.userProfile.login === null) {
+            this.noPermission = true;
             this.message_style = 'alert error one-third float-center';
             this.info_message = 'Cannot obtain user\'s github login id.';
             return false;
@@ -81,8 +31,8 @@ angular
           const loginUser = this.authentication.userProfile.login;
 
           if (this.exhibitOwner !== loginUser) {
-            this.hasError = true;
-            const msg = `exhibit owner ${this.exhibitOwner} not same as login user ${loginUser}`;
+            this.noPermission = true;
+            const msg = `exhibit owner "${this.exhibitOwner}" not same as login user "${loginUser}"`;
 
             this.message_style = 'alert error one-third float-center';
             this.info_message = msg;
@@ -96,16 +46,10 @@ angular
         };
 
         this.goToEdit = () => {
-          if (this.sanityCheck()) {
-            $location.url(`/exhibits/${this.exhibitId}/edit`);
-          }
+          $location.url(`/exhibits/${this.exhibitId}/edit`);
         };
 
         this.delete = () => {
-          if (!this.sanityCheck()) {
-            return;
-          }
-
           this.confirmDelete = true;
           this.message_style = 'alert info one-third float-center';
           this.info_message = 'Are you sure you want to delete this project?';
@@ -155,5 +99,38 @@ angular
         this.deleteAcknowledge = () => {
           $location.url('/exhibits');
         };
+
+        const getExhibit = () => {
+          utils.getExhibit(this.exhibitId).then((response) => {
+            this.config = JSON.parse(response.data.config);
+            this.snapshotRef = response.data.snapshot_ref;
+            this.exhibitOwner = response.data.owner;
+            this.exhibitIsPublic = response.data.public;
+
+            if (this.authentication.userProfile) {
+              const loginUser = this.authentication.userProfile.login;
+              console.log(loginUser);
+
+              if (loginUser === this.exhibitOwner) {
+                this.isOwner = true;
+              }
+            }
+          }, (e) => {
+            console.warn(e);
+            this.exhibitIdIsValid = false;
+            this.message_style = 'alert error one-third float-center';
+            this.info_message = `Cannot obtain exhibit with id ${this.exhibitId}`;
+          });
+        };
+
+        if (this.authentication.isAuthorized) {
+          getExhibit();
+        } else {
+          // wait a while till async login is ready (if the login is clicked)
+          const milliseconds = 1000;
+          utils.sleep(milliseconds).then(() => {
+            getExhibit();
+          });
+        }
       }],
   });

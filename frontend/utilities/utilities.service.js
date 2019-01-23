@@ -262,7 +262,7 @@ angular
           throw err;
         }
 
-        console.log(snapshot);
+        // console.log(snapshot);
 
         // document.body.appendChild(canvas);
 
@@ -323,7 +323,7 @@ angular
           throw err;
         }
 
-        console.log(snapshot);
+        // console.log(snapshot);
 
         // document.body.appendChild(canvas);
 
@@ -338,13 +338,16 @@ angular
           extra.disciplines = config.metadata.disciplines.join(';');
 
           extra.tags = config.metadata.tags.join(';');
-          
+
           extra.snapshotRef = snapshotRef;
 
           const api = new Api(`/exhibit/${exhibitId}/edit`);
 
           const lastModifiedTime = new Date();
           api.put({ config, extra, lastModifiedTime, owner }).then((resp) => {
+
+            console.log('get resp');
+
             self.message_style = 'alert success one-third float-center';
             self.info_message = 'Exhibit has been successfully edited';
             self.success = true;
@@ -396,6 +399,7 @@ angular
 
           if (snapshotCount <= 1) {
             this.deleteSnapshot(snapshotRef).then((response) => {
+              // console.log('deletedd snapshot');
               uploadExhibit(exhibitId, config, divId, self, owner);
             });
           } else {

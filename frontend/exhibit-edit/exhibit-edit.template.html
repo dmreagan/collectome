@@ -2,47 +2,69 @@
 
 
 
-    <section class="section" ng-if="!$ctrl.exhibitEditPageCanbeDisplayed">
-        <h4>This exhibit is either not public or you are not the owner.</h4>
+    <section class="section" ng-if="!$ctrl.authentication.isAuthorized">
+        <h4>Please log in.</h4>
     </section>
 
-    <section class="section" ng-if="$ctrl.exhibitEditPageCanbeDisplayed">
-        <div ng-show="$ctrl.exhibitId" ng-class="$ctrl.message_success">
-            <h5 class="text-center">{{$ctrl.message_content}}</h5>
-            <button class="button success float-center" ng-click="$ctrl.goToCreated()">View exhibit</button>
-        </div>
+    <section class="section" ng-if="$ctrl.authentication.isAuthorized">
 
-        <div class="row pad">
-            <exhibit-config-preview config="$ctrl.config" showfig="$ctrl.showfig" idswitch="$ctrl.containerIdOnOffSwitch"></exhibit-config-preview>
-
-            <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)"></exhibit-config-editor>
-
-            <div class="row pad">
-                <h5>Show container identification</h5>
-
-                <button class="button" ng-click="$ctrl.switchContainerId()">On/Off</button>
+        <section class="section" ng-if="!$ctrl.exhibitIdIsValid">
+            <div ng-class="$ctrl.message_style">
+                <h4 class="text-center">{{$ctrl.info_message}}</h4>
             </div>
-        </div>
+        </section>
 
-
-        <div class="content">
-            <div class="text-center section bg-gray" ng-if="$ctrl.authentication.isAuthorized">
-
-                <h4>Create this exhibit</h4>
-
-                <button class="button" ng-click="$ctrl.save()">Submit changes</button>
-
-                <div ng-class="$ctrl.message_style">
-                    <p>{{$ctrl.info_message}}</p>
+        <section class="section" ng-if="$ctrl.exhibitIdIsValid">
+            <section class="section" ng-if="$ctrl.exhibitEditPageCanbeDisplayed">
+                <div ng-show="$ctrl.exhibitId" ng-class="$ctrl.message_success">
+                    <h5 class="text-center">{{$ctrl.message_content}}</h5>
+                    <button class="button success float-center" ng-click="$ctrl.goToCreated()">View exhibit</button>
                 </div>
-            </div>
-            <div class="section">
+
                 <div class="row pad">
-                    <button class="button invert" ng-click="$ctrl.goToExhibits()">Return to search</button>
-                </div>
-            </div>
-        </div>
+                    <exhibit-config-preview config="$ctrl.config" showfig="$ctrl.showfig" idswitch="$ctrl.containerIdOnOffSwitch"></exhibit-config-preview>
 
+                    <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)"></exhibit-config-editor>
+
+                    <div class="row pad">
+                        <h5>Show container identification</h5>
+
+                        <button class="button" ng-click="$ctrl.switchContainerId()">On/Off</button>
+                    </div>
+                </div>
+
+
+                <div class="content">
+                    <div class="text-center section bg-gray" ng-if="$ctrl.isOwner">
+
+                        <h4>Update this exhibit</h4>
+
+                        <button class="button" ng-click="$ctrl.save()">Submit changes</button>
+
+                        <div ng-class="$ctrl.message_style">
+                            <p>{{$ctrl.info_message}}</p>
+                        </div>
+                    </div>
+
+                    <div class="text-center section bg-gray" ng-if="!$ctrl.isOwner">
+
+                        <h4>You are not the owner of this exhibit</h4>
+
+                    </div>
+
+                    <div class="section">
+                        <div class="row pad">
+                            <button class="button invert" ng-click="$ctrl.goToExhibits()">Return to search</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="section" ng-if="!$ctrl.exhibitEditPageCanbeDisplayed">
+                <h4>You are either not the owner or the exhibit is set to be private</h4>
+            </section>
+        </section>
     </section>
 
 </main>

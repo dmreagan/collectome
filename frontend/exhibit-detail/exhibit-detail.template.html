@@ -11,8 +11,14 @@
 
     <section class="section" ng-if="!$ctrl.exhibitIsPublic && !$ctrl.isOwner">
 
-      <h4>This exhibit is not public. If you are the owner, please login first.</h4>
+      <section class="section" ng-if="!$ctrl.authentication.isAuthorized">
+          <h4>This exhibit is not public. If you are the owner, please log in.</h4>
+      </section>
 
+      <section class="section" ng-if="$ctrl.authentication.isAuthorized">
+          <h4>You are not the owner of this private exhibit.</h4>
+      </section>
+    
     </section>
 
     <section class="section" ng-if="$ctrl.exhibitIsPublic || $ctrl.isOwner">
@@ -23,11 +29,7 @@
 
       </div>
 
-      <div>
-        <button class="button" ng-click="$ctrl.delete()">Delete</button>
-      </div>
-
-      <div class="text-center section bg-gray" ng-if="$ctrl.authentication.isAuthorized">
+      <div class="text-center section bg-gray" ng-if="$ctrl.isOwner">
         <h4>Modify this exhibit</h4>
         <ul class="button-group">
           <li>
@@ -37,10 +39,6 @@
             <button class="button" ng-click="$ctrl.delete()">Delete</button>
           </li>
         </ul>
-
-        <div ng-show="$ctrl.hasError" ng-class="$ctrl.message_style">
-          <h4 class="text-center">{{$ctrl.info_message}}</h4>
-        </div>
 
         <div ng-show="$ctrl.confirmDelete" ng-class="$ctrl.message_style">
           <h5 class="text-center">{{$ctrl.info_message}}</h5>
