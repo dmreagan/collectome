@@ -14,7 +14,7 @@
                     </div>
 
                     <div>
-                        <label for="rowsearch">Number of rows (1-100):</label>
+                        <label for="rowsearch">Display wall number of rows (1-100):</label>
                     </div>
                     <div>
                         <input type="number" id="rowsearch" name="rowsearch" ng-model="$ctrl.rowSearch" min="1" max="100"
@@ -22,7 +22,7 @@
                     </div>
 
                     <div>
-                        <label for="colearch">Number of columns (1-100):</label>
+                        <label for="colearch">Display wall number of columns (1-100):</label>
                     </div>
                     <div>
                         <input type="number" id="colearch" name="colearch" ng-model="$ctrl.colSearch" min="1" max="100"
@@ -52,10 +52,10 @@
                     </div>
                     <div class="one-third">
                         <select class="form-control" ng-model="$ctrl.sortBy">
-                            <option value="-_score">Relevance</option>
+                            <option value="_score">Relevance</option>
                             <option value="title">Title</option>
-                            <option value="-last_modified_time">Recently updated</option>
-                            <option value="-create_time">Creation time</option>
+                            <option value="last_modified_time">Recently updated</option>
+                            <option value="create_time">Creation time</option>
                         </select>
                     </div>
                 </div>
