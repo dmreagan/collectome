@@ -12,9 +12,12 @@ angular
         this.rowSearch = null;
         this.colSearch = null;
 
+        // only show exhibits that are public
+        const getPublicExhibit = e => e.public;
+
         const loadExhibits = () => {
           utils.getExhibits().then((response) => {
-            this.exhibits = response.data;
+            this.exhibits = response.data.filter(getPublicExhibit);
             console.log(this.exhibits);
             this.sortBy = 'create_time';
           }, (e) => {
@@ -31,7 +34,7 @@ angular
           };
 
           utils.searchExhibits(query).then((response) => {
-            this.exhibits = response.data;
+            this.exhibits = response.data.filter(getPublicExhibit);
             this.sortBy = '-_score';
           }, (error) => {
             console.warn(error);

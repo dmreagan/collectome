@@ -38,6 +38,8 @@ angular
             const data = JSON.parse(response.data);
             this.authentication.userProfile = data;
             this.username = data.name;
+          }, (e) => {
+            console.warn(e);
           });
         }
       };
