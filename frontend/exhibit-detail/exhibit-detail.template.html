@@ -12,21 +12,27 @@
     <section class="section" ng-if="!$ctrl.exhibitIsPublic && !$ctrl.isOwner">
 
       <section class="section" ng-if="!$ctrl.authentication.isAuthorized">
-          <h4>This exhibit is not public. If you are the owner, please log in.</h4>
+        <h4>This exhibit is not public. If you are the owner, please log in.</h4>
       </section>
 
       <section class="section" ng-if="$ctrl.authentication.isAuthorized">
-          <h4>You are not the owner of this private exhibit.</h4>
+        <h4>You are not the owner of this private exhibit.</h4>
       </section>
-    
+
     </section>
 
     <section class="section" ng-if="$ctrl.exhibitIsPublic || $ctrl.isOwner">
       <div class="row pad">
-        <exhibit-config-preview config="$ctrl.config" showfig="$ctrl.showfig"></exhibit-config-preview>
+        <exhibit-config-preview config="$ctrl.config" showfig="$ctrl.showfig" idswitch="$ctrl.containerIdOnOffSwitch"></exhibit-config-preview>
 
         <exhibit-config-display config="$ctrl.config"></exhibit-config-display>
 
+      </div>
+
+      <div class="row pad">
+        <h5>Show container identification</h5>
+
+        <button class="button" ng-click="$ctrl.switchContainerId()">On/Off</button>
       </div>
 
       <div class="text-center section bg-gray" ng-if="$ctrl.isOwner">

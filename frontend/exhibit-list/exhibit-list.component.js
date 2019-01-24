@@ -69,7 +69,7 @@ angular
           console.log(this.rowSearch);
           console.log(this.colSearch);
 
-          if ((this.searchString === null) && (this.rowSearch === null) && (this.colSearch === null)) {
+          if (!this.searchString && !this.rowSearch && !this.colSearch) {
             console.log('loadExhibits');
             loadExhibits();
           } else {

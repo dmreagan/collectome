@@ -18,6 +18,14 @@ angular
 
         this.showfig = true;
 
+        this.switchContainerId = () => {
+          if (!this.containerIdOnOffSwitch) {
+            this.containerIdOnOffSwitch = true;
+          } else {
+            this.containerIdOnOffSwitch = false;
+          }
+        };
+
         this.goToExhibits = () => $location.url('/exhibits');
 
         this.sanityCheck = () => {
