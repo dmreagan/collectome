@@ -8,10 +8,13 @@ angular
       config: '<',
       showfig: '<',
       idswitch: '<',
+      livepreview: '<',
     },
     templateUrl: 'exhibit-config-preview/exhibit-config-preview.template.html',
     controller: ['Utilities', function exhibitConfigPreviewController(Utilities) {
       const utils = new Utilities();
+
+      this.idSwitchPreviousValue = null;
 
       const updatePreview = () => {
         utils.calculateSize('#avl-shim', '#avl-preview', this.config);
@@ -27,6 +30,7 @@ angular
 
       this.$onInit = () => {
         // console.log('onInit');
+        this.idSwitchPreviousValue = this.idswitch;
       };
 
       this.$doCheck = () => {
@@ -37,13 +41,25 @@ angular
         // console.log('onChange');
 
         /**
+         * when onChanges event is triggered by idswitch, there is no need
+         * to update preview, just rely on ng-if to show the title
+         */
+        if (this.idswitch !== this.idSwitchPreviousValue) {
+          this.idSwitchPreviousValue = this.idswitch;
+          return;
+        }
+
+        /**
          * since we load config using async http.get from exhibit-create component,
          * the first time the onChanges event being called, config is still undefined.
          * We need to bypass this call and wait for its second invocation when config
          * has been initialized properly.
          */
         if (this.config !== undefined) {
-          updatePreview();
+          // only update when 'livepreview' is set to be true
+          if (this.livepreview) {
+            updatePreview();
+          }
         }
       };
 

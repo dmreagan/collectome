@@ -12,6 +12,8 @@ angular
 
         this.showfig = true;
 
+        this.livepreview = true;
+
         this.updateConfig = (updatedConfig) => {
           this.config = updatedConfig;
         };

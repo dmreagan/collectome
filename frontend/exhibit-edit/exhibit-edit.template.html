@@ -22,9 +22,14 @@
                 </div>
 
                 <div class="row pad">
-                    <exhibit-config-preview config="$ctrl.config" showfig="$ctrl.showfig" idswitch="$ctrl.containerIdOnOffSwitch"></exhibit-config-preview>
+                    <exhibit-config-preview config="$ctrl.config" showfig="$ctrl.showfig" idswitch="$ctrl.containerIdOnOffSwitch" livepreview="$ctrl.livepreview"></exhibit-config-preview>
 
                     <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)"></exhibit-config-editor>
+
+                    <div class="row pad">
+                        <input type="checkbox" ng-model="$ctrl.livepreview" name="live" checked>
+                        <label for="scales">Live Preview</label>
+                    </div>
 
                     <div class="row pad">
                         <h5>Show container identification</h5>

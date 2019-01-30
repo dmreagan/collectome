@@ -13,6 +13,14 @@ angular
         this.rowSearch = null;
         this.colSearch = null;
 
+        this.threeByThreeCheckbox = false;
+        this.fourByFourCheckbox = false;
+
+        this.customizedLayoutCheckbox = false;
+
+        this.custRow = 1;
+        this.custCol = 1;
+
         // only show exhibits that are public
         const filterExhibit = (e) => {
           if (e.public) {
@@ -40,7 +48,7 @@ angular
           utils.getExhibits().then((response) => {
             this.exhibits = response.data.filter(filterExhibit);
             console.log(this.exhibits);
-            this.sortBy = 'create_time';
+            this.sortBy = '-create_time';
           }, (e) => {
             console.warn(e);
             this.exhibits = [];
@@ -48,16 +56,45 @@ angular
         };
 
         const searchExhibits = () => {
+          let layouts = [];
+
+          if (this.threeByThreeCheckbox) {
+            layouts.push({ row: 3, col: 3 });
+          }
+
+          if (this.fourByFourCheckbox) {
+            layouts.push({ row: 4, col: 4 });
+          }
+
+          if (this.customizedLayoutCheckbox) {
+            if (!this.custRow) {
+              this.custRow = 1;
+            }
+
+            if (!this.custCol) {
+              this.custCol = 1;
+            }
+
+            layouts.push({ row: this.custRow, col: this.custCol });
+          }
+
+          if (layouts.length === 0) {
+            layouts = null;
+          }
+
+          console.log(layouts);
+
           const query = {
             query_string: this.searchString,
             row: this.rowSearch,
             col: this.colSearch,
+            gird_layouts: layouts,
           };
 
           utils.searchExhibits(query).then((response) => {
             this.exhibits = response.data.filter(filterExhibit);
             console.log(this.exhibits);
-            this.sortBy = '_score';
+            this.sortBy = '-_score';
           }, (error) => {
             console.warn(error);
             this.exhibits = [];
@@ -65,11 +102,19 @@ angular
         };
 
         this.updateSearch = () => {
-          console.log(this.searchString);
-          console.log(this.rowSearch);
-          console.log(this.colSearch);
+          console.log('search string:'.concat(this.searchString));
+          console.log('search row:'.concat(this.rowSearch));
+          console.log('search col:'.concat(this.colSearch));
+          console.log('3*3 checkbox:'.concat(this.threeByThreeCheckbox));
+          console.log('4*4 checkbox:'.concat(this.fourByFourCheckbox));
+          console.log('customized layout checkbox:'.concat(this.customizedLayoutCheckbox));
+          console.log('customized row:'.concat(this.custRow));
+          console.log('customized col:'.concat(this.custCol));
 
-          if (!this.searchString && !this.rowSearch && !this.colSearch) {
+          if (!this.searchString && !this.rowSearch && !this.colSearch
+            && !this.threeByThreeCheckbox
+            && !this.fourByFourCheckbox
+            && !this.customizedLayoutCheckbox) {
             console.log('loadExhibits');
             loadExhibits();
           } else {

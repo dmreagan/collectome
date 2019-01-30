@@ -85,9 +85,17 @@
 }
 
 #image-thumbnail {
-  width:  100%;
-  height: 10rem;
-  background-size: cover;
+  width:  200px;
+  height: 200px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.layout-image-thumbnail {
+  width:  60px;
+  height: 60px;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -196,4 +204,11 @@ div .choices__inner {
   margin-right:.9rem;
   /* transform: translate(0%, 25%); */
   max-width:15%;
+}
+
+.container {
+  column-count: 2;
+  /* column-gap: 5px; */
+  column-width: 200px;
+  /* column-rule: 4px dotted rgb(79, 185, 227); */
 }

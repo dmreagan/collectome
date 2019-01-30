@@ -690,9 +690,10 @@ $app->post('/search', function() use ($app)
     $query_string = $data->query_string;
     $row = $data->row;
     $col = $data->col;
+    $layouts = $data->gird_layouts;
 
-    if (empty($query_string) && empty($row) && empty($col)) {
-        $app->argument_required('At least one of search string/row/col is required');
+    if (empty($query_string) && empty($row) && empty($col) && empty($layouts)) {
+        $app->argument_required('At least one of search string/row/col/layouts is required');
         return;
     }
 
@@ -726,13 +727,39 @@ $app->post('/search', function() use ($app)
         $sql_statement = $sql_statement . " " . $statement;
     }
 
+
     if (!empty($col)) {
-        if (!empty($query_string)) {
-            $statement = "OR {$col} = p.columns";
-        } elseif (empty($row)) {
+        if (empty($query_string) && empty($row)) {
             $statement = "WHERE {$col} = p.columns";
         } else {
             $statement = "OR {$col} = p.columns";
+        }
+
+        $sql_statement = $sql_statement . " " . $statement;
+    }
+
+    if (!empty($layouts)) {
+
+        $statement = "";
+
+        $cnt = 1;
+        foreach ($layouts as $value) {
+
+            if ($cnt === 1) {
+                $statement = $statement . "({$value->row} = p.rows" . " AND " . "{$value->col} = p.columns)";
+            } else {
+                $statement = $statement . " OR " . "({$value->row} = p.rows" . " AND " . "{$value->col} = p.columns)";
+            }
+
+            $cnt += 1;
+        }
+
+        error_log("$statement" . "\n", 3, $app->ERROR_LOG_PATH);
+
+        if (empty($query_string) && empty($row) && empty($col)) {
+            $statement = "WHERE " . $statement;
+        } else {
+            $statement = "OR " . $statement;
         }
 
         $sql_statement = $sql_statement . " " . $statement;
