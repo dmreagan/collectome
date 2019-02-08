@@ -102,7 +102,8 @@
                 <div class="alert alert-warning" ng-if="$ctrl.rowSearch"># of rows: "{{$ctrl.rowSearch}}"</div>
                 <div class="alert alert-warning" ng-if="$ctrl.threeByThreeCheckbox">common 3 by 3 grid</div>
                 <div class="alert alert-warning" ng-if="$ctrl.fourByFourCheckbox">common 4 by 4 grid</div>
-                <div class="alert alert-warning" ng-if="$ctrl.customizedLayoutCheckbox">custom {{$ctrl.custCol}} by {{$ctrl.custRow}} grid</div>
+                <div class="alert alert-warning" ng-if="$ctrl.customizedLayoutCheckbox">custom {{$ctrl.custCol}} by
+                    {{$ctrl.custRow}} grid</div>
 
             </div>
             <div class="grid thirds">
@@ -125,7 +126,18 @@
                                     ''}}
                                 </p>
                             </div>
+
                         </a>
+
+                        <div>
+                            <drawdisplay rows="{{exhibit.rows}}" cols="{{exhibit.columns}}"><canvas></canvas></drawdisplay>
+                            <p>{{exhibit.columns}} X {{exhibit.rows}}</p>
+                        </div>
+
+                        <div>
+                            <drawgrid config="exhibit.config"><canvas></canvas></drawgrid>
+                        </div>
+
                     </div>
                 </div>
             </div>

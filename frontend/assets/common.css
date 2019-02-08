@@ -207,7 +207,7 @@ div .choices__inner {
 }
 
 .container {
-  column-count: 2;
+  column-count: 4;
   /* column-gap: 5px; */
   column-width: 200px;
   /* column-rule: 4px dotted rgb(79, 185, 227); */

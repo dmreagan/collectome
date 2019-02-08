@@ -21,6 +21,18 @@ angular
         this.custRow = 1;
         this.custCol = 1;
 
+        // this.$onInit = () => {
+        //   console.log('onInit');
+        // };
+
+        // this.$onChanges = () => {
+        //   console.log('onChange');
+        // };
+
+        // this.$postLink = () => {
+        //   console.log('onPostLink');
+        // };
+
         // only show exhibits that are public
         const filterExhibit = (e) => {
           if (e.public) {
@@ -138,4 +150,81 @@ angular
           });
         }
       }],
+  })
+  .directive('drawdisplay', () => {
+    return {
+      restrict: 'E',
+      scope: {},
+      link: function(scope, element, attrs) {
+        const canvas = element.children()[0];
+        const ctx = canvas.getContext('2d');
+
+        const x = 10;
+        const y = 10;
+        const width = 150;
+        const height = 100;
+
+        ctx.lineWidth = 5;
+
+        ctx.strokeRect(x, y, width, height);
+
+        ctx.fillStyle = 'wheat';
+        ctx.fillRect(x, y, width, height);
+
+        const rows = attrs.rows;
+        const cols = attrs.cols;
+
+        // console.log(rows);
+        // console.log(cols);
+
+        const rowHeight = Math.ceil(height / rows);
+        const colWidth = Math.ceil(width / cols);
+
+        ctx.lineWidth = 2;
+
+        for (let i = 1; i < rows; i +=1) {
+          ctx.beginPath();
+
+          ctx.moveTo(x, i * rowHeight + y);
+          ctx.lineTo(x + width, i * rowHeight + y);
+          ctx.stroke();
+        }
+
+        for (let i = 1; i < cols; i +=1) {
+          ctx.beginPath();
+
+          ctx.moveTo(i * colWidth + x, y);
+          ctx.lineTo(i * colWidth + x, y + height);
+          ctx.stroke();
+        }
+    
+      }
+    };
+  })
+  .directive('drawgrid', () => {
+    return {
+      restrict: 'E',
+      scope: {
+        config: '=config',
+      },
+      link: function(scope, element, attrs) {
+        const config = JSON.parse(scope.config);
+        console.log(config);
+        const canvas = element.children()[0];
+        const ctx = canvas.getContext('2d');
+
+        const x = 10;
+        const y = 10;
+        const width = 150;
+        const height = 100;
+
+        ctx.lineWidth = 5;
+
+        ctx.strokeRect(x, y, width, height);
+
+        ctx.fillStyle = 'wheat';
+        ctx.fillRect(x, y, width, height);
+    
+      }
+    };
   });

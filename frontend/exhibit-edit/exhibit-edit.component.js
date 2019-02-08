@@ -22,6 +22,8 @@ angular
 
         this.containerIdOnOffSwitch = false;
 
+        this.livepreview = true;
+
         const params = $location.search();
 
         console.log(params);

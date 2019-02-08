@@ -39,15 +39,18 @@ angular
 
       this.$onChanges = () => {
         // console.log('onChange');
-
         /**
          * when onChanges event is triggered by idswitch, there is no need
          * to update preview, just rely on ng-if to show the title
          */
-        if (this.idswitch !== this.idSwitchPreviousValue) {
-          this.idSwitchPreviousValue = this.idswitch;
-          return;
+        if (this.idSwitchPreviousValue !== null) { // make sure idSwitchPreviousValue is initialized
+          if (this.idswitch !== this.idSwitchPreviousValue) {
+            this.idSwitchPreviousValue = this.idswitch;
+            console.log('return');
+            return;
+          }
         }
+        
 
         /**
          * since we load config using async http.get from exhibit-create component,

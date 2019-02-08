@@ -18,6 +18,8 @@ angular
 
         this.showfig = true;
 
+        this.containerIdOnOffSwitch = false;
+
         this.switchContainerId = () => {
           if (!this.containerIdOnOffSwitch) {
             this.containerIdOnOffSwitch = true;
