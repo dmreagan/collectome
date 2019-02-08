@@ -207,8 +207,8 @@ div .choices__inner {
 }
 
 .container {
-  column-count: 4;
+  column-count: 3;
   /* column-gap: 5px; */
-  column-width: 200px;
+  column-width: 300px;
   /* column-rule: 4px dotted rgb(79, 185, 227); */
 }

@@ -182,7 +182,7 @@ angular
 
         ctx.lineWidth = 2;
 
-        for (let i = 1; i < rows; i +=1) {
+        for (let i = 1; i < rows; i += 1) {
           ctx.beginPath();
 
           ctx.moveTo(x, i * rowHeight + y);
@@ -190,7 +190,7 @@ angular
           ctx.stroke();
         }
 
-        for (let i = 1; i < cols; i +=1) {
+        for (let i = 1; i < cols; i += 1) {
           ctx.beginPath();
 
           ctx.moveTo(i * colWidth + x, y);
@@ -209,21 +209,55 @@ angular
       },
       link: function(scope, element, attrs) {
         const config = JSON.parse(scope.config);
-        console.log(config);
+        
+        const displayRows = config.display.rows;
+        const displayCols = config.display.columns;
+
+        // console.log(displayRows);
+        // console.log(displayCols);
+
+        const containers = config.layout.containers;
+
+        // console.log(containers);
+
+        const compare = (a, b) => {
+          if (a.originY !== b.originY) {
+            return a.originY - b.originY;
+          }
+
+          return a.originX - b.originX;
+        };
+
+        const sortedContainers= containers.sort(compare);
+        // console.log(sortedContainers);
+
         const canvas = element.children()[0];
         const ctx = canvas.getContext('2d');
 
-        const x = 10;
-        const y = 10;
-        const width = 150;
-        const height = 100;
+        const x = 5;
+        const y = 5;
+        const width = 280;
+        const height = 140;
 
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 2;
 
-        ctx.strokeRect(x, y, width, height);
+        const rowHeight = Math.floor(height / displayRows);
+        const colWidth = Math.floor(width / displayCols);
 
-        ctx.fillStyle = 'wheat';
-        ctx.fillRect(x, y, width, height);
+        for (let i = 0; i < sortedContainers.length; i += 1) {
+          const container = sortedContainers[i];
+
+          const originX = container.originX * colWidth + x;
+          const originY = container.originY * rowHeight + y;
+
+          const gridWidth = container.sizeX * colWidth;
+          const gridHeight = container.sizeY * rowHeight;
+
+          ctx.strokeRect(originX, originY, gridWidth, gridHeight);
+
+          // ctx.fillStyle = 'blanchedalmond';
+          // ctx.fillRect(originX, originY, gridWidth, gridHeight);
+        }
     
       }
     };
