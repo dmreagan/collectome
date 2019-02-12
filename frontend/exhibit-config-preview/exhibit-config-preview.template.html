@@ -29,7 +29,7 @@
         <li id="{{tile.id}}" class="shadow-3 gridlist" gridster-item row="tile.row" col="tile.col" size-x="tile.sizeX"
           size-y="tile.sizeY" ng-repeat="tile in $ctrl.tiles">
 
-          <figure ng-if="$ctrl.showfig">
+          <figure>
 
             <iframe ng-src="{{tile.url | trusted}}" contentid="{{tile.contentId}}" scale="$ctrl.config"></iframe>
             <div id="over" ng-if="$ctrl.idswitch">{{tile.id}}</div>

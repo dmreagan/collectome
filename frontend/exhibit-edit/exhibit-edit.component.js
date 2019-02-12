@@ -16,8 +16,6 @@ angular
 
         this.isOwner = false;
 
-        this.showfig = true;
-
         this.exhibitIdIsValid = true;
 
         this.containerIdOnOffSwitch = false;
@@ -63,27 +61,7 @@ angular
 
           const loginUser = this.authentication.userProfile.login;
 
-          const divId = '#avl-shim';
-
-          this.showfig = false;
-          this.containerIdOnOffSwitch = false;
-
-          /**
-           * Before we do the snapshot, we want to hide <figure></figure> in
-           * 'exhibit-config-preview.template.html' since html2canvas has
-           * issues capturing the iframe.
-           * 
-           * 'this.showfig' will trigue the event to set figure tag's
-           * ng-if property to false to make the figures off.
-           * However, the will take place AFTER html2canvas lib tries to capture
-           * the snapshot. The workaround here is to synchronouslly sleep a while
-           * to wait ng-if take effects.
-           */
-
-          const milliseconds = 10;
-          utils.sleep(milliseconds).then(() => {
-            utils.updateExhibit(this.exhibitId, this.snapshotRef, this.config, divId, this, loginUser);
-          });
+          utils.updateExhibit(this.exhibitId, this.config, this, loginUser);
         };
 
         this.sanitycheck = () => {
@@ -122,7 +100,6 @@ angular
           if (this.authentication.isAuthorized) {
             utils.getExhibit(this.exhibitId).then((response) => {
               this.config = JSON.parse(response.data.config);
-              this.snapshotRef = response.data.snapshot_ref;
               this.exhibitOwner = response.data.owner;
               this.exhibitIsPublic = response.data.public;
               this.sanitycheck();

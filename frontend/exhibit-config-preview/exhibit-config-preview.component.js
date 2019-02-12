@@ -6,7 +6,6 @@ angular
   .component('exhibitConfigPreview', {
     bindings: {
       config: '<',
-      showfig: '<',
       idswitch: '<',
       livepreview: '<',
     },
@@ -50,7 +49,6 @@ angular
             return;
           }
         }
-        
 
         /**
          * since we load config using async http.get from exhibit-create component,

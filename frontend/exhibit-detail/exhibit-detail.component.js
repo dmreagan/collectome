@@ -16,8 +16,6 @@ angular
 
         this.isOwner = false;
 
-        this.showfig = true;
-
         this.containerIdOnOffSwitch = false;
 
         this.switchContainerId = () => {
@@ -68,26 +66,6 @@ angular
             this.acknowledgeDelete = true;
             this.confirmDelete = false;
 
-            /**
-            * before delete snapshot we need to check whether other exhibits
-            * also refer to this snapshot, if yes, then no deletion.
-            */
-            utils.getSnapshotCount(this.snapshotRef).then((response) => {
-              const snapshotCount = response.data.count;
-
-              // console.log('snapshotCount');
-              // console.log(snapshotCount);
-
-              if (snapshotCount <= 1) {
-                utils.deleteSnapshot(this.snapshotRef);
-              }
-            }, (e) => {
-              console.warn(e);
-              // window.alert('Deleting the post failed.');
-              this.message_style = 'alert error one-third float-center';
-              this.info_message = 'Deleting the snapshot failed.';
-            });
-
             utils.deleteExhibit(this.exhibitId).then((response) => {
               this.message_style = 'alert success one-third float-center';
               this.info_message = 'Exhibit Deleted!';
@@ -113,7 +91,6 @@ angular
         const getExhibit = () => {
           utils.getExhibit(this.exhibitId).then((response) => {
             this.config = JSON.parse(response.data.config);
-            this.snapshotRef = response.data.snapshot_ref;
             this.exhibitOwner = response.data.owner;
             this.exhibitIsPublic = response.data.public;
 
