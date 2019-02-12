@@ -14,8 +14,8 @@ angular
           this.info_message = null;
 
           if (this.searchURL === '') {
-            this.message_style = 'alert error one-third float-center';
-            this.info_message = 'Search URL cannot be empty';
+            this.message_style = 'callout warning';
+            this.info_message = 'URL cannot be empty';
             return;
           }
 
@@ -26,7 +26,7 @@ angular
 
             const lines = data.split('\n');
 
-            this.message_style = 'alert success one-third float-center';
+            this.message_style = 'callout success';
 
             for (let i = 0; i < lines.length; i += 1) {
               if (lines[i].toLowerCase().startsWith(XFrameOptKey.toLowerCase())) {
@@ -41,7 +41,7 @@ angular
           }, (error) => {
             console.warn(error);
 
-            this.message_style = 'alert error one-third float-center';
+            this.message_style = 'callout warning';
 
             console.log(error.status);
 
