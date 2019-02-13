@@ -20,14 +20,6 @@ angular
 
         this.containerIdOnOffSwitch = false;
 
-        this.switchContainerId = () => {
-          if (!this.containerIdOnOffSwitch) {
-            this.containerIdOnOffSwitch = true;
-          } else {
-            this.containerIdOnOffSwitch = false;
-          }
-        };
-
         if (this.exhibitId) {
           this.goToCreated = () => $location.url(`/exhibits/${this.exhibitId}`);
           this.message_success = 'alert success one-third float-center';
