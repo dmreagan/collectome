@@ -5,7 +5,8 @@
 
   #over {
     color: black;
-    -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+    -webkit-text-fill-color: white;
+    /* Will override color (regardless of order) */
     -webkit-text-stroke-width: 5px;
     -webkit-text-stroke-color: black;
     font-size: 15em;
@@ -32,6 +33,7 @@
           <figure>
 
             <iframe ng-src="{{tile.url | trusted}}" contentid="{{tile.contentId}}" scale="$ctrl.config"></iframe>
+        
             <div id="over" ng-if="$ctrl.idswitch">{{tile.id}}</div>
 
             <figcaption>

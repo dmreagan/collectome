@@ -22,8 +22,10 @@
     </section>
 
     <section class="section" ng-if="$ctrl.exhibitIsPublic || $ctrl.isOwner">
+
       <div class="row pad">
-        <exhibit-config-preview config="$ctrl.config" idswitch="$ctrl.containerIdOnOffSwitch" livepreview="true"></exhibit-config-preview>
+        <exhibit-config-preview config="$ctrl.config" idswitch="$ctrl.containerIdOnOffSwitch" livepreview="true">
+        </exhibit-config-preview>
 
         <exhibit-config-display config="$ctrl.config"></exhibit-config-display>
 
@@ -33,6 +35,10 @@
         <h5>Show container identification</h5>
 
         <button class="button" ng-click="$ctrl.switchContainerId()">On/Off</button>
+      </div>
+
+      <div class="row pad">
+        <button class="button" ng-click="$ctrl.goToDisplay()">Go to display</button>
       </div>
 
       <div class="text-center section bg-gray" ng-if="$ctrl.isOwner">

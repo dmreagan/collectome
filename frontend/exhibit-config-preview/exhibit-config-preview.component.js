@@ -45,7 +45,6 @@ angular
         if (this.idSwitchPreviousValue !== null) { // make sure idSwitchPreviousValue is initialized
           if (this.idswitch !== this.idSwitchPreviousValue) {
             this.idSwitchPreviousValue = this.idswitch;
-            console.log('return');
             return;
           }
         }
@@ -143,7 +142,7 @@ angular
             elem.css('height', `${scaleHeight}px`);
             elem.css('transform-origin', 'top left');
             elem.css('transform', `scale3d(${scale}, ${scale}, 1)`);
-          });
+          }); 
       }
     };
  });
