@@ -91,7 +91,12 @@ angular
         this.fork = () => {
           const loginUser = this.authentication.userProfile.login;
 
-          utils.submitExhibit(this.config, this, loginUser);
+          const clonedConfig = JSON.parse(JSON.stringify(this.config));
+
+          // set to prviate
+          clonedConfig.metadata.public = false;
+
+          utils.submitExhibit(clonedConfig, this, loginUser);
         };
 
         const getExhibit = () => {
