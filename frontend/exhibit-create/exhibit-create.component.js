@@ -23,7 +23,7 @@ angular
         if (this.exhibitId) {
           this.goToCreated = () => $location.url(`/exhibits/${this.exhibitId}`);
           this.message_success = 'alert success one-third float-center';
-          this.message_content = 'Exhibit created!';
+          this.message_content = 'Exhibit created/forked!';
         }
 
         this.save = () => {

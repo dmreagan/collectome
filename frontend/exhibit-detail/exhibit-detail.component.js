@@ -18,14 +18,6 @@ angular
 
         this.containerIdOnOffSwitch = false;
 
-        this.switchContainerId = () => {
-          if (!this.containerIdOnOffSwitch) {
-            this.containerIdOnOffSwitch = true;
-          } else {
-            this.containerIdOnOffSwitch = false;
-          }
-        };
-
         this.goToExhibits = () => $location.url('/exhibits');
 
         this.sanityCheck = () => {
@@ -94,6 +86,12 @@ angular
            * since we need a reload the page after changing the URL
            */
           window.location.href = `/exhibit-display/${this.exhibitId}`;
+        };
+
+        this.fork = () => {
+          const loginUser = this.authentication.userProfile.login;
+
+          utils.submitExhibit(this.config, this, loginUser);
         };
 
         const getExhibit = () => {

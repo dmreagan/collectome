@@ -22,19 +22,36 @@
                 </div>
 
                 <div class="row pad">
-                    <exhibit-config-preview config="$ctrl.config" idswitch="$ctrl.containerIdOnOffSwitch" livepreview="$ctrl.livepreview"></exhibit-config-preview>
+                    <exhibit-config-preview config="$ctrl.config" idswitch="$ctrl.containerIdOnOffSwitch"
+                        livepreview="$ctrl.livepreview"></exhibit-config-preview>
 
-                    <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)"></exhibit-config-editor>
-
-                    <div class="row pad">
-                        <input type="checkbox" ng-model="$ctrl.livepreview" name="live" checked>
-                        <label for="scales">Live Preview</label>
+                    <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)">
+                    </exhibit-config-editor>
+                    
+                    <div>
+                        <label>Live preview</label>
+                        <div class="switch">
+                            <input class="switch-input" id="live" type="checkbox" name="livePreview"
+                                ng-model="$ctrl.livepreview" checked>
+                            <label class="switch-paddle" for="live">
+                                <span class="show-for-sr">Live preview</span>
+                                <span class="switch-active" aria-hidden="true">On</span>
+                                <span class="switch-inactive" aria-hidden="true">Off</span>
+                            </label>
+                        </div>
                     </div>
 
-                    <div class="row pad">
-                        <h5>Show container identification</h5>
-
-                        <button class="button" ng-click="$ctrl.switchContainerId()">On/Off</button>
+                    <div>
+                        <label>Identify containers</label>
+                        <div class="switch">
+                            <input class="switch-input" id="identify" type="checkbox" name="identifyContainers"
+                                ng-model="$ctrl.containerIdOnOffSwitch">
+                            <label class="switch-paddle" for="identify">
+                                <span class="show-for-sr">Identify containers</span>
+                                <span class="switch-active" aria-hidden="true">Yes</span>
+                                <span class="switch-inactive" aria-hidden="true">No</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 

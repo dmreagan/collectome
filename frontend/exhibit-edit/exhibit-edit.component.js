@@ -34,14 +34,6 @@ angular
           }
         }
 
-        this.switchContainerId = () => {
-          if (!this.containerIdOnOffSwitch) {
-            this.containerIdOnOffSwitch = true;
-          } else {
-            this.containerIdOnOffSwitch = false;
-          }
-        };
-
         this.updateConfig = (updatedConfig) => {
           this.config = updatedConfig;
         };

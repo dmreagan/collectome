@@ -31,17 +31,28 @@
 
       </div>
 
-      <div class="row pad">
-        <h5>Show container identification</h5>
-
-        <button class="button" ng-click="$ctrl.switchContainerId()">On/Off</button>
+      <div>
+        <label>Identify containers</label>
+        <div class="switch">
+          <input class="switch-input" id="identify" type="checkbox" name="identifyContainers"
+            ng-model="$ctrl.containerIdOnOffSwitch">
+          <label class="switch-paddle" for="identify">
+            <span class="show-for-sr">Identify containers</span>
+            <span class="switch-active" aria-hidden="true">Yes</span>
+            <span class="switch-inactive" aria-hidden="true">No</span>
+          </label>
+        </div>
       </div>
 
       <div class="row pad">
         <button class="button" ng-click="$ctrl.goToDisplay()">Go to display</button>
       </div>
 
-      <div class="text-center section bg-gray" ng-if="$ctrl.isOwner">
+      <div class="row pad" ng-if="$ctrl.authentication.isAuthorized && !$ctrl.isOwner">
+        <button class="button" ng-click="$ctrl.fork()">Fork</button>
+      </div>
+
+      <div class="row pad" ng-if="$ctrl.isOwner">
         <h4>Modify this exhibit</h4>
         <ul class="button-group">
           <li>
