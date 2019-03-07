@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS guestbook.countries;
 DROP BLOB TABLE IF EXISTS guestbook_images;
 
 -- custom text analyzer
-CREATE ANALYZER myanalyzer (
+CREATE ANALYZER exhibitanalyzer (
   TOKENIZER standard,
   TOKEN_FILTERS (
     lowercase,
@@ -22,13 +22,13 @@ CREATE ANALYZER myanalyzer (
 DROP TABLE IF EXISTS exhibits;
 CREATE TABLE exhibits (
     id STRING PRIMARY KEY,
-    title STRING INDEX USING FULLTEXT WITH (analyzer = 'myanalyzer'),
-    description STRING INDEX USING FULLTEXT WITH (analyzer = 'myanalyzer'),
-    disciplines STRING INDEX USING FULLTEXT WITH (analyzer = 'myanalyzer'),
-    institutions STRING INDEX USING FULLTEXT WITH (analyzer = 'myanalyzer'),
-    tags STRING INDEX USING FULLTEXT WITH (analyzer = 'myanalyzer'),
+    title STRING INDEX USING FULLTEXT WITH (analyzer = 'exhibitanalyzer'),
+    description STRING INDEX USING FULLTEXT WITH (analyzer = 'exhibitanalyzer'),
+    disciplines STRING INDEX USING FULLTEXT WITH (analyzer = 'exhibitanalyzer'),
+    institutions STRING INDEX USING FULLTEXT WITH (analyzer = 'exhibitanalyzer'),
+    tags STRING INDEX USING FULLTEXT WITH (analyzer = 'exhibitanalyzer'),
     snapshot_ref STRING,
-    people STRING INDEX USING FULLTEXT WITH (analyzer = 'myanalyzer'),
+    people STRING INDEX USING FULLTEXT WITH (analyzer = 'exhibitanalyzer'),
     public BOOLEAN,
     columns INTEGER,
     rows INTEGER,
