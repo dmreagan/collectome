@@ -28,7 +28,7 @@ angular
 
         if (params.status) {
           if (params.status === 'success') {
-            this.message_style = 'alert success one-third float-center';
+            this.message_style = 'callout success';
             this.info_message = 'Exhibit has been successfully edited';
             this.success = true;
           }
@@ -44,7 +44,7 @@ angular
 
         this.save = () => {
           if (this.authentication.userProfile === null) {
-            this.message_style = 'alert error one-third float-center';
+            this.message_style = 'callout alert';
             this.info_message = 'Cannot obtain github login id.';
             return;
           }

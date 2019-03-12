@@ -22,14 +22,14 @@ angular
 
         if (this.exhibitId) {
           this.goToCreated = () => $location.url(`/exhibits/${this.exhibitId}`);
-          this.message_success = 'alert success one-third float-center';
+          this.message_success = 'callout success';
           this.message_content = 'Exhibit created/forked!';
         }
 
         this.save = () => {
           // check github login id is available
           if (this.authentication.userProfile.login === undefined) {
-            this.message_style = 'alert error one-third float-center';
+            this.message_style = 'callout alert';
             this.info_message = 'Cannot obtain github login id.';
             return;
           }

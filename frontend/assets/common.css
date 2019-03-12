@@ -30,11 +30,15 @@
   }
 
   body {
-    margin: 50px;
+    /* margin: 50px; */
     padding: 0px;
     /* overflow: hidden; */
     background-color: rgb(255, 255, 255);
   }   
+
+  .all-but-header {
+    margin: 3rem;
+  }
 
   /* shadow CSS from http://timnew.me/blog/2014/08/16/material-design-shadow-in-html/ */
   .shadow-0 {
@@ -71,11 +75,11 @@
   bottom: 0;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  /* h1, h2, h3, h4, h5, h6 {
   line-height: 1em;
   margin-left: 1em;
   font-family: sans-serif;
-  }
+  } */
 
 
 .float-alert{

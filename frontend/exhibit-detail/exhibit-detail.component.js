@@ -51,7 +51,7 @@ angular
 
         this.delete = () => {
           this.confirmDelete = true;
-          this.message_style = 'alert info one-third float-center';
+          this.message_style = 'callout warning';
           this.info_message = 'Are you sure you want to delete this project?';
 
           this.deleteYes = () => {
@@ -59,14 +59,14 @@ angular
             this.confirmDelete = false;
 
             utils.deleteExhibit(this.exhibitId).then((response) => {
-              this.message_style = 'alert success one-third float-center';
+              this.message_style = 'callout success';
               this.info_message = 'Exhibit Deleted!';
               // console.log(response);
               // console.log('Exhibit deleted!');
             }, (e) => {
               console.warn(e);
               // window.alert('Deleting the post failed.');
-              this.message_style = 'alert error one-third float-center';
+              this.message_style = 'callout alert';
               this.info_message = 'Deleting the exhibit failed.';
             });
           };
