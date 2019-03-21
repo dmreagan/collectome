@@ -59,6 +59,7 @@ angular
         const loadExhibits = () => {
           utils.getExhibits().then((response) => {
             this.exhibits = response.data.filter(filterExhibit);
+
             console.log(this.exhibits);
             this.sortBy = '-create_time';
           }, (e) => {

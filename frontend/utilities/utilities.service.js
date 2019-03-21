@@ -395,6 +395,7 @@ angular
       };
 
       this.getExhibits = () => {
+        console.log('get exhibits');
         const d = $q.defer();
         const api = new Api('/exhibits');
         api.get().then((response) => {

@@ -539,6 +539,7 @@ $app->delete('/exhibits/:id', function($id) use ($app)
  */
 $app->get('/exhibits', function() use ($app)
 {
+    error_log("In get exhibits" . "\n", 3, $result);
     $qry = $app->conn->prepare("SELECT p.*
             FROM {$app->EXHIBITS_TABLE_NAME} AS p");
     $qry->execute();
