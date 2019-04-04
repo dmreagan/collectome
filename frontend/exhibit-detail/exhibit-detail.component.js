@@ -85,7 +85,9 @@ angular
            * need to use 'window.location.href' rather than '$location.url'
            * since we need a reload the page after changing the URL
            */
-          window.location.href = `/exhibit-display/${this.exhibitId}`;
+          window.location.href = `/exhibit-display/${this.exhibitId}`; // dev
+          /* note in production we may need the following full path to bypass the .htaccess rule set for showcase web app */
+          // window.location.href = `https://showcase.avl.iu.edu/collectome/frontend/exhibit-display/${this.exhibitId}`; // production
         };
 
         this.fork = () => {

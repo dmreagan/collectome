@@ -14,8 +14,8 @@
 
     "content" : [
         { "id" : "content1", "title" : "Information Technology News", "url" : "https://itnews.iu.edu/", "scale" : 2 },
-        { "id" : "content2", "title" : "Berkeley", "url" : "http://www.berkeley.edu/", "scale" : 2 },
-        { "id" : "content3", "title" : "MIT", "url" : "http://www.mit.edu/", "scale" : 2 }
+        { "id" : "content2", "title" : "Berkeley", "url" : "https://www.berkeley.edu/", "scale" : 2 },
+        { "id" : "content3", "title" : "MIT", "url" : "https://www.mit.edu/", "scale" : 2 }
     ],
 
     "display" : {

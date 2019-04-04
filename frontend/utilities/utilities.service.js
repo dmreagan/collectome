@@ -287,7 +287,9 @@ angular
         const snapshotRef = '-1'; /* reserved for future use, e.g., logo or user uplodaed image file */
         const extra = {};
 
-        extra.authors = config.metadata.authors.filter(name => name.name_first && name.name_last).join(';');
+        const authors = config.metadata.authors.filter(name => (name.first_name && name.last_name));
+        const filteredAuthors = authors.map(name => `${name.first_name}--${name.last_name}`);
+        extra.authors = filteredAuthors.join(';');
 
         extra.institutions = config.metadata.institutions.filter(name => name).join(';');
 

@@ -231,7 +231,6 @@ $app->get('/snapshotcount/:digest', function($digest) use ($app)
         ));
         return;
     }
-
 })->name('snapshot-count-get');
 
 /**
