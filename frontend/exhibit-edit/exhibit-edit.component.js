@@ -2,8 +2,8 @@ angular
   .module('exhibitEdit')
   .component('exhibitEdit', {
     templateUrl: 'exhibit-edit/exhibit-edit.template.html',
-    controller: ['Authentication', 'Utilities', '$location', '$routeParams',
-      function exhibitEditController(Authentication, Utilities, $location, $routeParams) {
+    controller: ['Authentication', 'Utilities', '$location', '$routeParams', '$route',
+      function exhibitEditController(Authentication, Utilities, $location, $routeParams, $route) {
         const utils = new Utilities();
 
         this.authentication = Authentication;
@@ -31,6 +31,12 @@ angular
             this.message_style = 'callout success';
             this.info_message = 'Exhibit has been successfully edited';
             this.success = true;
+          } else if (params.status === 'dupid') {
+            this.message_style = 'callout alert';
+            this.info_message = 'Sanity check failed. title already used';
+          } else {
+            this.message_style = 'callout alert';
+            this.info_message = 'Updating the exhibit failed.';
           }
         }
 
@@ -53,7 +59,34 @@ angular
 
           const loginUser = this.authentication.userProfile.login;
 
-          utils.updateExhibit(this.exhibitId, this.config, this, loginUser);
+          // the following 'updateExhibit' function is used for system generated id
+          // utils.updateExhibit(this.exhibitId, this.config, this, loginUser); 
+
+          // when using user composed id (i.e., title), we need to delete and then create, since
+          // it is a bad practice to update primary key.
+
+          utils.checkId(this.config.metadata.name, loginUser).then((response) => {
+            utils.deleteExhibit(this.exhibitId).then((response) => {
+              const type = 1; // update type
+              utils.submitExhibit(this.config, this, loginUser, type);
+            }, (e) => {
+              console.warn(e);
+              // window.alert('Deleting the post failed.');
+              // this.message_style = 'callout alert';
+              // this.info_message = 'Updating the exhibit failed.';
+
+              $location.search('status', 'error');
+              $route.reload();
+            });
+          }, (e) => {
+            console.warn(e);
+            // this.message_style = 'callout alert';
+            // this.info_message = 'Sanity check failed. title already used';
+
+            console.log('duplicate id');
+            $location.search('status', 'dupid');
+            $route.reload();
+          });
         };
 
         this.sanitycheck = () => {

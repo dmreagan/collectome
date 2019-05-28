@@ -36,7 +36,8 @@ angular
 
           const loginUser = this.authentication.userProfile.login;
 
-          utils.submitExhibit(this.config, this, loginUser);
+          const type = 0; // create from scratch
+          utils.submitExhibit(this.config, this, loginUser, type);
         };
 
         const path = './assets/config-default.json';

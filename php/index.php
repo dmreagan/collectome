@@ -108,6 +108,30 @@ class CrateResource extends \Slim\Slim
         }
     }
 
+    function title2id($owner, $title) {
+
+        $title = strtolower($title);
+        // replace whitespaces by dash
+        $title = preg_replace("/\s+/", "-", $title);
+
+        return $owner."-".$title;
+    }
+
+    function isIdUnique($id) {
+        // check if id already exist
+        $qry = $this->conn->prepare("SELECT id FROM {$this->EXHIBITS_TABLE_NAME} AS p WHERE p.id = ?");
+
+        $qry->bindParam(1, $id);
+        $qry->execute();
+
+        $result = $qry->fetch(PDO::FETCH_ASSOC);
+
+        if (!$result) {
+            return true;
+        } else {
+            return false; // already used
+        } 
+    }
 }
 
 $app = new CrateResource($config);
@@ -348,7 +372,15 @@ $app->post('/exhibits', function() use ($app)
 
     error_log("Done sanity check" . "\n", 3, $app->ERROR_LOG_PATH);
 
-    $id        = uniqid();
+    // $id        = uniqid();
+
+    $id = $app->title2id($owner, $title);
+
+    if (!$app->isIdUnique($id)) {
+        // server code '409' means "request conflicts with the current state of the server"
+        $app->resource_error(409, "Creation/Update failed. Title alreday used by an existing exhibit.");
+        return;
+    }
 
     $qry       = $app->conn->prepare("INSERT INTO {$app->EXHIBITS_TABLE_NAME} (
       id, title, description, disciplines, institutions, tags, snapshot_ref, people, public, columns, rows, 
@@ -388,7 +420,7 @@ $app->post('/exhibits', function() use ($app)
              "id" => $id
          );
 
-        $app->success(201, $result, $id);
+        $app->success(201, $result);
     } else {
         $app->resource_error(500, $app->conn->errorInfo());
     }
@@ -645,18 +677,43 @@ $app->post('/github', function() use ($app)
 
 })->name('git-user-email');
 
+$app->post('/idcheck', function() use ($app) {
+    error_log("In idcheck" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $data = json_decode($app->request->getBody());
+    $title = $data->title;
+    $owner = $data->owner;
+
+    if (empty($title) || empty($owner)) {
+        $app->argument_required('Argument title and owner are required');
+        return;
+    }
+
+    $id = $app->title2id($owner, $title);
+
+    if (!$app->isIdUnique($id)) {
+        $app->resource_error(409, "ID alreday used by an existing exhibit.");
+    } else {
+        $result = array(
+            "success"=>"Id OK!"
+        );
+
+       $app->success(200, $result);       
+    }
+
+})->name('idcheck');
+
 $app->post('/header', function() use ($app)
 {
     error_log("In get header" . "\n", 3, $app->ERROR_LOG_PATH);
     
-
     $data = json_decode($app->request->getBody());
     $url = $data->url;
 
     if (empty($url)) {
         $app->argument_required('Argument url is required');
         return;
-      }
+    }
 
     $ch = curl_init();
 

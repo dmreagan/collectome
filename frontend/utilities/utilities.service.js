@@ -240,11 +240,9 @@ angular
       /**
        *
        * @param {config file} config
-       * @param {id of the div to be taken a snapshot} divId
+       * @param {type of the submit, 0 for create from scratch, 1 for update, i.e., delete and then create} type
        */
-      this.submitExhibit = (config, self, owner) => {
-        const path = '/exhibit-create';
-
+      this.submitExhibit = (config, self, owner, type) => {
         const snapshotRef = '-1'; /* reserved for future use, e.g., logo or user uplodaed image file */
         const extra = {};
 
@@ -268,13 +266,26 @@ angular
         api.post({ config, extra, createTime, owner }).then((resp) => {
           const assignedId = resp.data.id;
 
-          $location.url(`${path}/${assignedId}`);
+          if (type === 0) { // create from scratch
+            const path = '/exhibit-create';
+            $location.url(`${path}/${assignedId}`);
+          } else if (type === 1) { // update, i.e., delete first and then create
+            self.message_style = 'alert success one-third float-center';
+            self.info_message = 'Exhibit has been successfully edited';
+            self.success = true;
+            $location.url(`/exhibits/${assignedId}/edit?status=success`);
+          }
         }, (e) => {
           console.warn(e);
 
-          // roll back
-          const msg = 'Upload exhibit failed.';
-          this.snapshotRollback = (snapshotRef, self, msg);
+          // // roll back
+          // const msg = 'Upload exhibit failed.';
+          // this.snapshotRollback = (snapshotRef, self, msg);
+
+          console.warn(e.data.status);
+          self.message_style = 'callout alert';
+          self.info_message = e.data.error;
+
         });
       };
 
@@ -330,8 +341,12 @@ angular
           console.warn(e);
 
           // roll back
-          const msg = 'Update exhibit failed.';
-          this.snapshotRollback = (snapshotRef, self, msg);
+          // const msg = 'Update exhibit failed.';
+          // this.snapshotRollback = (snapshotRef, self, msg);
+
+          self.message_style = 'callout alert';
+          self.info_message = e.data.error;
+
         });
       };
 
@@ -358,6 +373,19 @@ angular
 
         const api = new Api('/github');
         api.get().then((response) => {
+          d.resolve(response);
+        }, (e) => {
+          console.warn(e);
+          d.reject(e);
+        });
+        return d.promise;
+      };
+
+      this.checkId = (title, owner) => {
+        const d = $q.defer();
+
+        const api = new Api('/idcheck');
+        api.post({ title, owner }).then((response) => {
           d.resolve(response);
         }, (e) => {
           console.warn(e);

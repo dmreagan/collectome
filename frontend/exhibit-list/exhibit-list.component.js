@@ -162,9 +162,17 @@ angular
 
         const x = 10;
         const y = 10;
-        const width = 150;
-        const height = 100;
+        const width = 250;
 
+        const rows = attrs.rows;
+        const cols = attrs.cols;
+
+        const colWidth = Math.ceil(width / cols);
+
+        // enforce 16:9 aspect ratio
+        const rowHeight = Math.ceil(colWidth / 16 * 9);
+        const height = rows * rowHeight;
+        
         ctx.lineWidth = 5;
 
         ctx.strokeRect(x, y, width, height);
@@ -172,14 +180,8 @@ angular
         ctx.fillStyle = 'wheat';
         ctx.fillRect(x, y, width, height);
 
-        const rows = attrs.rows;
-        const cols = attrs.cols;
-
         // console.log(rows);
         // console.log(cols);
-
-        const rowHeight = Math.ceil(height / rows);
-        const colWidth = Math.ceil(width / cols);
 
         ctx.lineWidth = 2;
 
@@ -235,15 +237,21 @@ angular
         const canvas = element.children()[0];
         const ctx = canvas.getContext('2d');
 
-        const x = 5;
-        const y = 5;
-        const width = 280;
-        const height = 140;
+        const x = 10;
+        const y = 10;
+        const width = 250; 
+
+        const colWidth = Math.ceil(width / displayCols);
+
+        // enforce 16:9 aspect ratio
+        const rowHeight = Math.ceil(colWidth / 16 * 9);
 
         ctx.lineWidth = 2;
 
-        const rowHeight = Math.floor(height / displayRows);
-        const colWidth = Math.floor(width / displayCols);
+        const colors = ['black', 'silver', 'gray', 'maroon', 'red', 
+        'purple', 'fuchsia', 'green', 'lime', 'olive', 'yellow', 'navy', 'blue',
+      'teal', 'aqua'];
+        var index = 0;
 
         for (let i = 0; i < sortedContainers.length; i += 1) {
           const container = sortedContainers[i];
@@ -254,10 +262,11 @@ angular
           const gridWidth = container.sizeX * colWidth;
           const gridHeight = container.sizeY * rowHeight;
 
-          ctx.strokeRect(originX, originY, gridWidth, gridHeight);
+          // ctx.strokeRect(originX, originY, gridWidth, gridHeight);
 
-          // ctx.fillStyle = 'blanchedalmond';
-          // ctx.fillRect(originX, originY, gridWidth, gridHeight);
+          ctx.fillStyle = colors[index];
+          index = (index + 1) % colors.length;
+          ctx.fillRect(originX, originY, gridWidth, gridHeight);
         }
     
       }
