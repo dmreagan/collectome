@@ -22,7 +22,7 @@ For image upload, you will also need the `libcurl` library. The procedure for do
 Start a local web server to test the app
 
 ```bash
-php -S localhost:8080
+php -S localhost:8081
 ```
 
-Open *[http://localhost:8080](http://localhost:8080)* in a web browser.
+Open *[http://localhost:8081](http://localhost:8081)* in a web browser.
