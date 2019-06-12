@@ -6,12 +6,13 @@
             <div class="grid-x grid-margin-x large-up-2">
                 <div class="cell">
                     <fieldset>
-                        <legend><h3>Search</h3></legend>
+                        <!-- <legend><h3>Search</h3></legend> -->
                         <label for="search">
+                            <g-octicon icon="search" aria-label="Search"></g-octicon>
                             Search for metadata fields
                             <input type="text" name="search" id="search" 
                                     ng-model="$ctrl.searchString" ng-change="$ctrl.updateSearch()"
-                                    placeholder="Search exhibits">
+                                    placeholder="Enter search terms">
                         </label>
 
                         <!-- <div>

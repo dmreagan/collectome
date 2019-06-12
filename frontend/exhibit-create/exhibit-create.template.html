@@ -11,8 +11,6 @@
       <exhibit-config-preview config="$ctrl.config" idswitch="$ctrl.containerIdOnOffSwitch"
         livepreview="$ctrl.livepreview"></exhibit-config-preview>
 
-      <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)"></exhibit-config-editor>
-
       <div>
         <label>Live preview</label>
         <div class="switch">
@@ -24,7 +22,7 @@
           </label>
         </div>
       </div>
-
+  
       <div>
         <label>Identify containers</label>
         <div class="switch">
@@ -37,24 +35,25 @@
           </label>
         </div>
       </div>
+
+      <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)"></exhibit-config-editor>
+      <br>
     </div>
 
-    <div class="content">
-      <div class="text-center section bg-gray" ng-if="$ctrl.authentication.isAuthorized">
+    <div class="text-center callout secondary" ng-if="$ctrl.authentication.isAuthorized">
+      <h4>Create this exhibit</h4>
+      <button class="button warning" ng-click="$ctrl.save()">Submit</button>
+      
+      <!-- <div ng-class="$ctrl.message_style">
+        <p>{{$ctrl.info_message}}</p>
+      </div> -->
+    </div>
 
-        <h4>Create this exhibit</h4>
-
-        <button class="button" ng-click="$ctrl.save()">Submit</button>
-
-        <div ng-class="$ctrl.message_style">
-          <p>{{$ctrl.info_message}}</p>
-        </div>
-      </div>
-      <div class="section">
-        <div class="row pad">
-          <button class="button invert" ng-click="$ctrl.goToExhibits()">Return to search</button>
-        </div>
-      </div>
+    <div class="section">
+      <button class="button hollow" ng-click="$ctrl.goToExhibits()">
+        <g-octicon icon="search" aria-label="Search"></g-octicon>
+        Return to search
+      </button>
     </div>
 
   </section>
