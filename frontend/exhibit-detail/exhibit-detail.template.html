@@ -23,12 +23,13 @@
 
     <section class="section" ng-if="$ctrl.exhibitIsPublic || $ctrl.isOwner">
 
-      <div class="row pad">
-        <exhibit-config-preview config="$ctrl.config" idswitch="$ctrl.containerIdOnOffSwitch" livepreview="true">
+      <div>
+        <exhibit-config-preview config="$ctrl.config" 
+                                idswitch="$ctrl.containerIdOnOffSwitch" 
+                                livepreview="true">
         </exhibit-config-preview>
 
         <exhibit-config-display config="$ctrl.config"></exhibit-config-display>
-
       </div>
 
       <div>
@@ -44,15 +45,20 @@
         </div>
       </div>
 
-      <div class="row pad">
-        <button class="button" ng-click="$ctrl.goToDisplay()">Go to display</button>
+      <div>
+        <a ng-href="/exhibit-display/{{$ctrl.exhibitId}}" 
+           target="_blank" 
+           rel="noopener noreferrer">
+           View this collection in exhibit mode
+           <g-octicon icon="link-external" aria-label="External Link"></g-octicon>
+        </a>
       </div>
 
-      <div class="row pad" ng-if="$ctrl.authentication.isAuthorized && !$ctrl.isOwner">
+      <div ng-if="$ctrl.authentication.isAuthorized && !$ctrl.isOwner">
         <button class="button" ng-click="$ctrl.fork()">Fork</button>
       </div>
 
-      <div class="row pad" ng-if="$ctrl.isOwner">
+      <div ng-if="$ctrl.isOwner">
         <h4>Modify this exhibit</h4>
         <div class="button-group">
           <button class="button warning" ng-click="$ctrl.goToEdit()">Edit</button>
@@ -72,13 +78,10 @@
         </div>
 
       </div>
-
-      <div class="section">
-        <div class="row pad">
-          <button class="button invert" ng-click="$ctrl.goToExhibits()">Return to search</button>
-        </div>
+      <br>
+      <div>
+        <button class="button invert" ng-click="$ctrl.goToExhibits()">Return to search</button>
       </div>
-
     </section>
   </section>
 
