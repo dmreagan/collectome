@@ -16,7 +16,6 @@ angular
         const opts = {
           outerMargin: false,
           width: 'auto',
-          colWidth: 'auto',
           pushing: true,
           floating: true,
           draggable: {
@@ -44,6 +43,7 @@ angular
         // opts.margins = [100, 100];
 
         opts.rowHeight = config.display.tile_y_resolution;
+        opts.colWidth = config.display.tile_x_resolution;
 
         return opts;
       };
@@ -105,7 +105,7 @@ angular
 
             item.contentId = record[0].content;
 
-            matchedContent = content.filter(matchID);
+            const matchedContent = content.filter(matchID);
 
             if (matchedContent.length > 0) {
               item.title = matchedContent[0].title;
@@ -263,7 +263,9 @@ angular
 
         const createTime = new Date();
 
-        api.post({ config, extra, createTime, owner }).then((resp) => {
+        api.post({
+          config, extra, createTime, owner,
+        }).then((resp) => {
           const assignedId = resp.data.id;
 
           if (type === 0) { // create from scratch
@@ -314,7 +316,9 @@ angular
 
         const lastModifiedTime = new Date();
 
-        api.put({ config, extra, lastModifiedTime, owner }).then((resp) => {
+        api.put({
+          config, extra, lastModifiedTime, owner,
+        }).then((resp) => {
           self.message_style = 'alert success one-third float-center';
           self.info_message = 'Exhibit has been successfully edited';
           self.success = true;
@@ -420,9 +424,7 @@ angular
         return d.promise;
       };
 
-      this.sleep = (milliseconds) => {
-        return new Promise(resolve => setTimeout(resolve, milliseconds));
-      };
+      this.sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 
       this.getExhibits = () => {
         console.log('get exhibits');

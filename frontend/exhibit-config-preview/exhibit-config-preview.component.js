@@ -73,76 +73,74 @@ angular
       return $sce.trustAsResourceUrl(url);
     };
   }])
-  .directive('scale', () => {
-    return {
-      restrict: 'A',
-      scope: {
-        config: '=scale',
-     },
-      link: function(scope, elem, attr) {
-        elem.on('load', function() {
-            const contentId = elem.attr('contentId');
-            // console.log(contentId);
+  .directive('scale', () => ({
+    restrict: 'A',
+    scope: {
+      config: '=scale',
+    },
+    link: function (scope, elem, attr) {
+      elem.on('load', () => {
+        const contentId = elem.attr('contentId');
+        // console.log(contentId);
 
-            const grids = elem.parent().parent().parent(); 
-            const htmlStr = grids.html();
-            const idx = htmlStr.indexOf(contentId);
+        const grids = elem.parent().parent().parent();
+        const htmlStr = grids.html();
+        const idx = htmlStr.indexOf(contentId);
 
-            let strKey = 'width:';
-            const re = new RegExp(strKey, 'g');
+        let strKey = 'width:';
+        const re = new RegExp(strKey, 'g');
 
-            const matches = [];
-            const dist = [];
-            let match = null;
-            while (match = re.exec(htmlStr)) {
-                matches.push(match.index);
-                dist.push(Math.abs(idx - match.index))
-            }
+        const matches = [];
+        const dist = [];
+        let match = null;
+        while (match = re.exec(htmlStr)) {
+          matches.push(match.index);
+          dist.push(Math.abs(idx - match.index))
+        }
 
-            const closestMathIdx = matches[dist.indexOf(Math.min(... dist))];
-             
-            // console.log(htmlStr);    
-         
-            let i = htmlStr.indexOf('px', closestMathIdx + 1 + strKey.length);
+        const closestMathIdx = matches[dist.indexOf(Math.min(...dist))];
 
-            const width = parseInt(htmlStr.substring(closestMathIdx + 1 + strKey.length, i), 10);
+        // console.log(htmlStr);
 
-            // console.log(width);
+        let i = htmlStr.indexOf('px', closestMathIdx + 1 + strKey.length);
 
-            strKey = 'px; height:';
-            const startIdx = i + strKey.length + 1;
+        const width = parseInt(htmlStr.substring(closestMathIdx + 1 + strKey.length, i), 10);
 
-            i = htmlStr.indexOf('px', startIdx);
+        // console.log(width);
 
-            const height = parseInt(htmlStr.substring(startIdx, i), 10);
+        strKey = 'px; height:';
+        const startIdx = i + strKey.length + 1;
 
-            // console.log(height);
+        i = htmlStr.indexOf('px', startIdx);
 
-            const matchId = (obj) => {
-              if (obj.id === contentId) {
-                return true;
-              }
-    
-              return false;
-            };
+        const height = parseInt(htmlStr.substring(startIdx, i), 10);
 
-            const matchedRecord = scope.config.content.filter(matchId);
+        // console.log(height);
 
-            const scale = matchedRecord[0].scale;
+        const matchId = (obj) => {
+          if (obj.id === contentId) {
+            return true;
+          }
 
-            // console.log(scale);
+          return false;
+        };
 
-            const scaleWidth = width / scale;
-            const scaleHeight = height / scale;
+        const matchedRecord = scope.config.content.filter(matchId);
 
-            // console.log(scaleWidth);
-            // console.log(scaleHeight);
+        const scale = matchedRecord[0].scale;
 
-            elem.css('width', `${scaleWidth}px`);
-            elem.css('height', `${scaleHeight}px`);
-            elem.css('transform-origin', 'top left');
-            elem.css('transform', `scale3d(${scale}, ${scale}, 1)`);
-          }); 
-      }
-    };
- });
+        // console.log(scale);
+
+        const scaleWidth = width / scale;
+        const scaleHeight = height / scale;
+
+        // console.log(scaleWidth);
+        // console.log(scaleHeight);
+
+        elem.css('width', `${scaleWidth}px`);
+        elem.css('height', `${scaleHeight}px`);
+        elem.css('transform-origin', 'top left');
+        elem.css('transform', `scale3d(${scale}, ${scale}, 1)`);
+      });
+    },
+  }));
