@@ -10,9 +10,8 @@
                         <label for="search">
                             <g-octicon icon="search" aria-label="Search"></g-octicon>
                             Search for metadata fields
-                            <input type="text" name="search" id="search" 
-                                    ng-model="$ctrl.searchString" ng-change="$ctrl.updateSearch()"
-                                    placeholder="Enter search terms">
+                            <input type="text" name="search" id="search" ng-model="$ctrl.searchString"
+                                ng-change="$ctrl.updateSearch()" placeholder="Enter search terms">
                         </label>
 
                         <!-- <div>
@@ -34,34 +33,38 @@
                 </div>
                 <div class="cell">
                     <fieldset>
-                        <legend><h3>Filter by display configuration</h3></legend>
+                        <legend>
+                            <h3>Filter by display configuration</h3>
+                        </legend>
 
 
-                        <input type="checkbox" id="3by3" name="3by3" ng-model="$ctrl.threeByThreeCheckbox" ng-change="$ctrl.updateSearch()">
+                        <input type="checkbox" id="3by3" name="3by3" ng-model="$ctrl.threeByThreeCheckbox"
+                            ng-change="$ctrl.updateSearch()">
                         <label for="3by3">3 X 3</label>
                         <img class="layout-image-thumbnail" alt="" src="assets/3by3.png">
 
-                        <input type="checkbox" id="4by4" name="4by4" ng-model="$ctrl.fourByFourCheckbox" ng-change="$ctrl.updateSearch()">
+                        <input type="checkbox" id="4by4" name="4by4" ng-model="$ctrl.fourByFourCheckbox"
+                            ng-change="$ctrl.updateSearch()">
                         <label for="4by4">4 X 4</label>
                         <img class="layout-image-thumbnail" alt="" src="assets/4by4.png">
                     </fieldset>
 
                     <fieldset>
                         <legend>Custom Layouts</legend>
-                        <input type="checkbox" id="customized" name="customized" ng-model="$ctrl.customizedLayoutCheckbox"
-                            ng-change="$ctrl.updateSearch()">
+                        <input type="checkbox" id="customized" name="customized"
+                            ng-model="$ctrl.customizedLayoutCheckbox" ng-change="$ctrl.updateSearch()">
                         <label for="customized">M X N</label>
 
                         <div ng-if="$ctrl.customizedLayoutCheckbox">
                             <label for="custcol">
                                 Columns
-                                <input type="number" name="custcol" ng-model="$ctrl.custCol" min="1" max="100" placeholder="1"
-                                ng-change="$ctrl.updateSearch()">
+                                <input type="number" name="custcol" ng-model="$ctrl.custCol" min="1" max="100"
+                                    placeholder="1" ng-change="$ctrl.updateSearch()">
                             </label>
                             <label for="custrow">
                                 Rows
-                                <input type="number" name="custrow" ng-model="$ctrl.custRow" min="1" max="100" placeholder="1"
-                                ng-change="$ctrl.updateSearch()">
+                                <input type="number" name="custrow" ng-model="$ctrl.custRow" min="1" max="100"
+                                    placeholder="1" ng-change="$ctrl.updateSearch()">
                             </label>
                         </div>
                     </fieldset>
@@ -75,23 +78,25 @@
         <div class="row pad">
             <div class="grid-x grid-margin-x">
                 <!-- <div class="cell"> -->
-                    <div class="cell large-8 medium-6">
-                        <h2 class="section-title">
-                            <span ng-show="$ctrl.searchString.length > 0 || $ctrl.rowSearch || $ctrl.colSearch">
-                                Search Results: </span>{{ $ctrl.exhibits.length }}
-                            <ng-pluralize count="$ctrl.exhibits.length" when="{'0': 'Exhibits', 'one':'Exhibit', 'other': 'Exhibits'}"></ng-pluralize>
-                        </h2>
-                    </div>
-                    <div class="cell large-4 medium-6">
-                        <label>Sort by:
-                            <select ng-model="$ctrl.sortBy">
-                                <option value="-_score">Relevance</option>
-                                <option value="title">Title</option>
-                                <option value="last_modified_time">Recently updated</option>
-                                <option value="-create_time">Creation time</option>
-                            </select>
-                        </label>
-                    </div>
+                <div class="cell shrink">
+                    <h2 class="section-title">
+                        <span ng-show="$ctrl.searchString.length > 0 || $ctrl.rowSearch || $ctrl.colSearch">
+                            Search Results: </span>{{ $ctrl.exhibits.length }}
+                        <ng-pluralize count="$ctrl.exhibits.length"
+                            when="{'0': 'Exhibits', 'one':'Exhibit', 'other': 'Exhibits'}"></ng-pluralize>
+                    </h2>
+                </div>
+                <div class="cell auto"></div>
+                <div class="cell shrink">
+                    <label>Sort by:
+                        <select ng-model="$ctrl.sortBy">
+                            <option value="-_score">Relevance</option>
+                            <option value="title">Title</option>
+                            <option value="last_modified_time">Recently updated</option>
+                            <option value="-create_time">Creation time</option>
+                        </select>
+                    </label>
+                </div>
                 <!-- </div> -->
             </div>
             <div class="callout warning" ng-if="$ctrl.exhibits.length === 0 && ($ctrl.searchString.length > 0 
@@ -113,9 +118,8 @@
             </div>
             <div class="grid-x grid-margin-x small-up-1 medium-up-2 large-up-4">
 
-                <div class="card cell" 
-                     id="exhibit-{{exhibit.id}}" 
-                     ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id">
+                <div class="card cell" id="exhibit-{{exhibit.id}}"
+                    ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id">
 
                     <div class="card-section">
                         <a href="exhibits/{{ exhibit.id }}">
@@ -128,12 +132,12 @@
                     </div>
                     <div class="card-section">
                         <!-- <div class="thumbnail"> -->
-                            <drawdisplay rows="{{exhibit.rows}}" cols="{{exhibit.columns}}"><canvas></canvas></drawdisplay>
+                        <drawdisplay rows="{{exhibit.rows}}" cols="{{exhibit.columns}}"><canvas></canvas></drawdisplay>
                         <!-- </div> -->
                     </div>
                     <div class="card-section">
                         <!-- <div class="thumbnail"> -->
-                            <drawgrid config="exhibit.config"><canvas></canvas></drawgrid>
+                        <drawgrid config="exhibit.config"><canvas></canvas></drawgrid>
                         <!-- </div> -->
                     </div>
                 </div>
