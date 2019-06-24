@@ -114,25 +114,25 @@
           {{$ctrl.custRow}} grid</div>
 
       </div>
-      <div class="grid-x grid-margin-x small-up-1 medium-up-2 large-up-4">
-
-        <div class="card cell" id="exhibit-{{exhibit.id}}"
-          ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id">
-
-          <div class="card-section">
+      <div>
+        <div class="callout id=" exhibit-{{exhibit.id}}"
+          ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id"">
+          <div class=" media-object stack-for-small">
+          <div class="media-object-section">
+            <display-thumbnail config=exhibit></display-thumbnail>
+          </div>
+          <div class="media-object-section">
             <a href="exhibits/{{ exhibit.id }}">
-              <h2 class="title">{{ exhibit.title }}</h2>
+              <h4 class="title">{{ exhibit.title }}</h4>
             </a>
             <p>
-              {{ exhibit.description | limitTo: 60 }}{{exhibit.description.length > 50 ? '...' :
-                            ''}}
+              {{ exhibit.description | limitTo: 60 }}
+              {{exhibit.description.length > 50 ? '...' : ''}}
             </p>
-          </div>
-          <div class="card-section">
-            <display-thumbnail config=exhibit></display-thumbnail>
           </div>
         </div>
       </div>
+    </div>
     </div>
   </section>
 </main>
