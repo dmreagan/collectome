@@ -1,10 +1,11 @@
 angular.module('collectomeApp', [
-  'ngRoute',
-  'sameoriginCheck',
-  'exhibitList',
+  'displayThumbnail',
   'exhibitCreate',
   'exhibitDetail',
   'exhibitDisplay',
   'exhibitEdit',
+  'exhibitList',
   'indexHeader',
+  'ngRoute',
+  'sameoriginCheck',
 ]);
