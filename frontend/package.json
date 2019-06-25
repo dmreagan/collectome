@@ -22,7 +22,8 @@
       "jasmine": true
     },
     "globals": {
-      "angular": false
+      "angular": false,
+      "chroma": false
     }
   },
   "scripts": {

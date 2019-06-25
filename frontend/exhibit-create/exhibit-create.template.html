@@ -11,28 +11,31 @@
       <exhibit-config-preview config="$ctrl.config" idswitch="$ctrl.containerIdOnOffSwitch"
         livepreview="$ctrl.livepreview"></exhibit-config-preview>
 
-      <div>
-        <label>Live preview</label>
-        <div class="switch">
-          <input class="switch-input" id="live" type="checkbox" name="livePreview" ng-model="$ctrl.livepreview" checked>
-          <label class="switch-paddle" for="live">
-            <span class="show-for-sr">Live preview</span>
-            <span class="switch-active" aria-hidden="true">On</span>
-            <span class="switch-inactive" aria-hidden="true">Off</span>
-          </label>
+      <div class="grid-x grid-margin-x">
+        <div class="cell shrink">
+          <label>Live preview</label>
+          <div class="switch">
+            <input class="switch-input" id="live" type="checkbox" name="livePreview" ng-model="$ctrl.livepreview"
+              checked>
+            <label class="switch-paddle" for="live">
+              <span class="show-for-sr">Live preview</span>
+              <span class="switch-active" aria-hidden="true">On</span>
+              <span class="switch-inactive" aria-hidden="true">Off</span>
+            </label>
+          </div>
         </div>
-      </div>
-  
-      <div>
-        <label>Identify containers</label>
-        <div class="switch">
-          <input class="switch-input" id="identify" type="checkbox" name="identifyContainers"
-            ng-model="$ctrl.containerIdOnOffSwitch">
-          <label class="switch-paddle" for="identify">
-            <span class="show-for-sr">Identify containers</span>
-            <span class="switch-active" aria-hidden="true">Yes</span>
-            <span class="switch-inactive" aria-hidden="true">No</span>
-          </label>
+
+        <div class="cell shrink">
+          <label>Identify containers</label>
+          <div class="switch">
+            <input class="switch-input" id="identify" type="checkbox" name="identifyContainers"
+              ng-model="$ctrl.containerIdOnOffSwitch">
+            <label class="switch-paddle" for="identify">
+              <span class="show-for-sr">Identify containers</span>
+              <span class="switch-active" aria-hidden="true">Yes</span>
+              <span class="switch-inactive" aria-hidden="true">No</span>
+            </label>
+          </div>
         </div>
       </div>
 
@@ -43,7 +46,7 @@
     <div class="text-center callout secondary" ng-if="$ctrl.authentication.isAuthorized">
       <h4>Create this exhibit</h4>
       <button class="button warning" ng-click="$ctrl.save()">Submit</button>
-      
+
       <!-- <div ng-class="$ctrl.message_style">
         <p>{{$ctrl.info_message}}</p>
       </div> -->

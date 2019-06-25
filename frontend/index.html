@@ -2,56 +2,52 @@
 <html class="no-js ie9" itemscope="itemscope" itemtype="http://schema.org/Webpage" lang="en" ng-app="collectomeApp">
 
 <head prefix="og: http://ogp.me/ns# profile: http://ogp.me/ns/profile# article: http://ogp.me/ns/article#">
-    <base href="/" /> <!-- dev -->
-    <!-- <base href="/collectome/frontend/" /> --> <!-- production -->
+  <base href="/" /> <!-- dev -->
+  <!-- <base href="/collectome/frontend/" /> -->
+  <!-- production -->
 
-    <link rel="stylesheet" href="https://unpkg.com/angular-gridster@0.13.14/dist/angular-gridster.min.css" />
-    <link rel="stylesheet" href="https://unpkg.com/foundation-sites@6.5.3/dist/css/foundation.min.css" />
-    <link rel="stylesheet" href="assets/common.css" />
-    <link rel="stylesheet" href="assets/topbar-responsive.css" />
-    <title>Collectome Web App</title>
+  <link rel="stylesheet" href="https://unpkg.com/angular-gridster@0.13.14/dist/angular-gridster.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/foundation-sites@6.5.3/dist/css/foundation.min.css" />
+  <link rel="stylesheet" href="assets/common.css" />
+  <link rel="stylesheet" href="assets/topbar-responsive.css" />
+  <title>Collectome Web App</title>
 </head>
 
 <body>
-    <index-header></index-header>
+  <index-header></index-header>
 
-    <div ng-view autoscroll="true" class="all-but-header"></div>
+  <div ng-view autoscroll="true" class="all-but-header"></div>
 </body>
 
 <script type="application/javascript" src="https://unpkg.com/angular@1.6.6/angular.js"></script>
 <script type="application/javascript" src="https://unpkg.com/angular-jsoneditor@0.0.2/dist/angular-jsoneditor.js"></script>
 <script type="application/javascript" src="https://unpkg.com/ajv@6.9.1/dist/ajv.min.js"></script>
 <script type="application/javascript" src="https://unpkg.com/angular-route@1.6.5/angular-route.min.js"></script>
-<script type="application/javascript" src="https://unpkg.com/angular-gridster@0.13.14/dist/angular-gridster.min.js"></script>
+<script type="application/javascript"
+  src="https://unpkg.com/angular-gridster@0.13.14/dist/angular-gridster.min.js"></script>
 <script type="application/javascript" src="https://unpkg.com/foundation-sites@6.5.3/dist/js/foundation.min.js"></script>
 <script type="application/javascript" src="https://unpkg.com/g-octicon"></script>
-<script type="application/javascript" src="https://unpkg.com/html2canvas@1.0.0-alpha.12/dist/html2canvas.min.js"></script>
+<script type="application/javascript" src="https://unpkg.com/chroma-js@2.0.4/chroma.min.js"></script>
 
 <!-- modules -->
 <script type="application/javascript" src="app.module.js"></script>
 <script type="application/javascript" src="app.config.js"></script>
-<script type="application/javascript" src="api-host/api-host.module.js"></script>
-<script type="application/javascript" src="api-host/api-host.value.js"></script>
 <script type="application/javascript" src="api/api.module.js"></script>
 <script type="application/javascript" src="api/api.service.js"></script>
-<script type="application/javascript" src="index-header/index-header.module.js"></script>
-<script type="application/javascript" src="index-header/index-header.component.js"></script>
+<script type="application/javascript" src="api-host/api-host.module.js"></script>
+<script type="application/javascript" src="api-host/api-host.value.js"></script>
 <script type="application/javascript" src="authentication/authentication.module.js"></script>
 <script type="application/javascript" src="authentication/authentication.service.js"></script>
-<script type="application/javascript" src="login-button/login-button.module.js"></script>
-<script type="application/javascript" src="login-button/login-button.component.js"></script>
-<script type="application/javascript" src="sameorigin-check/sameorigin-check.module.js"></script>
-<script type="application/javascript" src="sameorigin-check/sameorigin-check.component.js"></script>
-<script type="application/javascript" src="exhibit-list/exhibit-list.module.js"></script>
-<script type="application/javascript" src="exhibit-list/exhibit-list.component.js"></script>
-<script type="application/javascript" src="exhibit-config-editor/exhibit-config-editor.module.js"></script>
-<script type="application/javascript" src="exhibit-config-editor/exhibit-config-editor.component.js"></script>
-<script type="application/javascript" src="exhibit-config-preview/exhibit-config-preview.module.js"></script>
-<script type="application/javascript" src="exhibit-config-preview/exhibit-config-preview.component.js"></script>
-<script type="application/javascript" src="exhibit-config-factory/exhibit-config-factory.module.js"></script>
-<script type="application/javascript" src="exhibit-config-factory/exhibit-config-factory.factory.js"></script>
+<script type="application/javascript" src="display-thumbnail/display-thumbnail.module.js"></script>
+<script type="application/javascript" src="display-thumbnail/display-thumbnail.component.js"></script>
 <script type="application/javascript" src="exhibit-config-display/exhibit-config-display.module.js"></script>
 <script type="application/javascript" src="exhibit-config-display/exhibit-config-display.component.js"></script>
+<script type="application/javascript" src="exhibit-config-editor/exhibit-config-editor.module.js"></script>
+<script type="application/javascript" src="exhibit-config-editor/exhibit-config-editor.component.js"></script>
+<script type="application/javascript" src="exhibit-config-factory/exhibit-config-factory.module.js"></script>
+<script type="application/javascript" src="exhibit-config-factory/exhibit-config-factory.factory.js"></script>
+<script type="application/javascript" src="exhibit-config-preview/exhibit-config-preview.module.js"></script>
+<script type="application/javascript" src="exhibit-config-preview/exhibit-config-preview.component.js"></script>
 <script type="application/javascript" src="exhibit-create/exhibit-create.module.js"></script>
 <script type="application/javascript" src="exhibit-create/exhibit-create.component.js"></script>
 <script type="application/javascript" src="exhibit-detail/exhibit-detail.module.js"></script>
@@ -60,6 +56,14 @@
 <script type="application/javascript" src="exhibit-edit/exhibit-edit.component.js"></script>
 <script type="application/javascript" src="exhibit-display/exhibit-display.module.js"></script>
 <script type="application/javascript" src="exhibit-display/exhibit-display.component.js"></script>
+<script type="application/javascript" src="exhibit-list/exhibit-list.module.js"></script>
+<script type="application/javascript" src="exhibit-list/exhibit-list.component.js"></script>
+<script type="application/javascript" src="index-header/index-header.module.js"></script>
+<script type="application/javascript" src="index-header/index-header.component.js"></script>
+<script type="application/javascript" src="login-button/login-button.module.js"></script>
+<script type="application/javascript" src="login-button/login-button.component.js"></script>
+<script type="application/javascript" src="sameorigin-check/sameorigin-check.module.js"></script>
+<script type="application/javascript" src="sameorigin-check/sameorigin-check.component.js"></script>
 <script type="application/javascript" src="utilities/utilities.module.js"></script>
 <script type="application/javascript" src="utilities/utilities.service.js"></script>
 
