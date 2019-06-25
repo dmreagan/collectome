@@ -9,7 +9,7 @@
         "institutions" : ["X Univ.", "Y Univ."],
         "disciplines" : ["Visualization", "Social Network Analysis"],
         "tags" : ["tagA", "tagB"],
-        "public" : true
+        "public" : false
     },
 
     "content" : [
