@@ -18,8 +18,8 @@ angular
 
         this.customizedLayoutCheckbox = false;
 
-        this.custRow = 1;
-        this.custCol = 1;
+        this.custRow = 3;
+        this.custCol = 3;
 
         // this.$onInit = () => {
         //   console.log('onInit');
