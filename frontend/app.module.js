@@ -1,4 +1,5 @@
 angular.module('collectomeApp', [
+  'angularjsFeather',
   'displayThumbnail',
   'exhibitCreate',
   'exhibitDetail',

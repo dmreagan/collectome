@@ -6,7 +6,9 @@
         <div class="cell auto"></div>
         <div class="cell large-8 medium-6">
           <div class="input-group">
-            <span class="input-group-label"><g-octicon icon="search" aria-label="Search"></g-octicon></span>
+            <span class="input-group-label">
+              <angularjs-feather icon="search"></angularjs-feather>
+            </span>
             <input type="text" class="input-group-field" name="search" id="search" ng-model="$ctrl.searchString"
               ng-change="$ctrl.updateSearch()" placeholder="Enter search terms">
           </div>
@@ -16,7 +18,10 @@
       <div class="grid-x grid-margin-x">
         <div class="cell auto"></div>
         <div class="cell shrink">
-          <label for="customized" class="">Filter by display configuration</label>
+          <label for="customized" class="">
+            <angularjs-feather icon="filter"></angularjs-feather>
+            Filter by display configuration
+          </label>
         </div>
         <div class="cell shrink">
           <div class="switch tiny">

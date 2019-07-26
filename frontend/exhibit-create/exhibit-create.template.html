@@ -45,7 +45,10 @@
 
     <div class="text-center callout secondary" ng-if="$ctrl.authentication.isAuthorized">
       <h4>Create this exhibit</h4>
-      <button class="button warning" ng-click="$ctrl.save()">Submit</button>
+      <button class="button warning" ng-click="$ctrl.save()">
+        <angularjs-feather icon="save"></angularjs-feather>
+        Save
+      </button>
 
       <!-- <div ng-class="$ctrl.message_style">
         <p>{{$ctrl.info_message}}</p>
@@ -54,8 +57,8 @@
 
     <div class="section">
       <button class="button hollow" ng-click="$ctrl.goToExhibits()">
-        <g-octicon icon="search" aria-label="Search"></g-octicon>
-        Return to search
+        <angularjs-feather icon="arrow-left"></angularjs-feather>
+        Back to search
       </button>
     </div>
 

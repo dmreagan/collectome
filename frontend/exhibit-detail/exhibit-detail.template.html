@@ -29,8 +29,8 @@
     <section class="section" ng-if="$ctrl.exhibitIsPublic || $ctrl.isOwner">
 
       <div>
-        <exhibit-config-preview config="$ctrl.config" 
-                                idswitch="$ctrl.containerIdOnOffSwitch" 
+        <exhibit-config-preview config="$ctrl.config"
+                                idswitch="$ctrl.containerIdOnOffSwitch"
                                 livepreview="true">
         </exhibit-config-preview>
 
@@ -52,11 +52,11 @@
       </div>
 
       <div>
-        <a ng-href="/exhibit-display/{{$ctrl.exhibitId}}" 
-           target="_blank" 
+        <a ng-href="/exhibit-display/{{$ctrl.exhibitId}}"
+           target="_blank"
            rel="noopener noreferrer">
+           <angularjs-feather icon="external-link"></angularjs-feather>
            View this collection in exhibit mode
-           <g-octicon icon="link-external" aria-label="External Link"></g-octicon>
         </a>
       </div>
 
@@ -64,8 +64,8 @@
 
       <div ng-if="$ctrl.authentication.isAuthorized && !$ctrl.isOwner">
         <button class="button" ng-click="$ctrl.fork()">
-          <g-octicon icon="repo-forked" aria-label="Fork Collection"></g-octicon>
-          Fork this collection
+          <angularjs-feather icon="copy"></angularjs-feather>
+          Copy this collection
         </button>
       </div>
 
@@ -73,11 +73,11 @@
         <h4>Modify this exhibit</h4>
         <div class="button-group float-center">
           <button class="button primary" ng-click="$ctrl.goToEdit()">
-            <g-octicon icon="pencil" aria-label="Pencil"></g-octicon>
+            <angularjs-feather icon="edit-2"></angularjs-feather>
             Edit
           </button>
           <button class="button alert" ng-click="$ctrl.delete()">
-            <g-octicon icon="trashcan" aria-label="Trashcan"></g-octicon>
+            <angularjs-feather icon="trash"></angularjs-feather>
             Delete
           </button>
         </div>
@@ -98,8 +98,8 @@
 
       <div>
         <button class="button hollow" ng-click="$ctrl.goToExhibits()">
-          <g-octicon icon="search" aria-label="Search"></g-octicon>
-          Return to search
+          <angularjs-feather icon="arrow-left"></angularjs-feather>
+          Back to search
         </button>
       </div>
     </section>
