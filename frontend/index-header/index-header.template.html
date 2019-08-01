@@ -1,35 +1,34 @@
-<!-- <header class="site-header" itemscope="itemscope" itemtype="http://schema.org/CollegeOrUniversity" role="banner" ng-if="!$ctrl.displayMode">
-    <div class="row pad">
-        <h4><a class="title" href="exhibits/" itemprop="department">Hello Collectome</a></h4>
-        <login-button class="float-right"></login-button>
-    </div>
-</header> -->
-
-<nav ng-if="!$ctrl.displayMode" class="top-bar topbar-responsive">
-  <div class="top-bar-title">
-    <!-- <span data-responsive-toggle="topbar-responsive" data-hide-for="medium">
-      <button class="menu-icon" type="button" data-toggle></button>
-    </span> -->
-    <h1>
-      <a class="topbar-responsive-logo" href="exhibits/">Collectome</a>
-    </h1>
+<div class="top-bar" ng-if="!$ctrl.displayMode">
+  <div class="top-bar-left">
+    <ul class="menu">
+      <li class="menu-text">Collectome</li>
+      <li>
+        <a href="/exhibits" class="button clear">
+          <angularjs-feather icon="home"></angularjs-feather>
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="/exhibits" class="button clear">
+          <angularjs-feather icon="search"></angularjs-feather>
+          Search
+        </a>
+      </li>
+      <li>
+        <a href="/exhibit-create" class="button clear">
+          <angularjs-feather icon="plus"></angularjs-feather>
+          Create collection
+        </a>
+      </li>
+      <li><a style="color: #767676" class="button clear">
+        <angularjs-feather icon="plus"></angularjs-feather>
+        Create playlist</a>
+      </li>
+    </ul>
   </div>
-  <div id="topbar-responsive" class="topbar-responsive-links">
-    <div class="top-bar-right">
-      <ul class="menu simple vertical medium-horizontal">
-        <!-- <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Works</a></li>
-        <li><a href="#">News</a></li>
-        <li><a href="#">Contact</a></li>
-        <li>
-          <button type="button" class="button hollow topbar-responsive-button">Categories</button>
-        </li> -->
-        <li>
-          <login-button class="float-right"></login-button>
-        </li>
-      </ul>
-    </div>
+  <div class="top-bar-right">
+    <ul class="menu">
+      <li><login-button></login-button></li>
+    </ul>
   </div>
-</nav>
+</div>

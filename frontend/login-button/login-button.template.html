@@ -1,11 +1,5 @@
-<style>
-    #login-name {
-        color: white;
-    }
-</style>
-
 <span ng-if="!$ctrl.authentication.isAuthorized">
-    <button class="button secondary float-right" ng-click="$ctrl.authenticateAsGitHubUser()">
+    <button class="button hollow" ng-click="$ctrl.authenticateAsGitHubUser()">
         <angularjs-feather icon="log-in"></angularjs-feather>
         Log in with GitHub
     </button>
@@ -17,8 +11,4 @@
         {{$ctrl.username}}
       </strong>
     </span>
-    <button class="button float-center" ng-click="$ctrl.goToExhibitCreate()">
-        <angularjs-feather icon="plus"></angularjs-feather>
-        Create new collection
-    </button>
 </span>
