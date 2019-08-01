@@ -1,101 +1,102 @@
 <main role="main" class="no-section-nav">
-
-
-
+  <div class="grid-container">
     <section class="text-center callout warning" ng-if="!$ctrl.authentication.isAuthorized">
-        <h4>Please log in.</h4>
+      <h4>Please log in.</h4>
     </section>
 
     <section class="section" ng-if="$ctrl.authentication.isAuthorized">
 
-        <section class="section" ng-if="!$ctrl.exhibitIdIsValid">
-            <div ng-class="$ctrl.message_style">
-                <h4 class="text-center">{{$ctrl.info_message}}</h4>
+      <section class="section" ng-if="!$ctrl.exhibitIdIsValid">
+        <div ng-class="$ctrl.message_style">
+          <h4 class="text-center">{{$ctrl.info_message}}</h4>
+        </div>
+      </section>
+
+      <section class="section" ng-if="$ctrl.exhibitIdIsValid">
+
+        <h2>
+          {{$ctrl.config.metadata.name}}
+          <!-- <small>insert id here?</small> -->
+        </h2>
+
+        <section class="section" ng-if="$ctrl.exhibitEditPageCanbeDisplayed">
+
+          <div class="row pad">
+            <exhibit-config-preview config="$ctrl.config" idswitch="$ctrl.containerIdOnOffSwitch"
+              livepreview="$ctrl.livepreview"></exhibit-config-preview>
+
+            <div class="grid-x grid-margin-x align-center-middle">
+              <div class="cell shrink">
+                <div class="grid-x grid-padding-x align-right">
+                  <div class="cell shrink">
+                    <label class="text-right">Live preview</label>
+                  </div>
+                  <div class="cell shrink">
+                    <div class="switch tiny middle">
+                      <input class="switch-input" id="live" type="checkbox" name="livePreview"
+                        ng-model="$ctrl.livepreview" checked>
+                      <label class="switch-paddle" for="live">
+                        <span class="show-for-sr">Live preview</span>
+                        <span class="switch-active" aria-hidden="true">On</span>
+                        <span class="switch-inactive" aria-hidden="true">Off</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="cell shrink">
+                <div class="grid-x grid-padding-x">
+                  <div class="cell shrink">
+                    <label class="text-right">Identify containers</label>
+                  </div>
+                  <div class="cell shrink">
+                    <div class="switch tiny">
+                      <input class="switch-input" id="identify" type="checkbox" name="identifyContainers"
+                        ng-model="$ctrl.containerIdOnOffSwitch">
+                      <label class="switch-paddle" for="identify">
+                        <span class="show-for-sr">Identify containers</span>
+                        <span class="switch-active" aria-hidden="true">Yes</span>
+                        <span class="switch-inactive" aria-hidden="true">No</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)">
+            </exhibit-config-editor>
+            <br>
+          </div>
+
+
+          <div class="content">
+            <div class="text-center callout secondary" ng-if="$ctrl.isOwner">
+              <h4>Update this exhibit</h4>
+              <button class="button warning" ng-click="$ctrl.save()">
+                <angularjs-feather icon="save"></angularjs-feather>
+                Save changes
+              </button>
+            </div>
+
+            <div class="text-center section bg-gray" ng-if="!$ctrl.isOwner">
+              <h4>You are not the owner of this exhibit</h4>
+            </div>
+
+            <div class="section">
+              <button class="button hollow" ng-click="$ctrl.goToExhibits()">
+                <angularjs-feather icon="arrow-left"></angularjs-feather>
+                Back to search
+              </button>
+            </div>
+          </div>
+
         </section>
 
-        <section class="section" ng-if="$ctrl.exhibitIdIsValid">
-
-            <h2>
-                {{$ctrl.config.metadata.name}}
-                <!-- <small>insert id here?</small> -->
-            </h2>
-
-            <section class="section" ng-if="$ctrl.exhibitEditPageCanbeDisplayed">
-                <!-- <div ng-show="$ctrl.exhibitId" ng-class="$ctrl.message_success">
-                    <h5 class="text-center">{{$ctrl.message_content}}</h5>
-                    <button class="button success float-center" ng-click="$ctrl.goToCreated()">View exhibit</button>
-                </div> -->
-
-                <div class="row pad">
-                    <exhibit-config-preview config="$ctrl.config" idswitch="$ctrl.containerIdOnOffSwitch"
-                        livepreview="$ctrl.livepreview"></exhibit-config-preview>
-
-                    <div class="grid-x grid-margin-x">
-                        <div class="cell shrink">
-                            <label>Live preview</label>
-                            <div class="switch">
-                                <input class="switch-input" id="live" type="checkbox" name="livePreview"
-                                    ng-model="$ctrl.livepreview" checked>
-                                <label class="switch-paddle" for="live">
-                                    <span class="show-for-sr">Live preview</span>
-                                    <span class="switch-active" aria-hidden="true">On</span>
-                                    <span class="switch-inactive" aria-hidden="true">Off</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="cell shrink">
-                            <label>Identify containers</label>
-                            <div class="switch">
-                                <input class="switch-input" id="identify" type="checkbox" name="identifyContainers"
-                                    ng-model="$ctrl.containerIdOnOffSwitch">
-                                <label class="switch-paddle" for="identify">
-                                    <span class="show-for-sr">Identify containers</span>
-                                    <span class="switch-active" aria-hidden="true">Yes</span>
-                                    <span class="switch-inactive" aria-hidden="true">No</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <exhibit-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)">
-                    </exhibit-config-editor>
-                    <br>
-                </div>
-
-
-                <div class="content">
-                    <div class="text-center callout secondary" ng-if="$ctrl.isOwner">
-                        <h4>Update this exhibit</h4>
-                        <button class="button warning" ng-click="$ctrl.save()">
-                          <angularjs-feather icon="save"></angularjs-feather>
-                          Save changes
-                        </button>
-
-                        <!-- <div ng-class="$ctrl.message_style">
-                            <p>{{$ctrl.info_message}}</p>
-                        </div> -->
-                    </div>
-
-                    <div class="text-center section bg-gray" ng-if="!$ctrl.isOwner">
-                        <h4>You are not the owner of this exhibit</h4>
-                    </div>
-
-                    <div class="section">
-                        <button class="button hollow" ng-click="$ctrl.goToExhibits()">
-                            <angularjs-feather icon="arrow-left"></angularjs-feather>
-                            Back to search
-                        </button>
-                    </div>
-                </div>
-
-            </section>
-
-            <section class="callout alert" ng-if="!$ctrl.exhibitEditPageCanbeDisplayed">
-                <h4>You are either not the owner or the exhibit is set to be private</h4>
-            </section>
+        <section class="callout alert" ng-if="!$ctrl.exhibitEditPageCanbeDisplayed">
+          <h4>You are either not the owner or the exhibit is set to be private</h4>
         </section>
+      </section>
     </section>
-
+  </div>
 </main>
