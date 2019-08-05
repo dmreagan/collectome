@@ -6,6 +6,7 @@ angular.module('collectomeApp', [
   'exhibitDisplay',
   'exhibitEdit',
   'exhibitList',
+  'home',
   'indexHeader',
   'ngRoute',
   'sameoriginCheck',
