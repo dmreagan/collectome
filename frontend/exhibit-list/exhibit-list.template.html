@@ -74,6 +74,11 @@
             <ng-pluralize count="$ctrl.exhibits.length"
               when="{'0': 'Collections', 'one':'Collection', 'other': 'Collections'}">
             </ng-pluralize>
+            <span class="h6" ng-if="$ctrl.authentication.isAuthorized">
+              ( your collections marked with
+              <angularjs-feather icon="user"></angularjs-feather>
+              )
+            </span>
           </h3>
         </div>
         <div class="cell auto"></div>
@@ -113,7 +118,11 @@
         </div>
         <div class="media-object-section">
           <a href="exhibits/{{ exhibit.id }}">
-            <h4>{{ exhibit.title }}</h4>
+            <h4>{{ exhibit.title }}
+              <angularjs-feather icon="user"
+                ng-if="exhibit.owner === $ctrl.authentication.userProfile.login">
+              </angularjs-feather>
+            </h4>
           </a>
           <p>
             {{ exhibit.description | limitTo: 280 }}
