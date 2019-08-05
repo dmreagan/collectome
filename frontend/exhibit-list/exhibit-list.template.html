@@ -116,8 +116,8 @@
             <h4>{{ exhibit.title }}</h4>
           </a>
           <p>
-            {{ exhibit.description | limitTo: 60 }}
-            {{exhibit.description.length > 50 ? '...' : ''}}
+            {{ exhibit.description | limitTo: 280 }}
+            {{exhibit.description.length > 280 ? '...' : ''}}
           </p>
         </div>
       </div>
