@@ -35,6 +35,6 @@ angular
         .when('/sameorigin-check/', {
           template: '<sameorigin-check></sameorigin-check>',
         })
-        .otherwise('/exhibits');
+        .otherwise('/home');
     },
   ]);

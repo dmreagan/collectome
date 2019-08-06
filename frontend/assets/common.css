@@ -36,9 +36,9 @@
     background-color: rgb(255, 255, 255);
   }
 
-  /* .all-but-header {
-    margin: 3rem;
-  } */
+  .main-top-margin {
+    margin-top: 1rem;
+  }
 
   /* shadow CSS from http://timnew.me/blog/2014/08/16/material-design-shadow-in-html/ */
   .shadow-0 {

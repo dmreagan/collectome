@@ -1,7 +1,7 @@
-<main role="main" class="no-section-nav">
+<main role="main" class="main-top-margin">
   <div class="grid-container">
     <section class="section">
-      <h2 class="text-center">Find collections</h2>
+      <h1 class="text-center">Find collections</h1>
       <form>
         <div class="grid-x grid-margin-x">
           <div class="cell auto"></div>
@@ -68,7 +68,7 @@
     <section class="section">
       <div class="grid-x grid-margin-x">
         <div class="cell shrink">
-          <h3 class="subheader">
+          <h2 class="subheader">
             <span ng-show="$ctrl.searchString.length > 0 || $ctrl.rowSearch || $ctrl.colSearch">
               Search Results: </span>{{ $ctrl.exhibits.length }}
             <ng-pluralize count="$ctrl.exhibits.length"
@@ -79,7 +79,7 @@
               <angularjs-feather icon="user"></angularjs-feather>
               )
             </span>
-          </h3>
+          </h2>
         </div>
         <div class="cell auto"></div>
         <div class="cell shrink">
@@ -118,11 +118,11 @@
         </div>
         <div class="media-object-section">
           <a href="exhibits/{{ exhibit.id }}">
-            <h4>{{ exhibit.title }}
+            <h3 class="h4">{{ exhibit.title }}
               <angularjs-feather icon="user"
                 ng-if="exhibit.owner === $ctrl.authentication.userProfile.login">
               </angularjs-feather>
-            </h4>
+            </h3>
           </a>
           <p>
             {{ exhibit.description | limitTo: 280 }}
