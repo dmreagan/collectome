@@ -1,108 +1,110 @@
-<main role="main" class="no-section-nav">
-
-  <section class="section" ng-if="!$ctrl.exhibitIdIsValid">
-    <div ng-class="$ctrl.message_style">
-      <h4 class="text-center">{{$ctrl.info_message}}</h4>
-    </div>
-  </section>
-
-
-  <section class="section" ng-if="$ctrl.exhibitIdIsValid">
-
-    <h2>
-      {{$ctrl.config.metadata.name}}
-      <!-- <small>insert id here?</small> -->
-    </h2>
-
-    <section class="section" ng-if="!$ctrl.exhibitIsPublic && !$ctrl.isOwner">
-
-      <section class="section" ng-if="!$ctrl.authentication.isAuthorized">
-        <h4>This exhibit is not public. If you are the owner, please log in.</h4>
-      </section>
-
-      <section class="section" ng-if="$ctrl.authentication.isAuthorized">
-        <h4>You are not the owner of this private exhibit.</h4>
-      </section>
-
+<main role="main" class="main-top-margin">
+  <div class="grid-container">
+    <section class="section" ng-if="!$ctrl.exhibitIdIsValid">
+      <div ng-class="$ctrl.message_style">
+        <h4 class="text-center">{{$ctrl.info_message}}</h4>
+      </div>
     </section>
 
-    <section class="section" ng-if="$ctrl.exhibitIsPublic || $ctrl.isOwner">
+    <section class="section" ng-if="$ctrl.exhibitIdIsValid">
 
-      <div>
-        <exhibit-config-preview config="$ctrl.config" 
-                                idswitch="$ctrl.containerIdOnOffSwitch" 
-                                livepreview="true">
+      <h2>
+        {{$ctrl.config.metadata.name}}
+        <!-- <small>insert id here?</small> -->
+      </h2>
+
+      <section class="section" ng-if="!$ctrl.exhibitIsPublic && !$ctrl.isOwner">
+
+        <section class="section" ng-if="!$ctrl.authentication.isAuthorized">
+          <h4>This exhibit is not public. If you are the owner, please log in.</h4>
+        </section>
+
+        <section class="section" ng-if="$ctrl.authentication.isAuthorized">
+          <h4>You are not the owner of this private exhibit.</h4>
+        </section>
+      </section>
+
+      <section class="section" ng-if="$ctrl.exhibitIsPublic || $ctrl.isOwner">
+
+        <exhibit-config-preview config="$ctrl.config" idswitch="$ctrl.containerIdOnOffSwitch" livepreview="true">
         </exhibit-config-preview>
 
-        <div>
-          <label>Identify containers</label>
-          <div class="switch">
-            <input class="switch-input" id="identify" type="checkbox" name="identifyContainers"
-              ng-model="$ctrl.containerIdOnOffSwitch">
-            <label class="switch-paddle" for="identify">
-              <span class="show-for-sr">Identify containers</span>
-              <span class="switch-active" aria-hidden="true">Yes</span>
-              <span class="switch-inactive" aria-hidden="true">No</span>
-            </label>
+        <div class="grid-x grid-margin-x align-center-middle">
+          <div class="cell shrink">
+            <div class="grid-x grid-padding-x">
+              <div class="cell shrink">
+                <label class="text-right">Identify containers</label>
+              </div>
+              <div class="cell shrink">
+                <div class="switch tiny">
+                  <input class="switch-input" id="identify" type="checkbox" name="identifyContainers"
+                    ng-model="$ctrl.containerIdOnOffSwitch">
+                  <label class="switch-paddle" for="identify">
+                    <span class="show-for-sr">Identify containers</span>
+                    <span class="switch-active" aria-hidden="true">Yes</span>
+                    <span class="switch-inactive" aria-hidden="true">No</span>
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         <exhibit-config-display config="$ctrl.config"></exhibit-config-display>
+
         <br>
-      </div>
 
-      <div>
-        <a ng-href="/exhibit-display/{{$ctrl.exhibitId}}" 
-           target="_blank" 
-           rel="noopener noreferrer">
-           View this collection in exhibit mode
-           <g-octicon icon="link-external" aria-label="External Link"></g-octicon>
-        </a>
-      </div>
+        <div>
+          <a ng-href="/exhibit-display/{{$ctrl.exhibitId}}" target="_blank" rel="noopener noreferrer">
+            <angularjs-feather icon="external-link"></angularjs-feather>
+            View this collection in exhibit mode
+          </a>
+        </div>
 
-      <br>
+        <br>
 
-      <div ng-if="$ctrl.authentication.isAuthorized && !$ctrl.isOwner">
-        <button class="button" ng-click="$ctrl.fork()">
-          <g-octicon icon="repo-forked" aria-label="Fork Collection"></g-octicon>
-          Fork this collection
-        </button>
-      </div>
-
-      <div ng-if="$ctrl.isOwner" class="text-center callout secondary">
-        <h4>Modify this exhibit</h4>
-        <div class="button-group float-center">
-          <button class="button primary" ng-click="$ctrl.goToEdit()">
-            <g-octicon icon="pencil" aria-label="Pencil"></g-octicon>
-            Edit
-          </button>
-          <button class="button alert" ng-click="$ctrl.delete()">
-            <g-octicon icon="trashcan" aria-label="Trashcan"></g-octicon>
-            Delete
+        <div ng-if="$ctrl.authentication.isAuthorized && !$ctrl.isOwner">
+          <button class="button" ng-click="$ctrl.fork()">
+            <angularjs-feather icon="copy"></angularjs-feather>
+            Copy this collection
           </button>
         </div>
-        <div ng-show="$ctrl.confirmDelete" ng-class="$ctrl.message_style">
-          <h5 class="text-center">{{$ctrl.info_message}}</h5>
-          <ul class="button-group">
-            <button class="button alert" ng-click="$ctrl.deleteYes()">Yes</button>
-            <button class="button secondary float-center" ng-click="$ctrl.deleteNo()">No</button>
-          </ul>
+
+        <div ng-if="$ctrl.isOwner" class="text-center callout secondary">
+          <h4>Modify this exhibit</h4>
+          <div class="button-group float-center">
+            <button class="button primary" ng-click="$ctrl.goToEdit()">
+              <angularjs-feather icon="edit-2"></angularjs-feather>
+              Edit
+            </button>
+            <button class="button alert" ng-click="$ctrl.delete()">
+              <angularjs-feather icon="trash"></angularjs-feather>
+              Delete
+            </button>
+          </div>
+          <div ng-show="$ctrl.confirmDelete" ng-class="$ctrl.message_style">
+            <h5 class="text-center">{{$ctrl.info_message}}</h5>
+            <div class="button-group float-center">
+              <button class="button alert" ng-click="$ctrl.deleteYes()">Yes</button>
+              <button class="button secondary" ng-click="$ctrl.deleteNo()">No</button>
+            </div>
+          </div>
+
+          <div ng-show="$ctrl.acknowledgeDelete" ng-class="$ctrl.message_style">
+            <h5 class="text-center">{{$ctrl.info_message}}</h5>
+            <button class="button success float-center" ng-click="$ctrl.deleteAcknowledge()">Continue...</button>
+          </div>
+
         </div>
 
-        <div ng-show="$ctrl.acknowledgeDelete" ng-class="$ctrl.message_style">
-          <h5 class="text-center">{{$ctrl.info_message}}</h5>
-          <button class="button success float-center" ng-click="$ctrl.deleteAcknowledge()">Continue...</button>
+        <div>
+          <button class="button hollow" ng-click="$ctrl.goToExhibits()">
+            <angularjs-feather icon="arrow-left"></angularjs-feather>
+            Back to search
+          </button>
         </div>
 
-      </div>
-
-      <div>
-        <button class="button hollow" ng-click="$ctrl.goToExhibits()">
-          <g-octicon icon="search" aria-label="Search"></g-octicon>
-          Return to search
-        </button>
-      </div>
+      </section>
     </section>
-  </section>
-
+  </div>
 </main>

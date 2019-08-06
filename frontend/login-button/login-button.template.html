@@ -1,22 +1,14 @@
-<style>
-    #login-name {
-        color: white;
-    }
-</style>
-
 <span ng-if="!$ctrl.authentication.isAuthorized">
-    <button class="button secondary float-right" ng-click="$ctrl.authenticateAsGitHubUser()">
-        <g-octicon icon="sign-in" aria-label="Sign in"></g-octicon>
-        Log in via <g-octicon icon="logo-github" aria-label="GitHub Logo"></g-octicon>
+    <button class="button hollow" ng-click="$ctrl.authenticateAsGitHubUser()">
+        <angularjs-feather icon="log-in"></angularjs-feather>
+        Log in with GitHub
     </button>
 </span>
 <span ng-if="$ctrl.authentication.isAuthorized">
-    <span id="login-name">
-        <g-octicon icon="mark-github" aria-label="GitHub"></g-octicon>
-        Logged in as {{$ctrl.username}}
+    <span id="login-name">Logged in as
+      <strong>
+        <angularjs-feather icon="github"></angularjs-feather>
+        {{$ctrl.username}}
+      </strong>
     </span>
-    <button class="button float-center" ng-click="$ctrl.goToExhibitCreate()">
-        <g-octicon icon="plus" aria-label="Plus"></g-octicon>
-        Create new project
-    </button>
 </span>

@@ -8,6 +8,9 @@ angular
 
 
       $routeProvider
+        .when('/home', {
+          template: '<home></home>',
+        })
         .when('/exhibits', {
           template: '<exhibit-list></exhibit-list>',
         })
@@ -32,6 +35,6 @@ angular
         .when('/sameorigin-check/', {
           template: '<sameorigin-check></sameorigin-check>',
         })
-        .otherwise('/exhibits');
+        .otherwise('/home');
     },
   ]);

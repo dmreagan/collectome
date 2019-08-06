@@ -1,100 +1,97 @@
-<main role="main" class="no-section-nav">
-  <section class="section">
-    <h1>Search for collections</h1>
-    <!-- <div class="row pad" id="search"> -->
-    <form>
-      <div class="grid-x grid-margin-x large-up-2">
-        <div class="cell">
-          <fieldset>
-            <!-- <legend><h3>Search</h3></legend> -->
-            <label for="search">
-              <g-octicon icon="search" aria-label="Search"></g-octicon>
-              Search for metadata fields
-              <input type="text" name="search" id="search" ng-model="$ctrl.searchString"
+<main role="main" class="main-top-margin">
+  <div class="grid-container">
+    <section class="section">
+      <h1 class="text-center">Find collections</h1>
+      <form>
+        <div class="grid-x grid-margin-x">
+          <div class="cell auto"></div>
+          <div class="cell large-8 medium-8">
+            <div class="input-group">
+              <span class="input-group-label">
+                <angularjs-feather icon="search"></angularjs-feather>
+              </span>
+              <input type="text" class="input-group-field" name="search" id="search" ng-model="$ctrl.searchString"
                 ng-change="$ctrl.updateSearch()" placeholder="Enter search terms">
-            </label>
-
-            <!-- <div>
-                            <label for="colearch">Display wall number of columns (1-100):</label>
-                        </div>
-                        <div>
-                            <input type="number" id="colearch" name="colearch" ng-model="$ctrl.colSearch" min="1" max="100"
-                                placeholder="#" ng-change="$ctrl.updateSearch()">
-                        </div>
-
-                        <div>
-                            <label for="rowsearch">Display wall number of rows (1-100):</label>
-                        </div>
-                        <div>
-                            <input type="number" id="rowsearch" name="rowsearch" ng-model="$ctrl.rowSearch" min="1" max="100"
-                                placeholder="#" ng-change="$ctrl.updateSearch()">
-                        </div> -->
-          </fieldset>
+            </div>
+          </div>
+          <div class="cell auto"></div>
         </div>
-        <div class="cell">
-          <fieldset>
-            <legend>
-              <h3>Filter by display configuration</h3>
-            </legend>
-
-
-            <input type="checkbox" id="3by3" name="3by3" ng-model="$ctrl.threeByThreeCheckbox"
-              ng-change="$ctrl.updateSearch()">
-            <label for="3by3">3 X 3</label>
-            <img class="layout-image-thumbnail" alt="" src="assets/3by3.png">
-
-            <input type="checkbox" id="4by4" name="4by4" ng-model="$ctrl.fourByFourCheckbox"
-              ng-change="$ctrl.updateSearch()">
-            <label for="4by4">4 X 4</label>
-            <img class="layout-image-thumbnail" alt="" src="assets/4by4.png">
-          </fieldset>
-
-          <fieldset>
-            <legend>Custom Layouts</legend>
-            <input type="checkbox" id="customized" name="customized" ng-model="$ctrl.customizedLayoutCheckbox"
-              ng-change="$ctrl.updateSearch()">
-            <label for="customized">M X N</label>
-
-            <div ng-if="$ctrl.customizedLayoutCheckbox">
-              <label for="custcol">
-                Columns
-                <input type="number" name="custcol" ng-model="$ctrl.custCol" min="1" max="100" placeholder="1"
-                  ng-change="$ctrl.updateSearch()">
-              </label>
-              <label for="custrow">
-                Rows
-                <input type="number" name="custrow" ng-model="$ctrl.custRow" min="1" max="100" placeholder="1"
-                  ng-change="$ctrl.updateSearch()">
+        <div class="grid-x grid-margin-x align-center">
+          <div class="cell shrink">
+            <label for="customized" class="">
+              <angularjs-feather icon="filter"></angularjs-feather>
+              Filter by display configuration
+            </label>
+          </div>
+          <div class="cell shrink">
+            <div class="switch tiny">
+              <input class="switch-input" id="customized" type="checkbox" name="customized"
+                ng-model="$ctrl.customizedLayoutCheckbox" ng-change="$ctrl.updateSearch()">
+              <label class="switch-paddle" for="customized">
+                <span class="show-for-sr">Filter by display configuration</span>
+                <span class="switch-active" aria-hidden="true">On</span>
+                <span class="switch-inactive" aria-hidden="true">Off</span>
               </label>
             </div>
-          </fieldset>
+          </div>
         </div>
-      </div>
-    </form>
-    <!-- </div> -->
-  </section>
+        <div ng-if="$ctrl.customizedLayoutCheckbox">
+          <div class="grid-x grid-margin-x align-center">
+            <!-- <div class="cell auto"></div> -->
+            <div class="cell shrink">
+              <label class="middle">Show only displays with</label>
+            </div>
+            <div class="cell shrink">
+              <div class="input-group">
+                <input type="number" name="custcol" ng-model="$ctrl.custCol" min="1" max="100" placeholder="1"
+                  ng-change="$ctrl.updateSearch()" style="width: 4rem;" class="input-group-field">
+                <span class="input-group-label">rows</span>
+              </div>
+            </div>
+            <div class="cell shrink">
+              <label class="middle">and</label>
+            </div>
+            <div class="cell shrink">
+              <div class="input-group">
+                <input type="number" name="custrow" ng-model="$ctrl.custRow" min="1" max="100" placeholder="1"
+                  ng-change="$ctrl.updateSearch()" style="width: 4rem;" class="input-group-field">
+                <span class="input-group-label">columns</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
 
-  <section class="section">
-    <div class="row pad">
+    <br><br>
+
+    <section class="section">
       <div class="grid-x grid-margin-x">
         <div class="cell shrink">
-          <h2 class="section-title">
+          <h2 class="subheader">
             <span ng-show="$ctrl.searchString.length > 0 || $ctrl.rowSearch || $ctrl.colSearch">
               Search Results: </span>{{ $ctrl.exhibits.length }}
-            <ng-pluralize count="$ctrl.exhibits.length" when="{'0': 'Exhibits', 'one':'Exhibit', 'other': 'Exhibits'}">
+            <ng-pluralize count="$ctrl.exhibits.length"
+              when="{'0': 'Collections', 'one':'Collection', 'other': 'Collections'}">
             </ng-pluralize>
+            <span class="h6" ng-if="$ctrl.authentication.isAuthorized">
+              ( your collections marked with
+              <angularjs-feather icon="user"></angularjs-feather>
+              )
+            </span>
           </h2>
         </div>
         <div class="cell auto"></div>
         <div class="cell shrink">
-          <label>Sort by:
-            <select ng-model="$ctrl.sortBy">
-              <option value="-_score">Relevance</option>
-              <option value="title">Title</option>
-              <option value="last_modified_time">Recently updated</option>
-              <option value="-create_time">Creation time</option>
-            </select>
-          </label>
+          <label for="select-sort" class="middle">Sort by</label>
+        </div>
+        <div class="cell shrink">
+          <select id="select-sort" ng-model="$ctrl.sortBy">
+            <option value="-_score">Relevance</option>
+            <option value="title">Title</option>
+            <option value="last_modified_time">Recently updated</option>
+            <option value="-create_time">Creation time</option>
+          </select>
         </div>
       </div>
       <div class="callout warning" ng-if="$ctrl.exhibits.length === 0 && ($ctrl.searchString.length > 0
@@ -112,27 +109,28 @@
         <div ng-if="$ctrl.fourByFourCheckbox">common 4 by 4 grid</div>
         <div ng-if="$ctrl.customizedLayoutCheckbox">custom {{$ctrl.custCol}} by
           {{$ctrl.custRow}} grid</div>
-
       </div>
-      <div>
-        <div class="callout id=" exhibit-{{exhibit.id}}"
-          ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id"">
-          <div class=" media-object stack-for-small">
-          <div class="media-object-section">
-            <display-thumbnail config=exhibit></display-thumbnail>
-          </div>
-          <div class="media-object-section">
-            <a href="exhibits/{{ exhibit.id }}">
-              <h4 class="title">{{ exhibit.title }}</h4>
-            </a>
-            <p>
-              {{ exhibit.description | limitTo: 60 }}
-              {{exhibit.description.length > 50 ? '...' : ''}}
-            </p>
-          </div>
+      <div class="callout id=" exhibit-{{exhibit.id}}"
+        ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id"">
+        <div class=" media-object stack-for-small">
+        <div class="media-object-section">
+          <display-thumbnail config=exhibit></display-thumbnail>
+        </div>
+        <div class="media-object-section">
+          <a href="exhibits/{{ exhibit.id }}">
+            <h3 class="h4">{{ exhibit.title }}
+              <angularjs-feather icon="user"
+                ng-if="exhibit.owner === $ctrl.authentication.userProfile.login">
+              </angularjs-feather>
+            </h3>
+          </a>
+          <p>
+            {{ exhibit.description | limitTo: 280 }}
+            {{exhibit.description.length > 280 ? '...' : ''}}
+          </p>
         </div>
       </div>
-    </div>
-    </div>
+  </div>
   </section>
+  </div>
 </main>
