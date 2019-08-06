@@ -82,6 +82,26 @@
           </h2>
         </div>
         <div class="cell auto"></div>
+
+        <div class="cell shrink" ng-if="$ctrl.authentication.isAuthorized">
+          <label for="owned-only" class="middle">
+            <angularjs-feather icon="filter"></angularjs-feather>
+            Show only my collections
+          </label>
+        </div>
+        <div class="cell shrink" ng-if="$ctrl.authentication.isAuthorized">
+          <div class="switch large">
+            <input class="switch-input" id="owned-only" type="checkbox" name="owned-only"
+              ng-model="$ctrl.ownedOnlyToggle" ng-change="$ctrl.updateSearch()">
+            <label class="switch-paddle" for="owned-only">
+              <span class="show-for-sr">Filter by display configuration</span>
+              <span class="switch-active" aria-hidden="true">Yes</span>
+              <span class="switch-inactive" aria-hidden="true">No</span>
+            </label>
+          </div>
+        </div>
+
+
         <div class="cell shrink">
           <label for="select-sort" class="middle">Sort by</label>
         </div>
