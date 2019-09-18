@@ -29,7 +29,7 @@ angular
         if (params.status) {
           if (params.status === 'success') {
             this.message_style = 'callout success';
-            this.info_message = 'Exhibit has been successfully edited';
+            this.info_message = 'Collection has been successfully edited';
             this.success = true;
           } else if (params.status === 'dupid') {
             this.message_style = 'callout alert';
@@ -60,7 +60,7 @@ angular
           const loginUser = this.authentication.userProfile.login;
 
           // the following 'updateExhibit' function is used for system generated id
-          // utils.updateExhibit(this.exhibitId, this.config, this, loginUser); 
+          // utils.updateExhibit(this.exhibitId, this.config, this, loginUser);
 
           // when using user composed id (i.e., title), we need to delete and then create, since
           // it is a bad practice to update primary key.
