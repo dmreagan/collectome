@@ -1,0 +1,80 @@
+{
+  "metadata": {
+    "name": "Example: Vimeo",
+    "description": "This collection demonstrates how to embed Vimeo videos. It includes examples of single videos and playlists.",
+    "authors": [
+      {
+        "first_name": "David",
+        "last_name": "Reagan"
+      }
+    ],
+    "institutions": [
+      "Indiana University",
+      "Y Univ."
+    ],
+    "disciplines": [
+      "Storm chasing"
+    ],
+    "tags": [
+      "example",
+      "vimeo"
+    ],
+    "public": true
+  },
+  "content": [
+    {
+      "id": "content1",
+      "title": "Vimeo: playlist, loop, mute",
+      "url": "https://vimeo.com/showcase/3265569/embed?autoplay=0&loop=1&muted=1&autopause=0",
+      "scale": 5
+    },
+    {
+      "id": "content2",
+      "title": "Vimeo: autoplay, loop",
+      "url": "https://player.vimeo.com/video/349605853?autoplay=1&loop=1&muted=0&autopause=0",
+      "scale": 5
+    }
+  ],
+  "display": {
+    "columns": 4,
+    "rows": 2,
+    "tile_x_resolution": 1920,
+    "tile_y_resolution": 1080
+  },
+  "layout": {
+    "margins": {
+      "XPercent": 5,
+      "YPercent": 10
+    },
+    "containers": [
+      {
+        "id": "container1",
+        "originX": 0,
+        "originY": 0,
+        "sizeX": 2,
+        "sizeY": 2
+      },
+      {
+        "id": "container2",
+        "originX": 2,
+        "originY": 0,
+        "sizeX": 2,
+        "sizeY": 2
+      }
+    ]
+  },
+  "mapping": [
+    {
+      "content": "content1",
+      "container": "container1"
+    },
+    {
+      "content": "content2",
+      "container": "container2"
+    },
+    {
+      "content": "content3",
+      "container": "container3"
+    }
+  ]
+}

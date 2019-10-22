@@ -273,7 +273,7 @@ angular
             $location.url(`${path}/${assignedId}`);
           } else if (type === 1) { // update, i.e., delete first and then create
             self.message_style = 'alert success one-third float-center';
-            self.info_message = 'Exhibit has been successfully edited';
+            self.info_message = 'Collection has been successfully edited';
             self.success = true;
             $location.url(`/exhibits/${assignedId}/edit?status=success`);
           }

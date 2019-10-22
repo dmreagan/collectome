@@ -32,6 +32,7 @@ angular
               if (lines[i].toLowerCase().startsWith(XFrameOptKey.toLowerCase())) {
                 console.log(lines[i]);
                 this.info_message = `${lines[i]}`;
+                this.message_style = 'callout alert';
 
                 return;
               }

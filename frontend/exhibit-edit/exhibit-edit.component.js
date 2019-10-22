@@ -32,7 +32,7 @@ angular
 
           if (params.status === 'success') {
             this.message_style = 'callout success';
-            this.info_message = 'Exhibit has been successfully edited';
+            this.info_message = 'Collection has been successfully edited';
             this.success = true;
           } else if (params.status === 'dupid') {
             this.message_style = 'callout alert';

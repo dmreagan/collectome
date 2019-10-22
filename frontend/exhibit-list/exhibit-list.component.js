@@ -17,6 +17,7 @@ angular
         this.fourByFourCheckbox = false;
 
         this.customizedLayoutCheckbox = false;
+        this.ownedOnlyToggle = false;
 
         this.custRow = 3;
         this.custCol = 3;
@@ -35,7 +36,11 @@ angular
 
         // only show exhibits that are public
         const filterExhibit = (e) => {
-          if (e.public) {
+          /**
+           * all public collections go through,
+           * unless the ownedOnlyToggle is on
+           */
+          if (e.public && !this.ownedOnlyToggle) {
             return true;
           }
 
@@ -45,8 +50,6 @@ angular
            */
           if (this.authentication.userProfile) {
             const loginUser = this.authentication.userProfile.login;
-
-            console.log(loginUser);
 
             if (e.owner === loginUser) {
               return true;
@@ -59,8 +62,6 @@ angular
         const loadExhibits = () => {
           utils.getExhibits().then((response) => {
             this.exhibits = response.data.filter(filterExhibit);
-
-            console.log(this.exhibits);
             this.sortBy = '-create_time';
           }, (e) => {
             console.warn(e);
@@ -95,8 +96,6 @@ angular
             layouts = null;
           }
 
-          console.log(layouts);
-
           const query = {
             query_string: this.searchString,
             row: this.rowSearch,
@@ -106,7 +105,6 @@ angular
 
           utils.searchExhibits(query).then((response) => {
             this.exhibits = response.data.filter(filterExhibit);
-            console.log(this.exhibits);
             this.sortBy = '-_score';
           }, (error) => {
             console.warn(error);
@@ -115,29 +113,18 @@ angular
         };
 
         this.updateSearch = () => {
-          console.log('search string:'.concat(this.searchString));
-          console.log('search row:'.concat(this.rowSearch));
-          console.log('search col:'.concat(this.colSearch));
-          console.log('3*3 checkbox:'.concat(this.threeByThreeCheckbox));
-          console.log('4*4 checkbox:'.concat(this.fourByFourCheckbox));
-          console.log('customized layout checkbox:'.concat(this.customizedLayoutCheckbox));
-          console.log('customized row:'.concat(this.custRow));
-          console.log('customized col:'.concat(this.custCol));
-
           if (!this.searchString && !this.rowSearch && !this.colSearch
             && !this.threeByThreeCheckbox
             && !this.fourByFourCheckbox
             && !this.customizedLayoutCheckbox) {
-            console.log('loadExhibits');
+
             loadExhibits();
           } else {
-            console.log('searchExhibits');
             searchExhibits();
           }
         };
 
         const init = () => {
-          console.log('init loadExhibits');
           loadExhibits();
         };
 

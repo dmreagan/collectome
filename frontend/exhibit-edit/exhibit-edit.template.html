@@ -12,6 +12,10 @@
         </div>
       </section>
 
+      <div ng-show="$ctrl.success" ng-class="$ctrl.message_style">
+        <h5 class="text-center">{{$ctrl.info_message}}</h5>
+      </div>
+
       <section class="section" ng-if="$ctrl.exhibitIdIsValid">
 
         <h2>

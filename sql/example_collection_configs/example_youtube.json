@@ -1,0 +1,90 @@
+{
+  "metadata": {
+    "name": "Example: YouTube",
+    "description": "This collection demonstrates how to embed YouTube videos. It includes examples of single videos, playlists, and user uploads.",
+    "authors": [
+      {
+        "first_name": "David",
+        "last_name": "Reagan"
+      }
+    ],
+    "institutions": [
+      "Indiana University"
+    ],
+    "disciplines": [],
+    "tags": [
+      "examples",
+      "youtube"
+    ],
+    "public": true
+  },
+  "content": [
+    {
+      "id": "content1",
+      "title": "YouTube: playlist, loop",
+      "url": "https://www.youtube.com/embed?listType=playlist&list=PL7rCw9VcILWC8Hkq4cwaO5u9Cm5lElYW5&modestbranding=1&rel=0&fs=0&autoplay=0&loop=1",
+      "scale": 5
+    },
+    {
+      "id": "content2",
+      "title": "YouTube: user uploads, loop",
+      "url": "https://www.youtube.com/embed?listType=user_uploads&list=TheAVLtube&modestbranding=1&rel=0&fs=0&autoplay=0&loop=1",
+      "scale": 5
+    },
+    {
+      "id": "content3",
+      "title": "YouTube: single video, autoplay, loop",
+      "url": "https://www.youtube.com/embed/AxAdzAhHeBg?modestbranding=1&rel=0&fs=0&autoplay=1&loop=1",
+      "scale": 5
+    }
+  ],
+  "display": {
+    "columns": 3,
+    "rows": 2,
+    "tile_x_resolution": 1920,
+    "tile_y_resolution": 1080
+  },
+  "layout": {
+    "margins": {
+      "XPercent": 5,
+      "YPercent": 10
+    },
+    "containers": [
+      {
+        "id": "container1",
+        "originX": 0,
+        "originY": 0,
+        "sizeX": 1,
+        "sizeY": 1
+      },
+      {
+        "id": "container2",
+        "originX": 0,
+        "originY": 1,
+        "sizeX": 1,
+        "sizeY": 1
+      },
+      {
+        "id": "container3",
+        "originX": 2,
+        "originY": 0,
+        "sizeX": 2,
+        "sizeY": 2
+      }
+    ]
+  },
+  "mapping": [
+    {
+      "content": "content1",
+      "container": "container1"
+    },
+    {
+      "content": "content2",
+      "container": "container2"
+    },
+    {
+      "content": "content3",
+      "container": "container3"
+    }
+  ]
+}
