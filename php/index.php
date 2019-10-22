@@ -11,6 +11,7 @@ class CrateResource extends \Slim\Slim
     public $config;
     public $SNAPSHOTS_BLOB_TABLE_NAME;
     public $EXHIBITS_TABLE_NAME;
+    public $PLAYLISTS_TABLE_NAME;
 
     public $GITHUB_CLIENT_ID;
     public $GITHUB_CLIENT_SECRET;
@@ -29,9 +30,10 @@ class CrateResource extends \Slim\Slim
     {
         parent::__construct();
         $this->config = $config;
-        
+
         $this->SNAPSHOTS_BLOB_TABLE_NAME = $config['snapshots_blob_table'];
         $this->EXHIBITS_TABLE_NAME = $config['exhibits_table'];
+        $this->PLAYLISTS_TABLE_NAME = $config['playlists_table'];
 
         $this->GITHUB_CLIENT_ID = getenv($config['git_client_id_env']);
         $this->GITHUB_CLIENT_SECRET = getenv($config['git_client_secret_env']);
@@ -94,10 +96,10 @@ class CrateResource extends \Slim\Slim
         $colName = 'cnt';
         $qry = $this->conn->prepare("SELECT COUNT(snapshot_ref) AS {$colName} FROM {$this->EXHIBITS_TABLE_NAME} WHERE snapshot_ref = ?");
         $qry->bindParam(1, $digest);
-    
+
         $qry->execute();
         $result = $qry->fetchAll(PDO::FETCH_ASSOC);
-    
+
         if (!$result) {
             error_log("Cannot retrieve snapshot count whose digest=\"{$digest}\" in table {$this->EXHIBITS_TABLE_NAME}" . "\n", 3, $this->ERROR_LOG_PATH);
             return -1;
@@ -117,7 +119,7 @@ class CrateResource extends \Slim\Slim
         return $owner."-".$title;
     }
 
-    function isIdUnique($id) {
+    function isExhibitUnique($id) {
         // check if id already exist
         $qry = $this->conn->prepare("SELECT id FROM {$this->EXHIBITS_TABLE_NAME} AS p WHERE p.id = ?");
 
@@ -130,8 +132,25 @@ class CrateResource extends \Slim\Slim
             return true;
         } else {
             return false; // already used
-        } 
+        }
     }
+
+    function isPlaylistUnique($id) {
+      // check if id already exist
+      $qry = $this->conn->prepare("SELECT id FROM {$this->PLAYLISTS_TABLE_NAME} AS p WHERE p.id = ?");
+
+      $qry->bindParam(1, $id);
+      $qry->execute();
+
+      $result = $qry->fetch(PDO::FETCH_ASSOC);
+
+      if (!$result) {
+          return true;
+      } else {
+          return false; // already used
+      }
+  }
+
 }
 
 $app = new CrateResource($config);
@@ -189,7 +208,7 @@ $app->post('/snapshots', function() use ($app)
 
     if ($result) {
         error_log("Digest {$result[0]['digest']} already in database, skip insertion" . "\n", 3, $app->ERROR_LOG_PATH);
-        
+
         $app->success(201, array(
             'url' => "/snapshot/{$digest}",
             'digest' => $digest
@@ -197,11 +216,11 @@ $app->post('/snapshots', function() use ($app)
 
         return;
     }
-    
+
     /////////////////////////////////////////////////
     // digest not in db, go ahead insert the snapshot
     /////////////////////////////////////////////////
-    error_log("Digest post url: {$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}" . "\n", 
+    error_log("Digest post url: {$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}" . "\n",
         3, $app->ERROR_LOG_PATH);
 
     $ch = curl_init("{$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}");
@@ -245,7 +264,7 @@ $app->get('/snapshotcount/:digest', function($digest) use ($app)
     $cnt = $app->getSnapshotRefCount($digest);
 
     if ($cnt === -1) {
-        
+
         $app->resource_error(500, "Cannot retrieve snapshot count whose digest=\"{$digest}\" in table {$this->EXHIBITS_TABLE_NAME}");
 
         return;
@@ -268,9 +287,9 @@ $app->get('/snapshot/:digest', function($digest) use ($app)
     }
 
     error_log("In get snapshot, with digest {$digest}" . "\n", 3, $app->ERROR_LOG_PATH);
-    
+
     $url = "{$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}";
-    
+
     error_log("$url" . "\n", 3, $app->ERROR_LOG_PATH);
 
     $ch = curl_init($url);
@@ -308,7 +327,7 @@ $app->delete('/snapshot/:digest', function($digest) use ($app)
 
     error_log("Delete snapshot url: {$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}" . "\n",
         3, $app->ERROR_LOG_PATH);
-    
+
     $ch = curl_init("{$app->config['blob_url']}{$app->SNAPSHOTS_BLOB_TABLE_NAME}/{$digest}");
 
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
@@ -331,7 +350,7 @@ $app->delete('/snapshot/:digest', function($digest) use ($app)
 
 $app->post('/exhibits', function() use ($app)
 {
-  
+
     error_log("In post exhibit" . "\n", 3, $app->ERROR_LOG_PATH);
     error_log("show request body" . "\n", 3, $app->ERROR_LOG_PATH);
     error_log("{$app->request->getBody()}" . "\n", 3, $app->ERROR_LOG_PATH);
@@ -351,7 +370,7 @@ $app->post('/exhibits', function() use ($app)
     $snapshot_ref    = $data->extra->snapshotRef;
     $people          = $data->extra->authors;
     $tags            = $data->extra->tags;
-   
+
     $create_time     = $data->createTime;
 
     $owner = $data->owner;
@@ -376,14 +395,14 @@ $app->post('/exhibits', function() use ($app)
 
     $id = $app->title2id($owner, $title);
 
-    if (!$app->isIdUnique($id)) {
+    if (!$app->isExhibitUnique($id)) {
         // server code '409' means "request conflicts with the current state of the server"
         $app->resource_error(409, "Creation/Update failed. Title alreday used by an existing exhibit.");
         return;
     }
 
     $qry       = $app->conn->prepare("INSERT INTO {$app->EXHIBITS_TABLE_NAME} (
-      id, title, description, disciplines, institutions, tags, snapshot_ref, people, public, columns, rows, 
+      id, title, description, disciplines, institutions, tags, snapshot_ref, people, public, columns, rows,
       tile_x_resolution, tile_y_resolution, config, create_time, last_modified_time, owner
     ) VALUES (
       ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
@@ -414,7 +433,7 @@ $app->post('/exhibits', function() use ($app)
 
     if ($state) {
         $app->refreshTable($app->EXHIBITS_TABLE_NAME);
-  
+
         $result = array(
              "success"=>"Exhibit Created!",
              "id" => $id
@@ -424,8 +443,92 @@ $app->post('/exhibits', function() use ($app)
     } else {
         $app->resource_error(500, $app->conn->errorInfo());
     }
-    
+
 })->name('post-exhibit');
+
+$app->post('/playlists', function() use ($app)
+{
+
+    error_log("In post playlist" . "\n", 3, $app->ERROR_LOG_PATH);
+    error_log("show request body" . "\n", 3, $app->ERROR_LOG_PATH);
+    error_log("{$app->request->getBody()}" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $data            = json_decode($app->request->getBody());
+    $title           = $data->config->metadata->name;
+    $description     = $data->config->metadata->description;
+    $public          = $data->config->metadata->public;
+
+    $disciplines     = $data->extra->disciplines;
+    $institutions    = $data->extra->institutions;
+    $snapshot_ref    = $data->extra->snapshotRef;
+    $people          = $data->extra->authors;
+    $collections     = $data->extra->collections;
+    $tags            = $data->extra->tags;
+
+    $create_time     = $data->createTime;
+
+    $owner = $data->owner;
+
+    if (empty($title)) {
+      $app->argument_required('Argument "Title" is required');
+      return;
+    } else if (empty($description)) {
+        $app->argument_required('Argument "Description" is required');
+        return;
+    } else if (empty($institutions)) {
+        $app->argument_required('Argument "Institutions" is required');
+        return;
+    }
+
+    error_log("Done sanity check" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $id = $app->title2id($owner, $title);
+
+    if (!$app->isPlaylistUnique($id)) {
+        // server code '409' means "request conflicts with the current state of the server"
+        $app->resource_error(409, "Creation/Update failed. Title alreday used by an existing playlist.");
+        return;
+    }
+
+    $qry       = $app->conn->prepare("INSERT INTO {$app->PLAYLISTS_TABLE_NAME} (
+      id, title, description, disciplines, institutions, tags, people, collections, public, config, create_time, last_modified_time, owner
+    ) VALUES (
+      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+    )");
+
+    $qry->bindParam(1, $id);
+    $qry->bindParam(2, $title);
+    $qry->bindParam(3, $description);
+    $qry->bindParam(4, $disciplines);
+    $qry->bindParam(5, $institutions);
+    $qry->bindParam(6, $tags);
+    $qry->bindParam(7, $people);
+    $qry->bindParam(8, $collections);
+    $qry->bindParam(9, $public);
+    $qry->bindParam(10, json_encode($data->config));
+    $qry->bindParam(11, $create_time);
+    // last_modified_time is the same as create_time when playlist is created
+    $qry->bindParam(12, $create_time);
+    $qry->bindParam(13, $owner);
+
+    // var_dump($qry);
+
+    $state = $qry->execute();
+
+    if ($state) {
+        $app->refreshTable($app->PLAYLISTS_TABLE_NAME);
+
+        $result = array(
+             "success"=>"Playlist Created!",
+             "id" => $id
+         );
+
+        $app->success(201, $result);
+    } else {
+        $app->resource_error(500, $app->conn->errorInfo());
+    }
+
+})->name('post-playlist');
 
 /**
  * edits an exhibit with a given id.
@@ -451,10 +554,10 @@ $app->put('/exhibit/:id/edit', function($id) use ($app)
     $snapshot_ref    = $data->extra->snapshotRef;
     $people          = $data->extra->authors;
     $tags            = $data->extra->tags;
-   
+
     $last_modified_time     = $data->lastModifiedTime;
     $owner = $data->owner;
-  
+
     if (empty($title)) {
       $app->argument_required('Argument "Title" is required');
       return;
@@ -472,19 +575,19 @@ $app->put('/exhibit/:id/edit', function($id) use ($app)
     error_log("Done sanity check" . "\n", 3, $app->ERROR_LOG_PATH);
 
     $qry = $app->conn->prepare("UPDATE {$app->EXHIBITS_TABLE_NAME}
-                                SET title = ?, 
-                                description = ?, 
-                                disciplines = ?, 
-                                institutions = ?, 
-                                tags = ?, 
-                                snapshot_ref = ?, 
-                                people = ?, 
-                                public = ?, 
-                                columns = ?, 
-                                rows = ?, 
-                                tile_x_resolution = ?, 
-                                tile_y_resolution = ?, 
-                                config = ?, 
+                                SET title = ?,
+                                description = ?,
+                                disciplines = ?,
+                                institutions = ?,
+                                tags = ?,
+                                snapshot_ref = ?,
+                                people = ?,
+                                public = ?,
+                                columns = ?,
+                                rows = ?,
+                                tile_x_resolution = ?,
+                                tile_y_resolution = ?,
+                                config = ?,
                                 last_modified_time = ?,
                                 owner = ?
                                 WHERE id=?");
@@ -532,12 +635,33 @@ $app->get('/exhibit/:id', function($id) use ($app)
 })->name('exhibit-get');
 
 /**
+ * Get the playlist for a given id.
+ */
+$app->get('/playlist/:id', function($id) use ($app)
+{
+   $qry = $app->conn->prepare("SELECT *
+           FROM {$app->PLAYLISTS_TABLE_NAME} AS p
+           WHERE p.id = ?");
+
+   $qry->bindParam(1, $id);
+   $qry->execute();
+
+   $result = $qry->fetch(PDO::FETCH_ASSOC);
+
+   if (!$result) {
+       $app->not_found("Playlist with id=\"{$id}\" not found");
+   } else {
+       $app->success(200, $result);
+   }
+})->name('playlist-get');
+
+/**
  * deletes an exhibit with a given id.
  */
 $app->delete('/exhibits/:id', function($id) use ($app)
 {
     if (empty($id)) {
-        $app->not_found('Please provide a post id: /exhibits/<id>');
+        $app->not_found('Please provide an exhibit id: /exhibits/<id>');
         return;
     }
     $qry = $app->conn->prepare("SELECT * FROM {$app->EXHIBITS_TABLE_NAME} WHERE id = ?");
@@ -560,10 +684,42 @@ $app->delete('/exhibits/:id', function($id) use ($app)
       $app->response->setStatus(204);
     } else {
       // nothing deleted?
-      $app->not_found("Post with id=\"{$id}\" not deleted");
+      $app->not_found("Exhibit with id=\"{$id}\" not deleted");
     }
 })->name('exhibit-delete');
 
+/**
+ * deletes a playlist with a given id.
+ */
+$app->delete('/playlists/:id', function($id) use ($app)
+{
+    if (empty($id)) {
+        $app->not_found('Please provide a playlist id: /playlists/<id>');
+        return;
+    }
+    $qry = $app->conn->prepare("SELECT * FROM {$app->PLAYLISTS_TABLE_NAME} WHERE id = ?");
+    $qry->bindParam(1, $id);
+
+    $qry->execute();
+    $result = $qry->fetchAll(PDO::FETCH_ASSOC);
+
+    if (!$result) {
+        $app->not_found("Post with id=\"{$id}\" not found");
+        return;
+    }
+
+    $qry = $app->conn->prepare("DELETE FROM {$app->PLAYLISTS_TABLE_NAME} WHERE id=?");
+    $qry->bindParam(1, $id);
+
+    $state = $qry->execute();
+
+    if ($state) {
+      $app->response->setStatus(204);
+    } else {
+      // nothing deleted?
+      $app->not_found("Playlist with id=\"{$id}\" not deleted");
+    }
+})->name('playlist-delete');
 
 /**
  * Get a list of all exhibits.
@@ -577,6 +733,19 @@ $app->get('/exhibits', function() use ($app)
     $result = $qry->fetchAll(PDO::FETCH_ASSOC);
     $app->success(200, $result);
 })->name('exhibits-get');
+
+/**
+ * Get a list of all playlists.
+ */
+$app->get('/playlists', function() use ($app)
+{
+    error_log("In get playlists" . "\n", 3, $result);
+    $qry = $app->conn->prepare("SELECT p.*
+            FROM {$app->PLAYLISTS_TABLE_NAME} AS p");
+    $qry->execute();
+    $result = $qry->fetchAll(PDO::FETCH_ASSOC);
+    $app->success(200, $result);
+})->name('playlists-get');
 
 /**
  * get collectome web app client id of github
@@ -601,7 +770,7 @@ $app->get('/github', function() use ($app)
 $app->post('/github', function() use ($app)
 {
     error_log("In github get user email" . "\n", 3, $app->ERROR_LOG_PATH);
-    
+
     if (!$app->GITHUB_CLIENT_ID || !$app->GITHUB_CLIENT_SECRET) {
         $app->not_found("Cannot find Github client id/secret");
         return;
@@ -635,7 +804,7 @@ $app->post('/github', function() use ($app)
     $result = curl_exec($ch);
 
     curl_close($ch);
- 
+
     error_log("$result" . "\n", 3, $app->ERROR_LOG_PATH);
 
     $data = json_decode($result);
@@ -677,8 +846,8 @@ $app->post('/github', function() use ($app)
 
 })->name('git-user-email');
 
-$app->post('/idcheck', function() use ($app) {
-    error_log("In idcheck" . "\n", 3, $app->ERROR_LOG_PATH);
+$app->post('/exhibitIdcheck', function() use ($app) {
+    error_log("In exhibit idcheck" . "\n", 3, $app->ERROR_LOG_PATH);
 
     $data = json_decode($app->request->getBody());
     $title = $data->title;
@@ -691,22 +860,48 @@ $app->post('/idcheck', function() use ($app) {
 
     $id = $app->title2id($owner, $title);
 
-    if (!$app->isIdUnique($id)) {
+    if (!$app->isExhibitUnique($id)) {
         $app->resource_error(409, "ID alreday used by an existing exhibit.");
     } else {
         $result = array(
             "success"=>"Id OK!"
         );
 
-       $app->success(200, $result);       
+       $app->success(200, $result);
     }
 
-})->name('idcheck');
+})->name('exhibitIdcheck');
+
+$app->post('/playlistIdcheck', function() use ($app) {
+  error_log("In playlist idcheck" . "\n", 3, $app->ERROR_LOG_PATH);
+
+  $data = json_decode($app->request->getBody());
+  $title = $data->title;
+  $owner = $data->owner;
+
+  if (empty($title) || empty($owner)) {
+      $app->argument_required('Argument title and owner are required');
+      return;
+  }
+
+  $id = $app->title2id($owner, $title);
+
+  if (!$app->isPlaylistUnique($id)) {
+      $app->resource_error(409, "ID alreday used by an existing playlist.");
+  } else {
+      $result = array(
+          "success"=>"Id OK!"
+      );
+
+     $app->success(200, $result);
+  }
+
+})->name('playlistIdcheck');
 
 $app->post('/header', function() use ($app)
 {
     error_log("In get header" . "\n", 3, $app->ERROR_LOG_PATH);
-    
+
     $data = json_decode($app->request->getBody());
     $url = $data->url;
 
@@ -739,10 +934,10 @@ $app->post('/header', function() use ($app)
 
 })->name('header');
 
-$app->post('/search', function() use ($app)
+$app->post('/searchExhibits', function() use ($app)
 {
-    error_log("In search" . "\n", 3, $app->ERROR_LOG_PATH);
-    
+    error_log("In search exhibits" . "\n", 3, $app->ERROR_LOG_PATH);
+
     $data = json_decode($app->request->getBody());
     $query_string = $data->query_string;
     $row = $data->row;
@@ -834,7 +1029,54 @@ $app->post('/search', function() use ($app)
     error_log("{$result}" . "\n", 3, $app->ERROR_LOG_PATH);
     $app->success(200, $result);
 
-})->name('search');
+})->name('search-exhibits');
+
+/* ************************* */
+$app->post('/searchPlaylists', function() use ($app)
+{
+    error_log("In search playlists" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $data = json_decode($app->request->getBody());
+    $query_string = $data->query_string;
+
+    if (empty($query_string)) {
+        $app->argument_required('Search string is required');
+        return;
+    }
+
+    error_log("Using search type {$app->SEARCH_MATCH_TYPE}" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $sql_statement = "SELECT p.*, p._score as _score FROM {$app->PLAYLISTS_TABLE_NAME} AS p";
+
+    if (!empty($query_string)) {
+        error_log("$query_string" . "\n", 3, $app->ERROR_LOG_PATH);
+
+        $statement = sprintf("WHERE match((p.title, p.description, p.disciplines, p.institutions, p.people, p.tags, p.collections), '%s')", $query_string);
+
+        $sql_statement = $sql_statement . " " . $statement;
+
+        $statement = "USING {$app->SEARCH_MATCH_TYPE}";
+
+        if ($app->SEARCH_MATCH_TYPE === 'phrase_prefix') {
+            $statement = $statement . " " . "WITH (max_expansions = {$app->MAX_EXPANSIONS})";
+        }
+
+        $sql_statement = $sql_statement . " " . $statement;
+    }
+
+    $sql_statement = $sql_statement . " " . "ORDER BY _score DESC";
+
+    error_log("$sql_statement" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $qry = $app->conn->prepare("{$sql_statement}");
+
+    $qry->execute();
+    $result = $qry->fetchAll(PDO::FETCH_ASSOC);
+
+    error_log("{$result}" . "\n", 3, $app->ERROR_LOG_PATH);
+    $app->success(200, $result);
+
+})->name('search-playlists');
 
 $app->run();
 ?>

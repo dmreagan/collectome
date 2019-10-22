@@ -1,0 +1,20 @@
+{
+  "metadata" : {
+      "name" : "My cool stuff",
+      "description" : "A meaningful description",
+      "authors" : [
+          {"first_name" : "Paul", "last_name" : "Dybala"},
+          {"first_name" : "Mario", "last_name" : "Mandzukic"}
+      ],
+      "institutions" : ["X Univ.", "Y Univ."],
+      "disciplines" : ["Visualization", "Social Network Analysis"],
+      "tags" : ["tagA", "tagB"],
+      "public" : false
+  },
+
+  "collections" : [
+      { "id" : "collection1", "duration" : 30 },
+      { "id" : "collection2", "duration" : 45 },
+      { "id" : "collection3", "duration" : 20 }
+  ]
+}

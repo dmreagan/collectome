@@ -1,0 +1,80 @@
+<main role="main" class="main-top-margin">
+  <div class="grid-container">
+    <section class="section">
+      <h1 class="text-center">Find playlists</h1>
+      <form>
+        <div class="grid-x grid-margin-x">
+          <div class="cell auto"></div>
+          <div class="cell large-8 medium-8">
+            <div class="input-group">
+              <span class="input-group-label">
+                <angularjs-feather icon="search"></angularjs-feather>
+              </span>
+              <input type="text" class="input-group-field" name="search" id="search" ng-model="$ctrl.searchString"
+                ng-change="$ctrl.updateSearch()" placeholder="Enter search terms">
+            </div>
+          </div>
+          <div class="cell auto"></div>
+        </div>
+      </form>
+    </section>
+
+    <br><br>
+
+    <section class="section">
+      <div class="grid-x grid-margin-x">
+        <div class="cell shrink">
+          <h2 class="subheader">
+            <span ng-show="$ctrl.searchString.length > 0">
+              Search Results: </span>{{ $ctrl.playlists.length }}
+            <ng-pluralize count="$ctrl.playlists.length"
+              when="{'0': 'Playlists', 'one':'Playlist', 'other': 'Playlists'}">
+            </ng-pluralize>
+            <span class="h6" ng-if="$ctrl.authentication.isAuthorized">
+              ( your playlists marked with
+              <angularjs-feather icon="user"></angularjs-feather>
+              )
+            </span>
+          </h2>
+        </div>
+        <div class="cell auto"></div>
+        <div class="cell shrink">
+          <label for="select-sort" class="middle">Sort by</label>
+        </div>
+        <div class="cell shrink">
+          <select id="select-sort" ng-model="$ctrl.sortBy">
+            <option value="-_score">Relevance</option>
+            <option value="title">Title</option>
+            <option value="last_modified_time">Recently updated</option>
+            <option value="-create_time">Creation time</option>
+          </select>
+        </div>
+      </div>
+      <div class="callout warning" ng-if="$ctrl.playlists.length === 0 && $ctrl.searchString.length > 0">
+        No playlists found for criteria:
+
+        <div ng-if="$ctrl.searchString.length > 0">search string:
+          "{{$ctrl.searchString}}"</div>
+      </div>
+      <div class="callout" id="playlist-{{playlist.id}}"
+        ng-repeat="playlist in $ctrl.playlists | orderBy:$ctrl.sortBy track by playlist.id">
+        <div class=" media-object stack-for-small">
+
+        <div class="media-object-section">
+          <a href="playlists/{{ playlist.id }}">
+            <h3 class="h4">{{ playlist.title }}
+              <angularjs-feather icon="user"
+                ng-if="playlist.owner === $ctrl.authentication.userProfile.login">
+              </angularjs-feather>
+            </h3>
+          </a>
+          <p>
+            {{ playlist.description | limitTo: 280 }}
+            {{playlist.description.length > 280 ? '...' : ''}}
+          </p>
+        </div>
+      </div>
+  </div>
+  </section>
+  </div>
+</main>

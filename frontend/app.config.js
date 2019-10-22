@@ -32,6 +32,27 @@ angular
         .when('/exhibit-display/:exhibitId', {
           template: '<exhibit-display></exhibit-display>',
         })
+        .when('/playlists', {
+          template: '<playlist-list></playlist-list>',
+        })
+        .when('/playlists/featured', {
+          template: '<playlist-list></playlist-list>',
+        })
+        .when('/playlists/:playlistId', {
+          template: '<playlist-detail></playlist-detail>',
+        })
+        .when('/playlist-create', {
+          template: '<playlist-create></playlist-create>',
+        })
+        .when('/playlist-create/:playlistId', {
+          template: '<playlist-create></playlist-create>',
+        })
+        .when('/playlists/:playlistId/edit', {
+          template: '<playlist-edit></playlist-edit>',
+        })
+        .when('/playlist-display/:playlistId', {
+          template: '<playlist-display></playlist-display>',
+        })
         .when('/sameorigin-check/', {
           template: '<sameorigin-check></sameorigin-check>',
         })

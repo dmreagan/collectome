@@ -7,9 +7,10 @@ angular
         this.displayMode = false;
 
         const path = $location.path();
-        const displayPath = '/exhibit-display/';
+        const exhibitDisplayPath = '/exhibit-display/';
+        const playlistDisplayPath = '/playlist-display/';
 
-        if (path.startsWith(displayPath)) {
+        if (path.startsWith(exhibitDisplayPath) || path.startsWith(playlistDisplayPath)) {
           this.displayMode = true;
         }
       }],

@@ -10,4 +10,9 @@ angular.module('collectomeApp', [
   'indexHeader',
   'ngRoute',
   'sameoriginCheck',
+  'playlistCreate',
+  'playlistDetail',
+  'playlistEdit',
+  'playlistList',
+  'playlistDisplay',
 ]);

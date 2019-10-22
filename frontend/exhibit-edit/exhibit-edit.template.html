@@ -6,7 +6,7 @@
 
     <section class="section" ng-if="$ctrl.authentication.isAuthorized">
 
-      <section class="section" ng-if="!$ctrl.exhibitIdIsValid">
+      <section class="section" ng-if="$ctrl.exhibitIdIsValid">
         <div ng-class="$ctrl.message_style">
           <h4 class="text-center">{{$ctrl.info_message}}</h4>
         </div>
@@ -16,7 +16,7 @@
 
         <h2>
           {{$ctrl.config.metadata.name}}
-          <!-- <small>insert id here?</small> -->
+          <small>{{$ctrl.exhibitId}}</small>
         </h2>
 
         <section class="section" ng-if="$ctrl.exhibitEditPageCanbeDisplayed">

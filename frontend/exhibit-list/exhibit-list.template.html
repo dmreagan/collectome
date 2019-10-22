@@ -110,8 +110,8 @@
         <div ng-if="$ctrl.customizedLayoutCheckbox">custom {{$ctrl.custCol}} by
           {{$ctrl.custRow}} grid</div>
       </div>
-      <div class="callout id=" exhibit-{{exhibit.id}}"
-        ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id"">
+      <div class="callout" id=" exhibit-{{exhibit.id}}"
+        ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id">
         <div class=" media-object stack-for-small">
         <div class="media-object-section">
           <display-thumbnail config=exhibit></display-thumbnail>

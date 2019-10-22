@@ -294,6 +294,58 @@ angular
       /**
        *
        * @param {config file} config
+       * @param {type of the submit, 0 for create from scratch, 1 for update, i.e., delete and then create} type
+       */
+      this.submitPlaylist = (config, self, owner, type) => {
+        const extra = {};
+
+        // eslint-disable-next-line max-len
+        const authors = config.metadata.authors.filter(name => (name.first_name && name.last_name));
+        const filteredAuthors = authors.map(name => `${name.first_name}--${name.last_name}`);
+        extra.authors = filteredAuthors.join(';');
+
+        extra.institutions = config.metadata.institutions.filter(name => name).join(';');
+
+        extra.disciplines = config.metadata.disciplines.join(';');
+
+        extra.tags = config.metadata.tags.join(';');
+
+        extra.collections = config.collections.map(entry => entry.id).join(';');
+
+        const api = new Api('/playlists');
+
+        const createTime = new Date();
+
+        api.post({
+          config, extra, createTime, owner,
+        }).then((resp) => {
+          const assignedId = resp.data.id;
+
+          if (type === 0) { // create from scratch
+            const path = '/playlist-create';
+            $location.url(`${path}/${assignedId}`);
+          } else if (type === 1) { // update, i.e., delete first and then create
+            self.message_style = 'alert success one-third float-center';
+            self.info_message = 'Playlist has been successfully edited';
+            self.success = true;
+            $location.url(`/playlists/${assignedId}/edit?status=success`);
+          }
+        }, (e) => {
+          console.warn(e);
+
+          // // roll back
+          // const msg = 'Upload exhibit failed.';
+          // this.snapshotRollback = (snapshotRef, self, msg);
+
+          console.warn(e.data.status);
+          self.message_style = 'callout alert';
+          self.info_message = e.data.error;
+        });
+      };
+
+      /**
+       *
+       * @param {config file} config
        * @param {id of the div to be taken a snapshot} divId
        */
       this.updateExhibit = (exhibitId, config, self, owner) => {
@@ -366,9 +418,25 @@ angular
         return d.promise;
       };
 
+      this.getPlaylist = (playlistId) => {
+        const d = $q.defer();
+        const api = new Api(`/playlist/${playlistId}`);
+        api.get().then((response) => {
+          d.resolve(response);
+        }, (e) => {
+          console.warn(e);
+          d.reject(e);
+        });
+        return d.promise;
+      };
 
       this.deleteExhibit = (exhibitId) => {
         const api = new Api(`/exhibits/${exhibitId}`);
+        return api.delete();
+      };
+
+      this.deletePlaylist = (playlistId) => {
+        const api = new Api(`/playlists/${playlistId}`);
         return api.delete();
       };
 
@@ -385,10 +453,23 @@ angular
         return d.promise;
       };
 
-      this.checkId = (title, owner) => {
+      this.checkExhibitId = (title, owner) => {
         const d = $q.defer();
 
-        const api = new Api('/idcheck');
+        const api = new Api('/exhibitIdcheck');
+        api.post({ title, owner }).then((response) => {
+          d.resolve(response);
+        }, (e) => {
+          console.warn(e);
+          d.reject(e);
+        });
+        return d.promise;
+      };
+
+      this.checkPlaylistId = (title, owner) => {
+        const d = $q.defer();
+
+        const api = new Api('/playlistIdcheck');
         api.post({ title, owner }).then((response) => {
           d.resolve(response);
         }, (e) => {
@@ -439,9 +520,34 @@ angular
         return d.promise;
       };
 
+      this.getPlaylists = () => {
+        console.log('get playlists');
+        const d = $q.defer();
+        const api = new Api('/playlists');
+        api.get().then((response) => {
+          d.resolve(response);
+        }, (e) => {
+          console.warn(e);
+          d.reject(e);
+        });
+        return d.promise;
+      };
+
       this.searchExhibits = (query) => {
         const d = $q.defer();
-        const api = new Api('/search');
+        const api = new Api('/searchExhibits');
+        api.post(query).then((response) => {
+          d.resolve(response);
+        }, (e) => {
+          console.warn(e);
+          d.reject(e);
+        });
+        return d.promise;
+      };
+
+      this.searchPlaylists = (query) => {
+        const d = $q.defer();
+        const api = new Api('/searchPlaylists');
         api.post(query).then((response) => {
           d.resolve(response);
         }, (e) => {

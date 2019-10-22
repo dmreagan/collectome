@@ -3,7 +3,7 @@ angular
   .component('exhibitDisplay', {
     templateUrl: 'exhibit-display/exhibit-display.template.html',
     controller: ['Utilities', '$routeParams',
-      function exhibitDetailController(Utilities, $routeParams) {
+      function exhibitDisplayController(Utilities, $routeParams) {
         const utils = new Utilities();
 
         this.exhibitId = $routeParams.exhibitId;
