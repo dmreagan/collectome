@@ -40,6 +40,35 @@ CREATE TABLE exhibits (
     owner STRING
 ) WITH (number_of_replicas = 0);
 
+-- custom text analyzer
+CREATE ANALYZER playlistanalyzer (
+  TOKENIZER standard,
+  TOKEN_FILTERS (
+    lowercase,
+    stop,
+    kstem,
+    asciifolding
+  )
+);
+
+-- projects table
+DROP TABLE IF EXISTS playlists;
+CREATE TABLE playlists (
+    id STRING PRIMARY KEY,
+    title STRING INDEX USING FULLTEXT WITH (analyzer = 'playlistanalyzer'),
+    description STRING INDEX USING FULLTEXT WITH (analyzer = 'playlistanalyzer'),
+    disciplines STRING INDEX USING FULLTEXT WITH (analyzer = 'playlistanalyzer'),
+    institutions STRING INDEX USING FULLTEXT WITH (analyzer = 'playlistanalyzer'),
+    tags STRING INDEX USING FULLTEXT WITH (analyzer = 'playlistanalyzer'),
+    people STRING INDEX USING FULLTEXT WITH (analyzer = 'playlistanalyzer'),
+    collections STRING INDEX USING FULLTEXT WITH (analyzer = 'playlistanalyzer'),
+    public BOOLEAN,
+    config STRING,
+    create_time STRING,
+    last_modified_time STRING,
+    owner STRING
+) WITH (number_of_replicas = 0);
+
 -- snapshots blob table
 DROP BLOB TABLE IF EXISTS exhibit_snapshots;
 CREATE BLOB TABLE exhibit_snapshots
