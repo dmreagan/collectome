@@ -1,0 +1,12 @@
+<div class="callout" ng-class="$ctrl.style">
+  <p class="text-center h5">{{$ctrl.message}}</p>
+
+  <div ng-if="$ctrl.confirm === 'continue'" style="text-align: center;">
+    <a class="button success" href="{{$ctrl.url}}">See it</a>
+  </div>
+
+  <div ng-if="$ctrl.confirm === 'yesno'" style="text-align: center;">
+    <a class="button alert" href="">Yes</a>
+    <a class="button alert hollow" href="">No</a>
+  </div>
+</div>

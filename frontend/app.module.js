@@ -9,6 +9,7 @@ angular.module('collectomeApp', [
   'home',
   'indexHeader',
   'ngRoute',
+  'notificationCallout',
   'sameoriginCheck',
   'playlistCreate',
   'playlistDetail',
