@@ -18,6 +18,14 @@ angular
 
         this.containerIdOnOffSwitch = false;
 
+        const params = $location.search();
+
+        if (params.status === 'copy') {
+          this.copy = true;
+          this.message_style = 'callout success';
+          this.info_message = 'This is your own copy of the collection. It is marked private by default.';
+        }
+
         this.goToExhibits = () => $location.url('/exhibits');
 
         this.sanityCheck = () => {
@@ -88,7 +96,7 @@ angular
           // set to prviate
           clonedConfig.metadata.public = false;
 
-          utils.submitExhibit(clonedConfig, this, loginUser);
+          utils.submitExhibit(clonedConfig, this, loginUser, 2);
         };
 
         const getExhibit = () => {
@@ -99,7 +107,6 @@ angular
 
             if (this.authentication.userProfile) {
               const loginUser = this.authentication.userProfile.login;
-              console.log(loginUser);
 
               if (loginUser === this.exhibitOwner) {
                 this.isOwner = true;

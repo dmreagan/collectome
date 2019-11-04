@@ -272,10 +272,12 @@ angular
             const path = '/exhibit-create';
             $location.url(`${path}/${assignedId}`);
           } else if (type === 1) { // update, i.e., delete first and then create
-            self.message_style = 'alert success one-third float-center';
+            self.message_style = 'callout success';
             self.info_message = 'Collection has been successfully edited';
             self.success = true;
             $location.url(`/exhibits/${assignedId}/edit?status=success`);
+          } else if (type === 2) {
+            $location.url(`/exhibits/${assignedId}?status=copy`);
           }
         }, (e) => {
           console.warn(e);
@@ -508,7 +510,6 @@ angular
       this.sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 
       this.getExhibits = () => {
-        console.log('get exhibits');
         const d = $q.defer();
         const api = new Api('/exhibits');
         api.get().then((response) => {
@@ -521,7 +522,6 @@ angular
       };
 
       this.getPlaylists = () => {
-        console.log('get playlists');
         const d = $q.defer();
         const api = new Api('/playlists');
         api.get().then((response) => {

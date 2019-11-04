@@ -6,6 +6,12 @@
       </div>
     </section>
 
+    <section class="section" ng-if="$ctrl.copy">
+      <div ng-class="$ctrl.message_style">
+        <p class="text-center h5">{{$ctrl.info_message}}</p>
+      </div>
+    </section>
+
     <section class="section" ng-if="$ctrl.exhibitIdIsValid">
 
       <h2>

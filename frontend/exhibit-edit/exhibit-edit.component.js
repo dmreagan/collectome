@@ -98,8 +98,6 @@ angular
           if (this.authentication.isAuthorized) {
             const loginUser = this.authentication.userProfile.login;
 
-            console.log(loginUser);
-
             if (this.exhibitOwner === loginUser) {
               /**
                * login user can edit since she is the owner, regardless whether
@@ -107,8 +105,6 @@ angular
                */
               this.exhibitEditPageCanbeDisplayed = true;
               this.isOwner = true;
-
-              console.log('branch 1');
             } else if (this.exhibitIsPublic) {
               /**
                * login user is not the owner, however since the exhibit is set
@@ -116,11 +112,9 @@ angular
                * not allowed to make any edit.
                */
               this.exhibitEditPageCanbeDisplayed = true;
-              console.log('branch 2');
             } else {
               /* not the owner and the exhibit is not public */
               this.exhibitEditPageCanbeDisplayed = false;
-              console.log('branch 3');
             }
           }
         };
