@@ -60,38 +60,36 @@ angular
             return;
           }
 
-          console.log(this.config);
-
           const loginUser = this.authentication.userProfile.login;
 
           // the following 'updateExhibit' function is used for system generated id
-          // utils.updateExhibit(this.exhibitId, this.config, this, loginUser);
+          utils.updateExhibit(this.exhibitId, this.config, this, loginUser);
 
           // when using user composed id (i.e., title), we need to delete and then create, since
           // it is a bad practice to update primary key.
 
-          utils.checkExhibitId(this.config.metadata.name, loginUser).then((response) => {
-            utils.deleteExhibit(this.exhibitId).then((response) => {
-              const type = 1; // update type
-              utils.submitExhibit(this.config, this, loginUser, type);
-            }, (e) => {
-              console.warn(e);
-              // window.alert('Deleting the post failed.');
-              // this.message_style = 'callout alert';
-              // this.info_message = 'Updating the exhibit failed.';
+          // utils.checkExhibitId(this.config.metadata.name, loginUser).then((response) => {
+          //   utils.deleteExhibit(this.exhibitId).then((response) => {
+          //     const type = 1; // update type
+          //     utils.submitExhibit(this.config, this, loginUser, type);
+          //   }, (e) => {
+          //     console.warn(e);
+          //     // window.alert('Deleting the post failed.');
+          //     // this.message_style = 'callout alert';
+          //     // this.info_message = 'Updating the exhibit failed.';
 
-              $location.search('status', 'error');
-              $route.reload();
-            });
-          }, (e) => {
-            console.warn(e);
-            // this.message_style = 'callout alert';
-            // this.info_message = 'Sanity check failed. title already used';
+          //     $location.search('status', 'error');
+          //     $route.reload();
+          //   });
+          // }, (e) => {
+          //   console.warn(e);
+          //   // this.message_style = 'callout alert';
+          //   // this.info_message = 'Sanity check failed. title already used';
 
-            console.log('duplicate id');
-            $location.search('status', 'dupid');
-            $route.reload();
-          });
+          //   console.log('duplicate id');
+          //   $location.search('status', 'dupid');
+          //   $route.reload();
+          // });
         };
 
         this.sanitycheck = () => {
@@ -130,7 +128,7 @@ angular
             }, (e) => {
               console.warn(e);
               this.exhibitIdIsValid = false;
-              this.message_style = 'alert error one-third float-center';
+              this.message_style = 'callout alert';
               this.info_message = `Cannot obtain exhibit with id ${this.exhibitId}`;
             });
           }

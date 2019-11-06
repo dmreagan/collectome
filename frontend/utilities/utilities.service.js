@@ -373,8 +373,71 @@ angular
         api.put({
           config, extra, lastModifiedTime, owner,
         }).then((resp) => {
-          self.message_style = 'alert success one-third float-center';
+          self.message_style = 'callout success';
           self.info_message = 'Exhibit has been successfully edited';
+          self.success = true;
+
+          // console.warn(resp);
+
+          const params = $location.search();
+
+          if (params.status) {
+            if (params.status === 'success') {
+              /**
+               * come from a previous successful edit page
+                */
+              $route.reload();
+            }
+          } else {
+            /**
+              * come from a plain edit page
+              */
+            // add paramter and then reload
+            $location.search('status', 'success');
+          }
+        }, (e) => {
+          console.warn(e);
+
+          // roll back
+          // const msg = 'Update exhibit failed.';
+          // this.snapshotRollback = (snapshotRef, self, msg);
+
+          self.message_style = 'callout alert';
+          self.info_message = e.data.error;
+
+        });
+      };
+
+      /**
+       *
+       * @param {config file} config
+       * @param {id of the div to be taken a snapshot} divId
+       */
+      this.updatePlaylist = (playlistId, config, self, owner) => {
+        const snapshotRef = '-1'; /* reserved for future use, e.g., logo or user uplodaed image file */
+        const extra = {};
+
+        const authors = config.metadata.authors.filter(name => (name.first_name && name.last_name));
+        const filteredAuthors = authors.map(name => `${name.first_name}--${name.last_name}`);
+        extra.authors = filteredAuthors.join(';');
+
+        extra.institutions = config.metadata.institutions.filter(name => name).join(';');
+
+        extra.disciplines = config.metadata.disciplines.join(';');
+
+        extra.tags = config.metadata.tags.join(';');
+
+        extra.snapshotRef = snapshotRef;
+
+        const api = new Api(`/playlist/${playlistId}/edit`);
+
+        const lastModifiedTime = new Date();
+
+        api.put({
+          config, extra, lastModifiedTime, owner,
+        }).then((resp) => {
+          self.message_style = 'callout success';
+          self.info_message = 'Playlist has been successfully edited';
           self.success = true;
 
           // console.warn(resp);

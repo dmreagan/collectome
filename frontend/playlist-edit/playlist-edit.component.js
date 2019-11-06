@@ -55,38 +55,35 @@ angular
             return;
           }
 
-          console.log(this.config);
-
           const loginUser = this.authentication.userProfile.login;
 
           // the following 'updatePlaylist' function is used for system generated id
-          // utils.updatePlaylist(this.playlistId, this.config, this, loginUser);
+          utils.updatePlaylist(this.playlistId, this.config, this, loginUser);
 
           // when using user composed id (i.e., title), we need to delete and then create, since
           // it is a bad practice to update primary key.
+          // utils.checkPlaylistId(this.config.metadata.name, loginUser).then((response) => {
+          //   utils.deletePlaylist(this.playlistId).then((response) => {
+          //     const type = 1; // update type
+          //     utils.submitPlaylist(this.config, this, loginUser, type);
+          //   }, (e) => {
+          //     console.warn(e);
+          //     // window.alert('Deleting the post failed.');
+          //     // this.message_style = 'callout alert';
+          //     // this.info_message = 'Updating the playlist failed.';
 
-          utils.checkPlaylistId(this.config.metadata.name, loginUser).then((response) => {
-            utils.deletePlaylist(this.playlistId).then((response) => {
-              const type = 1; // update type
-              utils.submitPlaylist(this.config, this, loginUser, type);
-            }, (e) => {
-              console.warn(e);
-              // window.alert('Deleting the post failed.');
-              // this.message_style = 'callout alert';
-              // this.info_message = 'Updating the playlist failed.';
+          //     $location.search('status', 'error');
+          //     $route.reload();
+          //   });
+          // }, (e) => {
+          //   console.warn(e);
+          //   // this.message_style = 'callout alert';
+          //   // this.info_message = 'Sanity check failed. title already used';
 
-              $location.search('status', 'error');
-              $route.reload();
-            });
-          }, (e) => {
-            console.warn(e);
-            // this.message_style = 'callout alert';
-            // this.info_message = 'Sanity check failed. title already used';
-
-            console.log('duplicate id');
-            $location.search('status', 'dupid');
-            $route.reload();
-          });
+          //   console.log('duplicate id');
+          //   $location.search('status', 'dupid');
+          //   $route.reload();
+          // });
         };
 
         this.sanitycheck = () => {

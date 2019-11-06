@@ -391,9 +391,9 @@ $app->post('/exhibits', function() use ($app)
 
     error_log("Done sanity check" . "\n", 3, $app->ERROR_LOG_PATH);
 
-    // $id        = uniqid();
+    $id = uniqid();
 
-    $id = $app->title2id($owner, $title);
+    // $id = $app->title2id($owner, $title);
 
     if (!$app->isExhibitUnique($id)) {
         // server code '409' means "request conflicts with the current state of the server"
@@ -482,7 +482,8 @@ $app->post('/playlists', function() use ($app)
 
     error_log("Done sanity check" . "\n", 3, $app->ERROR_LOG_PATH);
 
-    $id = $app->title2id($owner, $title);
+    $id = uniqid();
+    // $id = $app->title2id($owner, $title);
 
     if (!$app->isPlaylistUnique($id)) {
         // server code '409' means "request conflicts with the current state of the server"
@@ -612,6 +613,70 @@ $app->put('/exhibit/:id/edit', function($id) use ($app)
     $state = $qry->execute();
 
 })->name('exhibit-put');
+
+/**
+ * edits an playlist with a given id.
+ */
+$app->put('/playlist/:id/edit', function($id) use ($app)
+{
+    error_log("In update playlist" . "\n", 3, $app->ERROR_LOG_PATH);
+    error_log("show request body" . "\n", 3, $app->ERROR_LOG_PATH);
+    error_log("{$app->request->getBody()}" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $data            = json_decode($app->request->getBody());
+    $title           = $data->config->metadata->name;
+    $description     = $data->config->metadata->description;
+    $public          = $data->config->metadata->public;
+
+    $disciplines     = $data->extra->disciplines;
+    $institutions    = $data->extra->institutions;
+    $people          = $data->extra->authors;
+    $tags            = $data->extra->tags;
+
+    $last_modified_time     = $data->lastModifiedTime;
+    $owner = $data->owner;
+
+    if (empty($title)) {
+      $app->argument_required('Argument "Title" is required');
+      return;
+    } else if (empty($description)) {
+        $app->argument_required('Argument "Description" is required');
+        return;
+    }else if (empty($institutions)) {
+        $app->argument_required('Argument "Institutions" is required');
+        return;
+    }
+
+    error_log("Done sanity check" . "\n", 3, $app->ERROR_LOG_PATH);
+
+    $qry = $app->conn->prepare("UPDATE {$app->PLAYLISTS_TABLE_NAME}
+                                SET title = ?,
+                                description = ?,
+                                disciplines = ?,
+                                institutions = ?,
+                                tags = ?,
+                                people = ?,
+                                public = ?,
+                                config = ?,
+                                last_modified_time = ?,
+                                owner = ?
+                                WHERE id=?");
+
+    $qry->bindParam(1, $title);
+    $qry->bindParam(2, $description);
+    $qry->bindParam(3, $disciplines);
+    $qry->bindParam(4, $institutions);
+    $qry->bindParam(5, $tags);
+    $qry->bindParam(6, $people);
+    $qry->bindParam(7, $public);
+    $qry->bindParam(8, json_encode($data->config));
+    $qry->bindParam(9, $last_modified_time);
+    $qry->bindParam(10, $owner);
+    $qry->bindParam(11, $id);
+
+    $state = $qry->execute();
+
+})->name('playlist-put');
 
 /**
  * Get the exhibit for a given id.
