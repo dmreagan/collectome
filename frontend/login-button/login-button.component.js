@@ -26,10 +26,6 @@ angular
         }
       };
 
-      this.goToExhibitCreate = () => {
-        $location.url('/exhibit-create');
-      };
-
       const checkForGitHubUserProfile = () => {
         if ($window.location.search) {
           const code = $window.location.search.substring('?code='.length);
@@ -39,6 +35,7 @@ angular
             const data = JSON.parse(response.data);
             this.authentication.userProfile = data;
             this.username = data.name;
+            console.log(this.authentication);
           }, (e) => {
             console.warn(e);
           });

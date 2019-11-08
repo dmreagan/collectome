@@ -4,130 +4,133 @@ angular
     templateUrl: 'exhibit-detail/exhibit-detail.template.html',
     controller: ['Authentication', 'Utilities', '$routeParams', '$location',
       function exhibitDetailController(Authentication, Utilities, $routeParams, $location) {
-        const utils = new Utilities();
+        const ctrl = this;
 
-        this.authentication = Authentication;
+        /**
+         * Component lifecycle hooks
+         */
 
-        this.exhibitId = $routeParams.exhibitId;
+        // initialize scope
+        ctrl.$onInit = () => {
+          // services
+          ctrl.utils = new Utilities();
+          ctrl.authentication = Authentication;
 
-        this.exhibitIdIsValid = true;
+          // vars
+          ctrl.exhibitId = $routeParams.exhibitId;
+          ctrl.params = $location.search();
 
-        this.exhibitIsPublic = false;
+          // state
+          ctrl.notify = false;
+          ctrl.exhibitIdIsValid = false;
+          ctrl.exhibitIsPublic = false;
+          ctrl.userIsOwner = false;
+          ctrl.containerIdOnOffSwitch = false;
+        };
 
-        this.isOwner = false;
-
-        this.containerIdOnOffSwitch = false;
-
-        const params = $location.search();
-
-        if (params.status === 'copy') {
-          this.copy = true;
-          this.message_style = 'callout success';
-          this.info_message = 'This is your own copy of the collection. It is marked private by default.';
-        }
-
-        this.goToExhibits = () => $location.url('/exhibits');
-
-        this.sanityCheck = () => {
-          if (this.authentication.userProfile.login === null) {
-            this.noPermission = true;
-            this.message_style = 'alert error one-third float-center';
-            this.info_message = 'Cannot obtain user\'s github login id.';
-            return false;
+        // do some stuff after page has initialized
+        ctrl.$postLink = () => {
+          // show a success callout if collection was just copied
+          if (ctrl.params.status === 'copy') {
+            // ctrl.copy = true;
+            ctrl.notify = true;
+            ctrl.notificationStyle = 'success';
+            ctrl.notificationMessage = 'This is your own copy of the collection. It is marked private by default.';
           }
 
-          const loginUser = this.authentication.userProfile.login;
+          ctrl.getExhibit();
+        };
 
-          if (this.exhibitOwner !== loginUser) {
-            this.noPermission = true;
-            const msg = `exhibit owner "${this.exhibitOwner}" not same as login user "${loginUser}"`;
+        // on each digest, check if user is collection owner
+        // if user logs in from this page, we need to update view
+        ctrl.$doCheck = () => {
+          ctrl.userIsOwner = ctrl.isUserOwner();
 
-            this.message_style = 'alert error one-third float-center';
-            this.info_message = msg;
-
-            // console.log(msg);
-
-            return false;
+          if (ctrl.userIsOwner) {
+            ctrl.notify = false;
           }
-
-          return true;
         };
 
-        this.goToEdit = () => {
-          $location.url(`/exhibits/${this.exhibitId}/edit`);
+        /**
+         * Callbacks
+         */
+
+        // show delete confirmation callout
+        ctrl.delete = () => {
+          ctrl.confirmDelete = true;
         };
 
-        this.delete = () => {
-          this.confirmDelete = true;
-          this.message_style = 'callout warning';
-          this.info_message = 'Are you sure you want to delete this project?';
-
-          this.deleteYes = () => {
-            this.acknowledgeDelete = true;
-            this.confirmDelete = false;
-
-            utils.deleteExhibit(this.exhibitId).then((response) => {
-              this.message_style = 'callout success';
-              this.info_message = 'Exhibit Deleted!';
-              // console.log(response);
-              // console.log('Exhibit deleted!');
-            }, (e) => {
-              console.warn(e);
-              // window.alert('Deleting the post failed.');
-              this.message_style = 'callout alert';
-              this.info_message = 'Deleting the exhibit failed.';
-            });
-          };
+        // hide delete confirmation callout
+        ctrl.deleteNo = () => {
+          ctrl.confirmDelete = false;
         };
 
-        this.deleteNo = () => {
-          this.confirmDelete = false;
+        // send delete request and display response
+        ctrl.deleteYes = () => {
+          ctrl.acknowledgeDelete = true;
+          ctrl.confirmDelete = false;
+
+          ctrl.utils.deleteExhibit(ctrl.exhibitId).then(() => {
+            ctrl.notificationStyle = 'success';
+            ctrl.notificationMessage = 'Exhibit deleted!';
+          }, (e) => {
+            console.warn(e);
+            // window.alert('Deleting the post failed.');
+            ctrl.notificationStyle = 'alert';
+            ctrl.notificationMessage = 'Deleting the exhibit failed.';
+          });
         };
 
-        this.deleteAcknowledge = () => {
-          $location.url('/exhibits');
-        };
+        // create a copy owned by the user
+        ctrl.fork = () => {
+          const loginUser = ctrl.authentication.userProfile.login;
 
-        this.fork = () => {
-          const loginUser = this.authentication.userProfile.login;
-
-          const clonedConfig = JSON.parse(JSON.stringify(this.config));
+          const clonedConfig = JSON.parse(JSON.stringify(ctrl.config));
 
           // set to prviate
           clonedConfig.metadata.public = false;
 
-          utils.submitExhibit(clonedConfig, this, loginUser, 2);
+          ctrl.utils.submitExhibit(clonedConfig, this, loginUser, 2);
         };
 
-        const getExhibit = () => {
-          utils.getExhibit(this.exhibitId).then((response) => {
-            this.config = JSON.parse(response.data.config);
-            this.exhibitOwner = response.data.owner;
-            this.exhibitIsPublic = response.data.public;
+        /**
+         * Functions
+         */
 
-            if (this.authentication.userProfile) {
-              const loginUser = this.authentication.userProfile.login;
+        // Send request for collection
+        ctrl.getExhibit = () => {
+          ctrl.utils.getExhibit(ctrl.exhibitId).then((response) => {
+            ctrl.exhibitIdIsValid = true;
+            ctrl.config = JSON.parse(response.data.config);
+            ctrl.exhibitOwner = response.data.owner;
+            ctrl.exhibitIsPublic = response.data.public;
+            ctrl.userIsOwner = ctrl.isUserOwner();
 
-              if (loginUser === this.exhibitOwner) {
-                this.isOwner = true;
-              }
+            if (!ctrl.exhibitIsPublic && !ctrl.userIsOwner) {
+              ctrl.notificationStyle = 'alert';
+              ctrl.notificationMessage = 'This collection is private.';
+              ctrl.notify = true;
             }
           }, (e) => {
             console.warn(e);
-            this.exhibitIdIsValid = false;
-            this.message_style = 'alert error one-third float-center';
-            this.info_message = `Cannot obtain exhibit with id ${this.exhibitId}`;
+            ctrl.exhibitIdIsValid = false;
+            ctrl.notificationStyle = 'alert';
+            ctrl.notificationMessage = `Cannot obtain exhibit with id ${ctrl.exhibitId}`;
+            ctrl.notify = true;
           });
         };
 
-        if (this.authentication.isAuthorized) {
-          getExhibit();
-        } else {
-          // wait a while till async login is ready (if the login is clicked)
-          const milliseconds = 1000;
-          utils.sleep(milliseconds).then(() => {
-            getExhibit();
-          });
-        }
+        // Check if user owns this collection
+        ctrl.isUserOwner = () => {
+          let localUserIsOwner = false;
+
+          if (ctrl.authentication.userProfile) {
+            if (ctrl.authentication.userProfile.login === ctrl.exhibitOwner) {
+              localUserIsOwner = true;
+            }
+          }
+
+          return localUserIsOwner;
+        };
       }],
   });
