@@ -1,8 +1,8 @@
 <main role="main" class="main-top-margin">
   <div class="grid-container">
-    <section class="section" ng-if="!$ctrl.playlistIdIsValid">
-      <div ng-class="$ctrl.message_style">
-        <h4 class="text-center">{{$ctrl.info_message}}</h4>
+    <section ng-if="$ctrl.notify">
+      <div class="callout" ng-class="$ctrl.notificationStyle">
+        <p class="text-center h5">{{$ctrl.notificationMessage}}</p>
       </div>
     </section>
 
@@ -13,18 +13,7 @@
         <small>{{$ctrl.playlistId}}</small>
       </h2>
 
-      <section class="section" ng-if="!$ctrl.playlistIsPublic && !$ctrl.isOwner">
-
-        <section class="section" ng-if="!$ctrl.authentication.isAuthorized">
-          <h4>This playlist is not public. If you are the owner, please log in.</h4>
-        </section>
-
-        <section class="section" ng-if="$ctrl.authentication.isAuthorized">
-          <h4>You are not the owner of this private playlist.</h4>
-        </section>
-      </section>
-
-      <section class="section" ng-if="$ctrl.playlistIsPublic || $ctrl.isOwner">
+      <section ng-if="$ctrl.playlistIsPublic || $ctrl.userIsOwner">
 
         <playlist-config-display config="$ctrl.config"></playlist-config-display>
 
@@ -39,46 +28,47 @@
 
         <br>
 
-        <div ng-if="$ctrl.authentication.isAuthorized && !$ctrl.isOwner">
+        <div ng-if="$ctrl.authentication.isAuthorized && !$ctrl.userIsOwner">
           <button class="button" ng-click="$ctrl.fork()">
             <angularjs-feather icon="copy"></angularjs-feather>
             Copy this playlist
           </button>
         </div>
 
-        <div ng-if="$ctrl.isOwner" class="text-center callout secondary">
+        <div ng-if="$ctrl.userIsOwner" class="text-center callout secondary">
           <h4>Modify this playlist</h4>
           <div class="button-group float-center">
-            <button class="button primary" ng-click="$ctrl.goToEdit()">
+            <a class="button primary" ng-href="/playlists/{{$ctrl.playlistId}}/edit">
               <angularjs-feather icon="edit-2"></angularjs-feather>
               Edit
-            </button>
+            </a>
             <button class="button alert" ng-click="$ctrl.delete()">
               <angularjs-feather icon="trash"></angularjs-feather>
               Delete
             </button>
           </div>
-          <div ng-show="$ctrl.confirmDelete" ng-class="$ctrl.message_style">
-            <h5 class="text-center">{{$ctrl.info_message}}</h5>
+          <div ng-if="$ctrl.confirmDelete" class="callout warning">
+            <p class="text-center h5">Are you sure you want to delete this playlist?</p>
             <div class="button-group float-center">
-              <button class="button alert" ng-click="$ctrl.deleteYes()">Yes</button>
-              <button class="button secondary" ng-click="$ctrl.deleteNo()">No</button>
+              <button class="button alert" ng-click="$ctrl.deleteYes()">Delete</button>
+              <button class="button secondary hollow" ng-click="$ctrl.deleteNo()">Cancel</button>
             </div>
           </div>
 
-          <div ng-show="$ctrl.acknowledgeDelete" ng-class="$ctrl.message_style">
-            <h5 class="text-center">{{$ctrl.info_message}}</h5>
-            <button class="button success float-center" ng-click="$ctrl.deleteAcknowledge()">Continue...</button>
+          <div ng-if="$ctrl.acknowledgeDelete" class="callout" ng-class="$ctrl.notificationStyle">
+            <p class="text-center h5">{{$ctrl.notificationMessage}}</p>
+            <a class="button secondary hollow" href="/playlists">
+              <angularjs-feather icon="search"></angularjs-feather>
+              Back to search
+            </a>
           </div>
 
         </div>
 
-        <div>
-          <button class="button hollow" ng-click="$ctrl.goToPlaylists()">
-            <angularjs-feather icon="arrow-left"></angularjs-feather>
-            Back to search
-          </button>
-        </div>
+        <a class="button hollow" href="/playlists">
+          <angularjs-feather icon="arrow-left"></angularjs-feather>
+          Back to search
+        </a>
 
       </section>
     </section>

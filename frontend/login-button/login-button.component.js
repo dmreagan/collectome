@@ -19,8 +19,6 @@ angular
 
             const url = `${gitOAuthURL}?scope=${githubScope}&client_id=${clientId}&redirect_uri=${baseURL}${redirectURI}`;
 
-            console.log(url);
-
             $window.location.assign(url);
           });
         }
@@ -35,7 +33,6 @@ angular
             const data = JSON.parse(response.data);
             this.authentication.userProfile = data;
             this.username = data.name;
-            console.log(this.authentication);
           }, (e) => {
             console.warn(e);
           });

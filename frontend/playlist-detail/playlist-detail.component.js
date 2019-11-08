@@ -4,123 +4,123 @@ angular
     templateUrl: 'playlist-detail/playlist-detail.template.html',
     controller: ['Authentication', 'Utilities', '$routeParams', '$location',
       function playlistDetailController(Authentication, Utilities, $routeParams, $location) {
-        const utils = new Utilities();
+        const ctrl = this;
 
-        this.authentication = Authentication;
+        /**
+         * Component lifecycle hooks
+         */
 
-        this.playlistId = $routeParams.playlistId;
+        // initialize scope
+        ctrl.$onInit = () => {
+          // services
+          ctrl.utils = new Utilities();
+          ctrl.authentication = Authentication;
 
-        this.playlistIdIsValid = true;
+          // vars
+          ctrl.playlistId = $routeParams.playlistId;
 
-        this.playlistIsPublic = false;
+          // state
+          ctrl.notify = false;
+          ctrl.playlistIdIsValid = true;
+          ctrl.playlistIsPublic = false;
+          ctrl.isOwner = false;
+          ctrl.containerIdOnOffSwitch = false;
+        };
 
-        this.isOwner = false;
+        // do some stuff after page has initialized
+        ctrl.$postLink = () => {
+          ctrl.getPlaylist();
+        };
 
-        this.containerIdOnOffSwitch = false;
+        // on each digest, check if user is playlist owner
+        // if user logs in from this page, we need to update view
+        ctrl.$doCheck = () => {
+          ctrl.userIsOwner = ctrl.isUserOwner();
 
-        this.goToPlaylists = () => $location.url('/playlists');
-
-        this.sanityCheck = () => {
-          if (this.authentication.userProfile.login === null) {
-            this.noPermission = true;
-            this.message_style = 'alert error one-third float-center';
-            this.info_message = 'Cannot obtain user\'s github login id.';
-            return false;
+          if (ctrl.userIsOwner) {
+            ctrl.notify = false;
           }
-
-          const loginUser = this.authentication.userProfile.login;
-
-          if (this.playlistOwner !== loginUser) {
-            this.noPermission = true;
-            const msg = `playlist owner "${this.playlistOwner}" not same as login user "${loginUser}"`;
-
-            this.message_style = 'alert error one-third float-center';
-            this.info_message = msg;
-
-            // console.log(msg);
-
-            return false;
-          }
-
-          return true;
         };
 
-        this.goToEdit = () => {
-          $location.url(`/playlists/${this.playlistId}/edit`);
+        /**
+         * Callbacks
+         */
+
+        // show delete confirmation callout
+        ctrl.delete = () => {
+          ctrl.confirmDelete = true;
         };
 
-        this.delete = () => {
-          this.confirmDelete = true;
-          this.message_style = 'callout warning';
-          this.info_message = 'Are you sure you want to delete this project?';
-
-          this.deleteYes = () => {
-            this.acknowledgeDelete = true;
-            this.confirmDelete = false;
-
-            utils.deletePlaylist(this.playlistId).then((response) => {
-              this.message_style = 'callout success';
-              this.info_message = 'Playlist Deleted!';
-              // console.log(response);
-              // console.log('Playlist deleted!');
-            }, (e) => {
-              console.warn(e);
-              // window.alert('Deleting the post failed.');
-              this.message_style = 'callout alert';
-              this.info_message = 'Deleting the playlist failed.';
-            });
-          };
+        // hide delete confirmation callout
+        ctrl.deleteNo = () => {
+          ctrl.confirmDelete = false;
         };
 
-        this.deleteNo = () => {
-          this.confirmDelete = false;
+        // send delete request and display response
+        ctrl.deleteYes = () => {
+          ctrl.acknowledgeDelete = true;
+          ctrl.confirmDelete = false;
+
+          ctrl.utils.deletePlaylist(ctrl.playlistId).then(() => {
+            ctrl.notificationStyle = 'success';
+            ctrl.notificationMessage = 'Playlist deleted!';
+          }, (e) => {
+            console.warn(e);
+            // window.alert('Deleting the post failed.');
+            ctrl.notificationStyle = 'alert';
+            ctrl.notificationMessage = 'Deleting the playlist failed.';
+          });
         };
 
-        this.deleteAcknowledge = () => {
-          $location.url('/playlists');
-        };
+        // create a copy owned by the user
+        ctrl.fork = () => {
+          const loginUser = ctrl.authentication.userProfile.login;
 
-        this.fork = () => {
-          const loginUser = this.authentication.userProfile.login;
-
-          const clonedConfig = JSON.parse(JSON.stringify(this.config));
+          const clonedConfig = JSON.parse(JSON.stringify(ctrl.config));
 
           // set to prviate
           clonedConfig.metadata.public = false;
 
-          utils.submitPlaylist(clonedConfig, this, loginUser);
+          ctrl.utils.submitPlaylist(clonedConfig, this, loginUser);
         };
 
-        const getPlaylist = () => {
-          utils.getPlaylist(this.playlistId).then((response) => {
-            this.config = JSON.parse(response.data.config);
-            this.playlistOwner = response.data.owner;
-            this.playlistIsPublic = response.data.public;
+        /**
+         * Functions
+         */
 
-            if (this.authentication.userProfile) {
-              const loginUser = this.authentication.userProfile.login;
-              console.log(loginUser);
+        // Send request for playlist
+        ctrl.getPlaylist = () => {
+          ctrl.utils.getPlaylist(ctrl.playlistId).then((response) => {
+            ctrl.config = JSON.parse(response.data.config);
+            ctrl.playlistOwner = response.data.owner;
+            ctrl.playlistIsPublic = response.data.public;
+            ctrl.userIsOwner = ctrl.isUserOwner();
 
-              if (loginUser === this.playlistOwner) {
-                this.isOwner = true;
-              }
+            if (!ctrl.playlistIsPublic && !ctrl.userIsOwner) {
+              ctrl.notificationStyle = 'alert';
+              ctrl.notificationMessage = 'This playlist is private.';
+              ctrl.notify = true;
             }
           }, (e) => {
             console.warn(e);
-            this.playlistIdIsValid = false;
-            this.message_style = 'alert error one-third float-center';
-            this.info_message = `Cannot obtain playlist with id ${this.playlistId}`;
+            ctrl.playlistIdIsValid = false;
+            ctrl.notificationStyle = 'alert';
+            ctrl.notificationMessage = `Cannot obtain playlist with id ${ctrl.playlistId}`;
+            ctrl.notify = true;
           });
         };
 
-        if (this.authentication.isAuthorized) {
-          getPlaylist();
-        } else {
-          // wait a while till async login is ready (if the login is clicked)
-          const milliseconds = 1000;
-          utils.sleep(milliseconds).then(() => {
-            getPlaylist();
-          });
-        }
+        // Check if user owns this playlist
+        ctrl.isUserOwner = () => {
+          let localUserIsOwner = false;
+
+          if (ctrl.authentication.userProfile) {
+            if (ctrl.authentication.userProfile.login === ctrl.playlistOwner) {
+              localUserIsOwner = true;
+            }
+          }
+
+          return localUserIsOwner;
+        };
       }],
   });
