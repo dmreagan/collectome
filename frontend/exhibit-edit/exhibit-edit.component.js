@@ -4,144 +4,140 @@ angular
     templateUrl: 'exhibit-edit/exhibit-edit.template.html',
     controller: ['Authentication', 'Utilities', '$location', '$routeParams', '$route',
       function exhibitEditController(Authentication, Utilities, $location, $routeParams, $route) {
-        const utils = new Utilities();
+        const ctrl = this;
 
-        this.authentication = Authentication;
+        /**
+         * Component lifecycle hooks
+         */
 
-        this.exhibitId = $routeParams.exhibitId;
+        // initialize scope
+        ctrl.$onInit = () => {
+          // services
+          ctrl.utils = new Utilities();
+          ctrl.authentication = Authentication;
 
-        this.exhibitIsPublic = false;
+          // vars
+          ctrl.exhibitId = $routeParams.exhibitId;
+          ctrl.params = $location.search();
 
-        this.exhibitEditPageCanbeDisplayed = false;
+          // state
+          ctrl.notify = false;
+          ctrl.exhibitIsPublic = false;
+          ctrl.exhibitEditPageCanbeDisplayed = false;
+          ctrl.userIsOwner = false;
+          ctrl.exhibitIdIsValid = true;
+          ctrl.containerIdOnOffSwitch = false;
+          ctrl.livepreview = true;
 
-        this.isOwner = false;
-
-        this.exhibitIdIsValid = true;
-
-        this.containerIdOnOffSwitch = false;
-
-        this.livepreview = true;
-
-        const params = $location.search();
-
-        console.log(params);
-
-        if (params.status) {
-
-          console.log('in params status check');
-
-          if (params.status === 'success') {
-            this.message_style = 'callout success';
-            this.info_message = 'Collection has been successfully edited';
-            this.success = true;
-          } else if (params.status === 'dupid') {
-            this.message_style = 'callout alert';
-            this.info_message = 'Sanity check failed. title already used';
-
-            console.log('params status is dupid');
-          } else {
-            this.message_style = 'callout alert';
-            this.info_message = 'Updating the exhibit failed.';
-          }
-        }
-
-        this.updateConfig = (updatedConfig) => {
-          this.config = updatedConfig;
+          // request collection
+          ctrl.getExhibit();
         };
 
-        this.goToExhibits = () => $location.url('/exhibits');
+        // do some stuff after page has initialized
+        ctrl.$postLink = () => {
+          // only need to retrieve the exhibit when user logged in
+          if (ctrl.authentication.isAuthorized) {
+            ctrl.sanitycheck();
 
-        this.goToCreated = () => $location.url(`/exhibits/${this.exhibitId}`);
+            // show notifications based on URL params
+            if (ctrl.params.status) {
+              if (ctrl.params.status === 'success') {
+                ctrl.notificationStyle = 'success';
+                ctrl.notificationMessage = 'Collection has been successfully edited.';
+                ctrl.notify = true;
+              } else if (ctrl.params.status === 'dupid') {
+                ctrl.notificationStyle = 'alert';
+                ctrl.notificationMessage = 'Title already in use.';
+                ctrl.notify = true;
+              } else {
+                ctrl.notificationStyle = 'alert';
+                ctrl.notificationMessage = 'Updating the exhibit failed.';
+                ctrl.notify = true;
+              }
+            }
+          } else {
+            ctrl.notificationStyle = 'warning';
+            ctrl.notificationMessage = 'Please log in to edit.';
+            ctrl.notify = true;
+          }
+        };
 
-        this.save = () => {
-          if (this.authentication.userProfile === null) {
-            this.message_style = 'callout alert';
-            this.info_message = 'Cannot obtain github login id.';
+        // on each digest, check if user is collection owner
+        // if user logs in from this page, we need to update view
+        ctrl.$doCheck = () => {
+          ctrl.sanitycheck();
+        };
+
+        /**
+         * Callbacks
+         */
+
+        // keep exhibit-edit and exhibit-config-editor configs in sync
+        ctrl.updateConfig = (updatedConfig) => {
+          ctrl.config = updatedConfig;
+        };
+
+        // submit update request
+        ctrl.save = () => {
+          if (ctrl.authentication.userProfile === null) {
+            ctrl.notificationStyle = 'alert';
+            ctrl.notificationMessage = 'Cannot obtain GitHub login id.';
             return;
           }
 
-          const loginUser = this.authentication.userProfile.login;
+          const loginUser = ctrl.authentication.userProfile.login;
 
-          // the following 'updateExhibit' function is used for system generated id
-          utils.updateExhibit(this.exhibitId, this.config, this, loginUser);
-
-          // when using user composed id (i.e., title), we need to delete and then create, since
-          // it is a bad practice to update primary key.
-
-          // utils.checkExhibitId(this.config.metadata.name, loginUser).then((response) => {
-          //   utils.deleteExhibit(this.exhibitId).then((response) => {
-          //     const type = 1; // update type
-          //     utils.submitExhibit(this.config, this, loginUser, type);
-          //   }, (e) => {
-          //     console.warn(e);
-          //     // window.alert('Deleting the post failed.');
-          //     // this.message_style = 'callout alert';
-          //     // this.info_message = 'Updating the exhibit failed.';
-
-          //     $location.search('status', 'error');
-          //     $route.reload();
-          //   });
-          // }, (e) => {
-          //   console.warn(e);
-          //   // this.message_style = 'callout alert';
-          //   // this.info_message = 'Sanity check failed. title already used';
-
-          //   console.log('duplicate id');
-          //   $location.search('status', 'dupid');
-          //   $route.reload();
-          // });
+          ctrl.utils.updateExhibit(ctrl.exhibitId, ctrl.config, this, loginUser);
         };
 
-        this.sanitycheck = () => {
-          if (this.authentication.isAuthorized) {
-            const loginUser = this.authentication.userProfile.login;
+        /**
+         * Functions
+         */
 
-            if (this.exhibitOwner === loginUser) {
+        // check login and ownership status and update view
+        ctrl.sanitycheck = () => {
+          if (ctrl.authentication.isAuthorized) {
+            const loginUser = ctrl.authentication.userProfile.login;
+
+            if (ctrl.exhibitOwner === loginUser) {
               /**
                * login user can edit since she is the owner, regardless whether
                * the exhibit is set to be public or private.
                */
-              this.exhibitEditPageCanbeDisplayed = true;
-              this.isOwner = true;
-            } else if (this.exhibitIsPublic) {
+              ctrl.exhibitEditPageCanbeDisplayed = true;
+              ctrl.userIsOwner = true;
+
+              // ugly hack to get rid of login warning but not status notifications
+              if (ctrl.notificationStyle === 'warning') {
+                ctrl.notify = false;
+              }
+            } else if (ctrl.exhibitIsPublic) {
               /**
                * login user is not the owner, however since the exhibit is set
                * to be public, login user can still view the exhibit but just
                * not allowed to make any edit.
                */
-              this.exhibitEditPageCanbeDisplayed = true;
+              ctrl.exhibitEditPageCanbeDisplayed = true;
             } else {
               /* not the owner and the exhibit is not public */
-              this.exhibitEditPageCanbeDisplayed = false;
+              ctrl.exhibitEditPageCanbeDisplayed = false;
             }
           }
         };
 
-        const getExhibit = () => {
-          // only need to retrieve the exhibit when user logged in
-          if (this.authentication.isAuthorized) {
-            utils.getExhibit(this.exhibitId).then((response) => {
-              this.config = JSON.parse(response.data.config);
-              this.exhibitOwner = response.data.owner;
-              this.exhibitIsPublic = response.data.public;
-              this.sanitycheck();
-            }, (e) => {
-              console.warn(e);
-              this.exhibitIdIsValid = false;
-              this.message_style = 'callout alert';
-              this.info_message = `Cannot obtain exhibit with id ${this.exhibitId}`;
-            });
-          }
-        };
-
-        if (this.authentication.isAuthorized) {
-          getExhibit();
-        } else {
-          // wait a while till async login is ready (if the login is clicked)
-          const milliseconds = 1000;
-          utils.sleep(milliseconds).then(() => {
-            getExhibit();
+        // request collection and display response
+        ctrl.getExhibit = () => {
+          ctrl.utils.getExhibit(ctrl.exhibitId).then((response) => {
+            ctrl.config = JSON.parse(response.data.config);
+            ctrl.exhibitOwner = response.data.owner;
+            ctrl.exhibitIsPublic = response.data.public;
+          }, (e) => {
+            console.warn(e);
+            ctrl.exhibitIdIsValid = false;
+            ctrl.notificationStyle = 'alert';
+            ctrl.notificationMessage = `Cannot obtain exhibit with id ${ctrl.exhibitId}`;
+            ctrl.notify = true;
           });
-        }
+        };
       }],
   });
