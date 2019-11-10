@@ -2,8 +2,8 @@ angular
   .module('exhibitEdit')
   .component('exhibitEdit', {
     templateUrl: 'exhibit-edit/exhibit-edit.template.html',
-    controller: ['Authentication', 'Utilities', '$location', '$routeParams', '$route',
-      function exhibitEditController(Authentication, Utilities, $location, $routeParams, $route) {
+    controller: ['Authentication', 'Utilities', '$location', '$routeParams',
+      function exhibitEditController(Authentication, Utilities, $location, $routeParams) {
         const ctrl = this;
 
         /**
@@ -82,6 +82,7 @@ angular
           if (ctrl.authentication.userProfile === null) {
             ctrl.notificationStyle = 'alert';
             ctrl.notificationMessage = 'Cannot obtain GitHub login id.';
+            ctrl.notify = true;
             return;
           }
 

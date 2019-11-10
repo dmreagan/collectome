@@ -10,16 +10,6 @@
     <section class="section" ng-if="$ctrl.authentication.isAuthorized">
 
       <section class="section" ng-if="$ctrl.exhibitIdIsValid">
-        <div ng-class="$ctrl.message_style">
-          <h4 class="text-center">{{$ctrl.info_message}}</h4>
-        </div>
-      </section>
-
-      <div ng-show="$ctrl.success" ng-class="$ctrl.message_style">
-        <h5 class="text-center">{{$ctrl.info_message}}</h5>
-      </div>
-
-      <section class="section" ng-if="$ctrl.exhibitIdIsValid">
 
         <h2>
           {{$ctrl.config.metadata.name}}
@@ -96,10 +86,6 @@
             </a>
           </div>
 
-        </section>
-
-        <section class="callout alert" ng-if="!$ctrl.exhibitEditPageCanbeDisplayed">
-          <h4>You are either not the owner or the exhibit is set to be private</h4>
         </section>
       </section>
     </section>

@@ -2,146 +2,142 @@ angular
   .module('playlistEdit')
   .component('playlistEdit', {
     templateUrl: 'playlist-edit/playlist-edit.template.html',
-    controller: ['Authentication', 'Utilities', '$location', '$routeParams', '$route',
-      function playlistEditController(Authentication, Utilities, $location, $routeParams, $route) {
-        const utils = new Utilities();
+    controller: ['Authentication', 'Utilities', '$location', '$routeParams',
+      function playlistEditController(Authentication, Utilities, $location, $routeParams) {
+        const ctrl = this;
 
-        this.authentication = Authentication;
+        /**
+         * Component lifecycle hooks
+         */
 
-        this.playlistId = $routeParams.playlistId;
+        // initialize scope
+        ctrl.$onInit = () => {
+          // services
+          ctrl.utils = new Utilities();
+          ctrl.authentication = Authentication;
 
-        this.playlistIsPublic = false;
+          // vars
+          ctrl.playlistId = $routeParams.playlistId;
+          ctrl.params = $location.search();
 
-        this.playlistEditPageCanbeDisplayed = false;
+          // state
+          ctrl.playlistIsPublic = false;
+          ctrl.playlistEditPageCanbeDisplayed = false;
+          ctrl.isOwner = false;
+          ctrl.playlistIdIsValid = true;
+          ctrl.containerIdOnOffSwitch = false;
+          ctrl.livepreview = true;
 
-        this.isOwner = false;
-
-        this.playlistIdIsValid = true;
-
-        this.containerIdOnOffSwitch = false;
-
-        this.livepreview = true;
-
-        const params = $location.search();
-
-        console.log(params);
-
-        if (params.status) {
-          if (params.status === 'success') {
-            this.message_style = 'callout success';
-            this.info_message = 'Playlist has been successfully edited';
-            this.success = true;
-          } else if (params.status === 'dupid') {
-            this.message_style = 'callout alert';
-            this.info_message = 'Sanity check failed. title already used';
-          } else {
-            this.message_style = 'callout alert';
-            this.info_message = 'Updating the playlist failed.';
-          }
-        }
-
-        this.updateConfig = (updatedConfig) => {
-          this.config = updatedConfig;
+          // request playlist
+          ctrl.getPlaylist();
         };
 
-        this.goToPlaylists = () => $location.url('/playlists');
+        // do some stuff after page has initialized
+        ctrl.$postLink = () => {
+          // only need to retrieve the playlist when user logged in
+          if (ctrl.authentication.isAuthorized) {
+            ctrl.sanitycheck();
 
-        this.goToCreated = () => $location.url(`/playlists/${this.playlistId}`);
+            // show notifications based on URL params
+            if (ctrl.params.status) {
+              if (ctrl.params.status === 'success') {
+                ctrl.notificationStyle = 'callout success';
+                ctrl.notificationMessage = 'Playlist has been successfully edited';
+                ctrl.notify = true;
+              } else if (ctrl.params.status === 'dupid') {
+                ctrl.notificationStyle = 'callout alert';
+                ctrl.notificationMessage = 'Sanity check failed. title already used';
+                ctrl.notify = true;
+              } else {
+                ctrl.notificationStyle = 'callout alert';
+                ctrl.notificationMessage = 'Updating the playlist failed.';
+                ctrl.notify = true;
+              }
+            }
+          } else {
+            ctrl.notificationStyle = 'warning';
+            ctrl.notificationMessage = 'Please log in to edit.';
+            ctrl.notify = true;
+          }
+        };
 
-        this.save = () => {
-          if (this.authentication.userProfile === null) {
-            this.message_style = 'callout alert';
-            this.info_message = 'Cannot obtain github login id.';
+        // on each digest, check if user is playlist owner
+        // if user logs in from this page, we need to update view
+        ctrl.$doCheck = () => {
+          ctrl.sanitycheck();
+        };
+
+        /**
+         * Callbacks
+         */
+
+        // keep playlist-edit and playlist-config-editor configs in sync
+        ctrl.updateConfig = (updatedConfig) => {
+          ctrl.config = updatedConfig;
+        };
+
+        // submit update request
+        ctrl.save = () => {
+          if (ctrl.authentication.userProfile === null) {
+            ctrl.notificationStyle = 'alert';
+            ctrl.notificationMessage = 'Cannot obtain github login id.';
+            ctrl.notify = true;
             return;
           }
 
-          const loginUser = this.authentication.userProfile.login;
+          const loginUser = ctrl.authentication.userProfile.login;
 
-          // the following 'updatePlaylist' function is used for system generated id
-          utils.updatePlaylist(this.playlistId, this.config, this, loginUser);
-
-          // when using user composed id (i.e., title), we need to delete and then create, since
-          // it is a bad practice to update primary key.
-          // utils.checkPlaylistId(this.config.metadata.name, loginUser).then((response) => {
-          //   utils.deletePlaylist(this.playlistId).then((response) => {
-          //     const type = 1; // update type
-          //     utils.submitPlaylist(this.config, this, loginUser, type);
-          //   }, (e) => {
-          //     console.warn(e);
-          //     // window.alert('Deleting the post failed.');
-          //     // this.message_style = 'callout alert';
-          //     // this.info_message = 'Updating the playlist failed.';
-
-          //     $location.search('status', 'error');
-          //     $route.reload();
-          //   });
-          // }, (e) => {
-          //   console.warn(e);
-          //   // this.message_style = 'callout alert';
-          //   // this.info_message = 'Sanity check failed. title already used';
-
-          //   console.log('duplicate id');
-          //   $location.search('status', 'dupid');
-          //   $route.reload();
-          // });
+          ctrl.utils.updatePlaylist(ctrl.playlistId, ctrl.config, this, loginUser);
         };
 
-        this.sanitycheck = () => {
-          if (this.authentication.isAuthorized) {
-            const loginUser = this.authentication.userProfile.login;
+        /**
+         * Functions
+         */
 
-            console.log(loginUser);
+        // check login and ownership status and update view
+        ctrl.sanitycheck = () => {
+          if (ctrl.authentication.isAuthorized) {
+            const loginUser = ctrl.authentication.userProfile.login;
 
-            if (this.playlistOwner === loginUser) {
+            if (ctrl.playlistOwner === loginUser) {
               /**
                * login user can edit since she is the owner, regardless whether
                * the playlist is set to be public or private.
                */
-              this.playlistEditPageCanbeDisplayed = true;
-              this.isOwner = true;
+              ctrl.playlistEditPageCanbeDisplayed = true;
+              ctrl.isOwner = true;
 
-              console.log('branch 1');
-            } else if (this.playlistIsPublic) {
+              // ugly hack to get rid of login warning but not status notifications
+              if (ctrl.notificationStyle === 'warning') {
+                ctrl.notify = false;
+              }
+            } else if (ctrl.playlistIsPublic) {
               /**
                * login user is not the owner, however since the playlist is set
                * to be public, login user can still view the playlist but just
                * not allowed to make any edit.
                */
-              this.playlistEditPageCanbeDisplayed = true;
-              console.log('branch 2');
+              ctrl.playlistEditPageCanbeDisplayed = true;
             } else {
               /* not the owner and the playlist is not public */
-              this.playlistEditPageCanbeDisplayed = false;
-              console.log('branch 3');
+              ctrl.playlistEditPageCanbeDisplayed = false;
             }
           }
         };
 
-        const getPlaylist = () => {
-          // only need to retrieve the playlist when user logged in
-          if (this.authentication.isAuthorized) {
-            utils.getPlaylist(this.playlistId).then((response) => {
-              this.config = JSON.parse(response.data.config);
-              this.playlistOwner = response.data.owner;
-              this.playlistIsPublic = response.data.public;
-              this.sanitycheck();
-            }, (e) => {
-              console.warn(e);
-              this.playlistIdIsValid = false;
-              this.message_style = 'alert error one-third float-center';
-              this.info_message = `Cannot obtain playlist with id ${this.playlistId}`;
-            });
-          }
-        };
-
-        if (this.authentication.isAuthorized) {
-          getPlaylist();
-        } else {
-          // wait a while till async login is ready (if the login is clicked)
-          const milliseconds = 1000;
-          utils.sleep(milliseconds).then(() => {
-            getPlaylist();
+        // request playlist and display response
+        ctrl.getPlaylist = () => {
+          ctrl.utils.getPlaylist(ctrl.playlistId).then((response) => {
+            ctrl.config = JSON.parse(response.data.config);
+            ctrl.playlistOwner = response.data.owner;
+            ctrl.playlistIsPublic = response.data.public;
+          }, (e) => {
+            console.warn(e);
+            ctrl.playlistIdIsValid = false;
+            ctrl.notificationStyle = 'alert';
+            ctrl.notificationMessage = `Cannot obtain playlist with id ${ctrl.playlistId}`;
+            ctrl.notify = true;
           });
-        }
+        };
       }],
   });
