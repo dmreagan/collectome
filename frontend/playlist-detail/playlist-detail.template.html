@@ -20,7 +20,7 @@
         <br>
 
         <div>
-          <a ng-href="/playlist-display/{{$ctrl.playlistId}}" target="_blank" rel="noopener noreferrer">
+          <a ng-href="playlist-display/{{$ctrl.playlistId}}" target="_blank" rel="noopener noreferrer">
             <angularjs-feather icon="external-link"></angularjs-feather>
             View this playlist in exhibit mode
           </a>
@@ -38,7 +38,7 @@
         <div ng-if="$ctrl.userIsOwner" class="text-center callout secondary">
           <h4>Modify this playlist</h4>
           <div class="button-group float-center">
-            <a class="button primary" ng-href="/playlists/{{$ctrl.playlistId}}/edit">
+            <a class="button primary" ng-href="playlists/{{$ctrl.playlistId}}/edit">
               <angularjs-feather icon="edit-2"></angularjs-feather>
               Edit
             </a>
@@ -57,7 +57,7 @@
 
           <div ng-if="$ctrl.acknowledgeDelete" class="callout" ng-class="$ctrl.notificationStyle">
             <p class="text-center h5">{{$ctrl.notificationMessage}}</p>
-            <a class="button secondary hollow" href="/playlists">
+            <a class="button secondary hollow" href="playlists">
               <angularjs-feather icon="search"></angularjs-feather>
               Back to search
             </a>
@@ -65,7 +65,7 @@
 
         </div>
 
-        <a class="button hollow" href="/playlists">
+        <a class="button hollow" href="playlists">
           <angularjs-feather icon="arrow-left"></angularjs-feather>
           Back to search
         </a>
