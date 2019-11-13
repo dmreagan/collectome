@@ -1076,7 +1076,7 @@ $app->post('/searchExhibits', function() use ($app)
         if (empty($query_string) && empty($row) && empty($col)) {
             $statement = "WHERE " . $statement;
         } else {
-            $statement = "OR " . $statement;
+            $statement = "AND " . $statement;
         }
 
         $sql_statement = $sql_statement . " " . $statement;
