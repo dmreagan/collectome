@@ -1,32 +1,31 @@
 {
   "name": "collectome",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.html",
+  "version": "1.0.0",
+  "description": "A content sharing platform for high-resolution display walls.",
+  "repository": "https://github.com/dmreagan/collectome",
+  "license": "BSD-3-Clause",
   "author": "gruan",
-  "license": "ISC",
-  "dependencies": {
-    "browser-sync": "^2.26.7",
-    "connect-history-api-fallback": "1.6.0"
-  },
-  "devDependencies": {
-    "eslint": "^5.12.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0"
+  "main": "index.html",
+  "scripts": {
+    "serve": "node dev-server.js"
   },
   "eslintConfig": {
-    "extends": "airbnb-base",
     "env": {
       "es6": true,
       "browser": true,
       "jasmine": true
     },
+    "extends": "airbnb-base",
     "globals": {
       "angular": false,
       "chroma": false
     }
   },
-  "scripts": {
-    "serve": "node dev-server.js"
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "connect-history-api-fallback": "1.6.0",
+    "eslint": "^6.7.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
   }
 }
