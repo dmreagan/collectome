@@ -1,5 +1,5 @@
-angular.module('playlistCreate', [
-  'authentication',
-  'utilities',
-  'playlistConfigEditor',
+angular.module("playlistCreate", [
+  "authentication",
+  "utilities",
+  "playlistConfigEditor"
 ]);

@@ -1,3 +1,1 @@
-angular.module('exhibitDisplay', [
-  'utilities',
-]);
+angular.module("exhibitDisplay", ["utilities"]);

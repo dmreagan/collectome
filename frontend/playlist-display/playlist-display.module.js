@@ -1,3 +1,1 @@
-angular.module('playlistDisplay', [
-  'utilities',
-]);
+angular.module("playlistDisplay", ["utilities"]);

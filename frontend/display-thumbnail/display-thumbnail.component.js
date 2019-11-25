@@ -1,75 +1,75 @@
-angular
-  .module('displayThumbnail')
-  .component('displayThumbnail', {
-    template: '<canvas></canvas>',
-    bindings: {
-      config: '<',
-    },
-    controller: function DisplayThumbnailController($element) {
-      const ctrl = this;
+angular.module("displayThumbnail").component("displayThumbnail", {
+  template: "<canvas></canvas>",
+  bindings: {
+    config: "<"
+  },
+  controller: function DisplayThumbnailController($element) {
+    const ctrl = this;
 
-      this.$onInit = () => {
-        ctrl.x = 10;
-        ctrl.y = 10;
-        ctrl.width = 250;
-        ctrl.colWidth = Math.ceil(ctrl.width / ctrl.config.columns);
-        ctrl.rowHeight = Math.ceil(ctrl.colWidth / 16 * 9);
-        ctrl.height = ctrl.config.rows * ctrl.rowHeight;
+    this.$onInit = () => {
+      ctrl.x = 10;
+      ctrl.y = 10;
+      ctrl.width = 250;
+      ctrl.colWidth = Math.ceil(ctrl.width / ctrl.config.columns);
+      ctrl.rowHeight = Math.ceil((ctrl.colWidth / 16) * 9);
+      ctrl.height = ctrl.config.rows * ctrl.rowHeight;
 
-        /**
-         * Sorting function for layout containers
-         * @param {*} a
-         * @param {*} b
-         */
-        const compare = (a, b) => {
-          if (a.originY !== b.originY) {
-            return a.originY - b.originY;
-          }
+      /**
+       * Sorting function for layout containers
+       * @param {*} a
+       * @param {*} b
+       */
+      const compare = (a, b) => {
+        if (a.originY !== b.originY) {
+          return a.originY - b.originY;
+        }
 
-          return a.originX - b.originX;
-        };
-
-        ctrl.containers = JSON.parse(ctrl.config.config).layout.containers;
-        ctrl.sortedContainers = ctrl.containers.sort(compare);
+        return a.originX - b.originX;
       };
 
-      this.$postLink = () => {
-        ctrl.canvas = $element.children()[0];
-        ctrl.ctx = ctrl.canvas.getContext('2d');
+      ctrl.containers = JSON.parse(ctrl.config.config).layout.containers;
+      ctrl.sortedContainers = ctrl.containers.sort(compare);
+    };
 
-        for (let k = 0; k < ctrl.sortedContainers.length; k += 1) {
-          const container = ctrl.sortedContainers[k];
+    this.$postLink = () => {
+      ctrl.canvas = $element.children()[0];
+      ctrl.ctx = ctrl.canvas.getContext("2d");
 
-          const originX = container.originX * ctrl.colWidth + ctrl.x;
-          const originY = container.originY * ctrl.rowHeight + ctrl.y;
+      for (let k = 0; k < ctrl.sortedContainers.length; k += 1) {
+        const container = ctrl.sortedContainers[k];
 
-          const gridWidth = container.sizeX * ctrl.colWidth;
-          const gridHeight = container.sizeY * ctrl.rowHeight;
+        const originX = container.originX * ctrl.colWidth + ctrl.x;
+        const originY = container.originY * ctrl.rowHeight + ctrl.y;
 
-          // fetch color from chroma.js library
-          ctrl.ctx.fillStyle = chroma.scale('Blues')(k / (ctrl.sortedContainers.length - 1));
-          ctrl.ctx.fillRect(originX, originY, gridWidth, gridHeight);
-        }
+        const gridWidth = container.sizeX * ctrl.colWidth;
+        const gridHeight = container.sizeY * ctrl.rowHeight;
 
-        ctrl.ctx.lineWidth = 5;
-        ctrl.ctx.strokeRect(ctrl.x, ctrl.y, ctrl.width, ctrl.height);
+        // fetch color from chroma.js library
+        ctrl.ctx.fillStyle = chroma.scale("Blues")(
+          k / (ctrl.sortedContainers.length - 1)
+        );
+        ctrl.ctx.fillRect(originX, originY, gridWidth, gridHeight);
+      }
 
-        ctrl.ctx.lineWidth = 2;
+      ctrl.ctx.lineWidth = 5;
+      ctrl.ctx.strokeRect(ctrl.x, ctrl.y, ctrl.width, ctrl.height);
 
-        // draw horizontal bezels
-        for (let i = 1; i < ctrl.config.rows; i += 1) {
-          ctrl.ctx.beginPath();
-          ctrl.ctx.moveTo(ctrl.x, i * ctrl.rowHeight + ctrl.y);
-          ctrl.ctx.lineTo(ctrl.x + ctrl.width, i * ctrl.rowHeight + ctrl.y);
-          ctrl.ctx.stroke();
-        }
+      ctrl.ctx.lineWidth = 2;
 
-        for (let j = 1; j < ctrl.config.columns; j += 1) {
-          ctrl.ctx.beginPath();
-          ctrl.ctx.moveTo(j * ctrl.colWidth + ctrl.x, ctrl.y);
-          ctrl.ctx.lineTo(j * ctrl.colWidth + ctrl.x, ctrl.y + ctrl.height);
-          ctrl.ctx.stroke();
-        }
-      };
-    },
-  });
+      // draw horizontal bezels
+      for (let i = 1; i < ctrl.config.rows; i += 1) {
+        ctrl.ctx.beginPath();
+        ctrl.ctx.moveTo(ctrl.x, i * ctrl.rowHeight + ctrl.y);
+        ctrl.ctx.lineTo(ctrl.x + ctrl.width, i * ctrl.rowHeight + ctrl.y);
+        ctrl.ctx.stroke();
+      }
+
+      for (let j = 1; j < ctrl.config.columns; j += 1) {
+        ctrl.ctx.beginPath();
+        ctrl.ctx.moveTo(j * ctrl.colWidth + ctrl.x, ctrl.y);
+        ctrl.ctx.lineTo(j * ctrl.colWidth + ctrl.x, ctrl.y + ctrl.height);
+        ctrl.ctx.stroke();
+      }
+    };
+  }
+});

@@ -7,26 +7,30 @@
     </section>
 
     <section class="section" ng-if="$ctrl.playlistIdIsValid">
-
       <h2>
         {{$ctrl.config.metadata.name}}
         <small>{{$ctrl.playlistId}}</small>
       </h2>
 
       <section ng-if="$ctrl.playlistIsPublic || $ctrl.userIsOwner">
+        <playlist-config-display
+          config="$ctrl.config"
+        ></playlist-config-display>
 
-        <playlist-config-display config="$ctrl.config"></playlist-config-display>
-
-        <br>
+        <br />
 
         <div>
-          <a ng-href="playlist-display/{{$ctrl.playlistId}}" target="_blank" rel="noopener noreferrer">
+          <a
+            ng-href="playlist-display/{{$ctrl.playlistId}}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <angularjs-feather icon="external-link"></angularjs-feather>
             View this playlist in exhibit mode
           </a>
         </div>
 
-        <br>
+        <br />
 
         <div ng-if="$ctrl.authentication.isAuthorized && !$ctrl.userIsOwner">
           <button class="button" ng-click="$ctrl.fork()">
@@ -38,7 +42,10 @@
         <div ng-if="$ctrl.userIsOwner" class="text-center callout secondary">
           <h4>Modify this playlist</h4>
           <div class="button-group float-center">
-            <a class="button primary" ng-href="playlists/{{$ctrl.playlistId}}/edit">
+            <a
+              class="button primary"
+              ng-href="playlists/{{$ctrl.playlistId}}/edit"
+            >
               <angularjs-feather icon="edit-2"></angularjs-feather>
               Edit
             </a>
@@ -48,28 +55,39 @@
             </button>
           </div>
           <div ng-if="$ctrl.confirmDelete" class="callout warning">
-            <p class="text-center h5">Are you sure you want to delete this playlist?</p>
+            <p class="text-center h5">
+              Are you sure you want to delete this playlist?
+            </p>
             <div class="button-group float-center">
-              <button class="button alert" ng-click="$ctrl.deleteYes()">Delete</button>
-              <button class="button secondary hollow" ng-click="$ctrl.deleteNo()">Cancel</button>
+              <button class="button alert" ng-click="$ctrl.deleteYes()">
+                Delete
+              </button>
+              <button
+                class="button secondary hollow"
+                ng-click="$ctrl.deleteNo()"
+              >
+                Cancel
+              </button>
             </div>
           </div>
 
-          <div ng-if="$ctrl.acknowledgeDelete" class="callout" ng-class="$ctrl.notificationStyle">
+          <div
+            ng-if="$ctrl.acknowledgeDelete"
+            class="callout"
+            ng-class="$ctrl.notificationStyle"
+          >
             <p class="text-center h5">{{$ctrl.notificationMessage}}</p>
             <a class="button secondary hollow" href="playlists">
               <angularjs-feather icon="search"></angularjs-feather>
               Back to search
             </a>
           </div>
-
         </div>
 
         <a class="button hollow" href="playlists">
           <angularjs-feather icon="arrow-left"></angularjs-feather>
           Back to search
         </a>
-
       </section>
     </section>
   </div>

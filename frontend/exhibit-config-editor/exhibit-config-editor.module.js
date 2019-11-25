@@ -1,1 +1,1 @@
-angular.module('exhibitConfigEditor', ['angular-jsoneditor']);
+angular.module("exhibitConfigEditor", ["angular-jsoneditor"]);

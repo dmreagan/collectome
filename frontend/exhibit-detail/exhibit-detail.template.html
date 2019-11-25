@@ -1,6 +1,5 @@
 <main role="main" class="main-top-margin">
   <div class="grid-container">
-
     <section ng-if="$ctrl.notify">
       <div class="callout" ng-class="$ctrl.notificationStyle">
         <p class="text-center h5">{{$ctrl.notificationMessage}}</p>
@@ -8,15 +7,20 @@
     </section>
 
     <section class="section" ng-if="$ctrl.exhibitIdIsValid">
-
       <h2>
         {{$ctrl.config.metadata.name}}
         <small>{{$ctrl.exhibitId}}</small>
       </h2>
 
-      <section class="section" ng-if="$ctrl.exhibitIsPublic || $ctrl.userIsOwner">
-
-        <exhibit-config-preview config="$ctrl.config" idswitch="$ctrl.containerIdOnOffSwitch" livepreview="true">
+      <section
+        class="section"
+        ng-if="$ctrl.exhibitIsPublic || $ctrl.userIsOwner"
+      >
+        <exhibit-config-preview
+          config="$ctrl.config"
+          idswitch="$ctrl.containerIdOnOffSwitch"
+          livepreview="true"
+        >
         </exhibit-config-preview>
 
         <div class="grid-x grid-margin-x align-center-middle">
@@ -27,8 +31,13 @@
               </div>
               <div class="cell shrink">
                 <div class="switch tiny">
-                  <input class="switch-input" id="identify" type="checkbox" name="identifyContainers"
-                    ng-model="$ctrl.containerIdOnOffSwitch">
+                  <input
+                    class="switch-input"
+                    id="identify"
+                    type="checkbox"
+                    name="identifyContainers"
+                    ng-model="$ctrl.containerIdOnOffSwitch"
+                  />
                   <label class="switch-paddle" for="identify">
                     <span class="show-for-sr">Identify containers</span>
                     <span class="switch-active" aria-hidden="true">Yes</span>
@@ -42,16 +51,20 @@
 
         <exhibit-config-display config="$ctrl.config"></exhibit-config-display>
 
-        <br>
+        <br />
 
         <div>
-          <a ng-href="/exhibit-display/{{$ctrl.exhibitId}}" target="_blank" rel="noopener noreferrer">
+          <a
+            ng-href="/exhibit-display/{{$ctrl.exhibitId}}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <angularjs-feather icon="external-link"></angularjs-feather>
             View this collection in exhibit mode
           </a>
         </div>
 
-        <br>
+        <br />
 
         <div ng-if="$ctrl.authentication.isAuthorized && !$ctrl.userIsOwner">
           <button class="button" ng-click="$ctrl.fork()">
@@ -63,7 +76,10 @@
         <div ng-if="$ctrl.userIsOwner" class="text-center callout secondary">
           <h4>Modify this exhibit</h4>
           <div class="button-group float-center">
-            <a class="button primary" ng-href="exhibits/{{$ctrl.exhibitId}}/edit">
+            <a
+              class="button primary"
+              ng-href="exhibits/{{$ctrl.exhibitId}}/edit"
+            >
               <angularjs-feather icon="edit-2"></angularjs-feather>
               Edit
             </a>
@@ -73,28 +89,39 @@
             </button>
           </div>
           <div ng-if="$ctrl.confirmDelete" class="callout warning">
-            <p class="text-center h5">Are you sure you want to delete this collection?</p>
+            <p class="text-center h5">
+              Are you sure you want to delete this collection?
+            </p>
             <div class="button-group float-center">
-              <button class="button alert" ng-click="$ctrl.deleteYes()">Delete</button>
-              <button class="button secondary hollow" ng-click="$ctrl.deleteNo()">Cancel</button>
+              <button class="button alert" ng-click="$ctrl.deleteYes()">
+                Delete
+              </button>
+              <button
+                class="button secondary hollow"
+                ng-click="$ctrl.deleteNo()"
+              >
+                Cancel
+              </button>
             </div>
           </div>
 
-          <div ng-if="$ctrl.acknowledgeDelete" class="callout" ng-class="$ctrl.notificationStyle">
+          <div
+            ng-if="$ctrl.acknowledgeDelete"
+            class="callout"
+            ng-class="$ctrl.notificationStyle"
+          >
             <p class="text-center h5">{{$ctrl.notificationMessage}}</p>
             <a class="button secondary hollow" href="exhibits">
               <angularjs-feather icon="search"></angularjs-feather>
               Back to search
             </a>
           </div>
-
         </div>
 
         <a class="button hollow" href="exhibits">
           <angularjs-feather icon="arrow-left"></angularjs-feather>
           Back to search
         </a>
-
       </section>
     </section>
   </div>

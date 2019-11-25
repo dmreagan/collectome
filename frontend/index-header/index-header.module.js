@@ -1,3 +1,1 @@
-angular.module('indexHeader', [
-  'loginButton',
-]);
+angular.module("indexHeader", ["loginButton"]);

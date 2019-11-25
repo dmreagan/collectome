@@ -6,42 +6,40 @@
       </div>
     </section>
 
-      <section class="section" ng-if="$ctrl.playlistIdIsValid">
+    <section class="section" ng-if="$ctrl.playlistIdIsValid">
+      <h2>
+        {{$ctrl.config.metadata.name}}
+        <small>{{$ctrl.playlistId}}</small>
+      </h2>
 
-        <h2>
-          {{$ctrl.config.metadata.name}}
-          <small>{{$ctrl.playlistId}}</small>
-        </h2>
+      <section class="section" ng-if="$ctrl.playlistEditPageCanbeDisplayed">
+        <div>
+          <playlist-config-editor
+            config="$ctrl.config"
+            on-update="$ctrl.updateConfig(config)"
+          >
+          </playlist-config-editor>
+          <br />
+        </div>
 
-        <section class="section" ng-if="$ctrl.playlistEditPageCanbeDisplayed">
-
-          <div>
-            <playlist-config-editor config="$ctrl.config" on-update="$ctrl.updateConfig(config)">
-            </playlist-config-editor>
-            <br>
+        <div class="content">
+          <div class="text-center callout secondary" ng-if="$ctrl.isOwner">
+            <h4>Update this playlist</h4>
+            <button class="button warning" ng-click="$ctrl.save()">
+              <angularjs-feather icon="save"></angularjs-feather>
+              Save changes
+            </button>
           </div>
 
-
-          <div class="content">
-            <div class="text-center callout secondary" ng-if="$ctrl.isOwner">
-              <h4>Update this playlist</h4>
-              <button class="button warning" ng-click="$ctrl.save()">
-                <angularjs-feather icon="save"></angularjs-feather>
-                Save changes
-              </button>
-            </div>
-
-            <div class="text-center section bg-gray" ng-if="!$ctrl.isOwner">
-              <h4>You are not the owner of this playlist</h4>
-            </div>
-
-            <a class="button hollow" href="playlists">
-              <angularjs-feather icon="arrow-left"></angularjs-feather>
-              Back to search
-            </a>
+          <div class="text-center section bg-gray" ng-if="!$ctrl.isOwner">
+            <h4>You are not the owner of this playlist</h4>
           </div>
 
-        </section>
+          <a class="button hollow" href="playlists">
+            <angularjs-feather icon="arrow-left"></angularjs-feather>
+            Back to search
+          </a>
+        </div>
       </section>
     </section>
   </div>
