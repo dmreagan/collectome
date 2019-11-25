@@ -1,18 +1,26 @@
-angular
-  .module('loginButton')
-  .component('loginButton', {
-    templateUrl: 'login-button/login-button.template.html',
-    controller: ['Authentication', '$window', '$location', 'Utilities', function LoginButtonController(Authentication, $window, $location, Utilities) {
+angular.module("loginButton").component("loginButton", {
+  templateUrl: "login-button/login-button.template.html",
+  controller: [
+    "Authentication",
+    "$window",
+    "$location",
+    "Utilities",
+    function LoginButtonController(
+      Authentication,
+      $window,
+      $location,
+      Utilities
+    ) {
       this.authentication = Authentication;
       const utils = new Utilities();
-      const gitOAuthURL = 'https://github.com/login/oauth/authorize';
-      const githubScope = 'user:email';
-      const baseURL = 'http://127.0.0.1:3000'; // dev
+      const gitOAuthURL = "https://github.com/login/oauth/authorize";
+      const githubScope = "user:email";
+      const baseURL = "http://127.0.0.1:3000"; // dev
       // const baseURL = 'https://showcase.avl.iu.edu/collectome/frontend'; // production
 
       this.authenticateAsGitHubUser = () => {
         if (!this.authentication.isAuthorized) {
-          utils.getAppGitHubClientId().then((response) => {
+          utils.getAppGitHubClientId().then(response => {
             const clientId = response.data;
 
             const redirectURI = $location.path();
@@ -26,19 +34,23 @@ angular
 
       const checkForGitHubUserProfile = () => {
         if ($window.location.search) {
-          const code = $window.location.search.substring('?code='.length);
+          const code = $window.location.search.substring("?code=".length);
 
-          utils.getUserGitHubProfile(code).then((response) => {
-            this.authentication.isAuthorized = true;
-            const data = JSON.parse(response.data);
-            this.authentication.userProfile = data;
-            this.username = data.name;
-          }, (e) => {
-            console.warn(e);
-          });
+          utils.getUserGitHubProfile(code).then(
+            response => {
+              this.authentication.isAuthorized = true;
+              const data = JSON.parse(response.data);
+              this.authentication.userProfile = data;
+              this.username = data.name;
+            },
+            e => {
+              console.warn(e);
+            }
+          );
         }
       };
 
       if (!this.authentication.isAuthorized) checkForGitHubUserProfile();
-    }],
-  });
+    }
+  ]
+});

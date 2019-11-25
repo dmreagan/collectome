@@ -10,8 +10,15 @@
               <span class="input-group-label">
                 <angularjs-feather icon="search"></angularjs-feather>
               </span>
-              <input type="text" class="input-group-field" name="search" id="search" ng-model="$ctrl.searchString"
-                ng-change="$ctrl.updateSearch()" placeholder="Enter search terms">
+              <input
+                type="text"
+                class="input-group-field"
+                name="search"
+                id="search"
+                ng-model="$ctrl.searchString"
+                ng-change="$ctrl.updateSearch()"
+                placeholder="Enter search terms"
+              />
             </div>
           </div>
           <div class="cell auto"></div>
@@ -25,8 +32,14 @@
           </div>
           <div class="cell shrink">
             <div class="switch tiny">
-              <input class="switch-input" id="customized" type="checkbox" name="customized"
-                ng-model="$ctrl.customizedLayoutCheckbox" ng-change="$ctrl.updateSearch()">
+              <input
+                class="switch-input"
+                id="customized"
+                type="checkbox"
+                name="customized"
+                ng-model="$ctrl.customizedLayoutCheckbox"
+                ng-change="$ctrl.updateSearch()"
+              />
               <label class="switch-paddle" for="customized">
                 <span class="show-for-sr">Filter by display configuration</span>
                 <span class="switch-active" aria-hidden="true">On</span>
@@ -43,8 +56,17 @@
             </div>
             <div class="cell shrink">
               <div class="input-group">
-                <input type="number" name="custcol" ng-model="$ctrl.custCol" min="1" max="100" placeholder="1"
-                  ng-change="$ctrl.updateSearch()" style="width: 4rem;" class="input-group-field">
+                <input
+                  type="number"
+                  name="custcol"
+                  ng-model="$ctrl.custCol"
+                  min="1"
+                  max="100"
+                  placeholder="1"
+                  ng-change="$ctrl.updateSearch()"
+                  style="width: 4rem;"
+                  class="input-group-field"
+                />
                 <span class="input-group-label">rows</span>
               </div>
             </div>
@@ -53,8 +75,17 @@
             </div>
             <div class="cell shrink">
               <div class="input-group">
-                <input type="number" name="custrow" ng-model="$ctrl.custRow" min="1" max="100" placeholder="1"
-                  ng-change="$ctrl.updateSearch()" style="width: 4rem;" class="input-group-field">
+                <input
+                  type="number"
+                  name="custrow"
+                  ng-model="$ctrl.custRow"
+                  min="1"
+                  max="100"
+                  placeholder="1"
+                  ng-change="$ctrl.updateSearch()"
+                  style="width: 4rem;"
+                  class="input-group-field"
+                />
                 <span class="input-group-label">columns</span>
               </div>
             </div>
@@ -63,16 +94,21 @@
       </form>
     </section>
 
-    <br><br>
+    <br /><br />
 
     <section class="section">
       <div class="grid-x grid-margin-x">
         <div class="cell shrink">
           <h2 class="subheader">
-            <span ng-show="$ctrl.searchString.length > 0 || $ctrl.rowSearch || $ctrl.colSearch">
-              Search Results: </span>{{ $ctrl.exhibits.length }}
-            <ng-pluralize count="$ctrl.exhibits.length"
-              when="{'0': 'Collections', 'one':'Collection', 'other': 'Collections'}">
+            <span
+              ng-show="$ctrl.searchString.length > 0 || $ctrl.rowSearch || $ctrl.colSearch"
+            >
+              Search Results: </span
+            >{{ $ctrl.exhibits.length }}
+            <ng-pluralize
+              count="$ctrl.exhibits.length"
+              when="{'0': 'Collections', 'one':'Collection', 'other': 'Collections'}"
+            >
             </ng-pluralize>
             <span class="h6" ng-if="$ctrl.authentication.isAuthorized">
               ( your collections marked with
@@ -91,8 +127,14 @@
         </div>
         <div class="cell shrink" ng-if="$ctrl.authentication.isAuthorized">
           <div class="switch large">
-            <input class="switch-input" id="owned-only" type="checkbox" name="owned-only"
-              ng-model="$ctrl.ownedOnlyToggle" ng-change="$ctrl.updateSearch()">
+            <input
+              class="switch-input"
+              id="owned-only"
+              type="checkbox"
+              name="owned-only"
+              ng-model="$ctrl.ownedOnlyToggle"
+              ng-change="$ctrl.updateSearch()"
+            />
             <label class="switch-paddle" for="owned-only">
               <span class="show-for-sr">Filter by display configuration</span>
               <span class="switch-active" aria-hidden="true">Yes</span>
@@ -100,7 +142,6 @@
             </label>
           </div>
         </div>
-
 
         <div class="cell shrink">
           <label for="select-sort" class="middle">Sort by</label>
@@ -114,43 +155,54 @@
           </select>
         </div>
       </div>
-      <div class="callout warning" ng-if="$ctrl.exhibits.length === 0 && ($ctrl.searchString.length > 0
+      <div
+        class="callout warning"
+        ng-if="$ctrl.exhibits.length === 0 && ($ctrl.searchString.length > 0
                 || $ctrl.rowSearch || $ctrl.colSearch
                 || $ctrl.threeByThreeCheckbox
                 || $ctrl.fourByFourCheckbox
-                || $ctrl.customizedLayoutCheckbox)">
+                || $ctrl.customizedLayoutCheckbox)"
+      >
         No exhibits found for criteria:
 
-        <div ng-if="$ctrl.searchString.length > 0">search string:
-          "{{$ctrl.searchString}}"</div>
+        <div ng-if="$ctrl.searchString.length > 0">
+          search string: "{{$ctrl.searchString}}"
+        </div>
         <div ng-if="$ctrl.colSearch"># of columns: "{{$ctrl.colSearch}}"</div>
         <div ng-if="$ctrl.rowSearch"># of rows: "{{$ctrl.rowSearch}}"</div>
         <div ng-if="$ctrl.threeByThreeCheckbox">common 3 by 3 grid</div>
         <div ng-if="$ctrl.fourByFourCheckbox">common 4 by 4 grid</div>
-        <div ng-if="$ctrl.customizedLayoutCheckbox">custom {{$ctrl.custCol}} by
-          {{$ctrl.custRow}} grid</div>
+        <div ng-if="$ctrl.customizedLayoutCheckbox">
+          custom {{$ctrl.custCol}} by {{$ctrl.custRow}} grid
+        </div>
       </div>
-      <div class="callout" id=" exhibit-{{exhibit.id}}"
-        ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id">
+      <div
+        class="callout"
+        id=" exhibit-{{exhibit.id}}"
+        ng-repeat="exhibit in $ctrl.exhibits | orderBy:$ctrl.sortBy track by exhibit.id"
+      >
         <div class=" media-object stack-for-small">
-        <div class="media-object-section">
-          <display-thumbnail config=exhibit></display-thumbnail>
-        </div>
-        <div class="media-object-section">
-          <a href="exhibits/{{ exhibit.id }}">
-            <h3 class="h4">{{ exhibit.title }}
-              <angularjs-feather icon="user"
-                ng-if="exhibit.owner === $ctrl.authentication.userProfile.login">
-              </angularjs-feather>
-            </h3>
-          </a>
-          <p>
-            {{ exhibit.description | limitTo: 280 }}
-            {{exhibit.description.length > 280 ? '...' : ''}}
-          </p>
+          <div class="media-object-section">
+            <display-thumbnail config="exhibit"></display-thumbnail>
+          </div>
+          <div class="media-object-section">
+            <a href="exhibits/{{ exhibit.id }}">
+              <h3 class="h4">
+                {{ exhibit.title }}
+                <angularjs-feather
+                  icon="user"
+                  ng-if="exhibit.owner === $ctrl.authentication.userProfile.login"
+                >
+                </angularjs-feather>
+              </h3>
+            </a>
+            <p>
+              {{ exhibit.description | limitTo: 280 }}
+              {{exhibit.description.length > 280 ? '...' : ''}}
+            </p>
+          </div>
         </div>
       </div>
-  </div>
-  </section>
+    </section>
   </div>
 </main>

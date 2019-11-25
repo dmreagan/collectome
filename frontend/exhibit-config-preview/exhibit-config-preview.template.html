@@ -19,38 +19,54 @@
 
   .gridlist {
     background: white;
-    z-index: -1
+    z-index: -1;
   }
 </style>
 
 <div id="avl-shim">
   <div id="avl-preview">
-
     <div id="gridster" gridster="$ctrl.gridsterOpts">
       <ul id="tiles">
-        <li id="{{tile.id}}" class="shadow-3 gridlist" gridster-item row="tile.row" col="tile.col" size-x="tile.sizeX"
-          size-y="tile.sizeY" ng-repeat="tile in $ctrl.tiles">
-
+        <li
+          id="{{tile.id}}"
+          class="shadow-3 gridlist"
+          gridster-item
+          row="tile.row"
+          col="tile.col"
+          size-x="tile.sizeX"
+          size-y="tile.sizeY"
+          ng-repeat="tile in $ctrl.tiles"
+        >
           <figure>
+            <iframe
+              ng-src="{{tile.url | trusted}}"
+              contentid="{{tile.contentId}}"
+              scale="$ctrl.config"
+            ></iframe>
 
-            <iframe ng-src="{{tile.url | trusted}}" contentid="{{tile.contentId}}" scale="$ctrl.config"></iframe>
-
-            <div class="container-identity" ng-if="$ctrl.idswitch">{{tile.id}}</div>
+            <div class="container-identity" ng-if="$ctrl.idswitch">
+              {{tile.id}}
+            </div>
 
             <figcaption>
               <h4>{{tile.title}}</h4>
             </figcaption>
-
           </figure>
-
         </li>
       </ul>
     </div>
 
     <div id="bezels">
-      <div ng-repeat="pos in $ctrl.bezelPosVertical" class="bezel vertical" ng-style="{ top: pos + 'px' }"></div>
-      <div ng-repeat="pos in $ctrl.bezelPosHorizontal" class="bezel horizontal" ng-style="{ left: pos + 'px' }"></div>
+      <div
+        ng-repeat="pos in $ctrl.bezelPosVertical"
+        class="bezel vertical"
+        ng-style="{ top: pos + 'px' }"
+      ></div>
+      <div
+        ng-repeat="pos in $ctrl.bezelPosHorizontal"
+        class="bezel horizontal"
+        ng-style="{ left: pos + 'px' }"
+      ></div>
     </div>
-
   </div>
 </div>

@@ -1,5 +1,5 @@
-angular.module('playlistEdit', [
-  'authentication',
-  'utilities',
-  'playlistConfigEditor',
+angular.module("playlistEdit", [
+  "authentication",
+  "utilities",
+  "playlistConfigEditor"
 ]);

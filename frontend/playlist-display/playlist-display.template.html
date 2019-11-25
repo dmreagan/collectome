@@ -1,13 +1,13 @@
-
 <div ng-if="!$ctrl.playlistIsPublic">
-    <h4>This playlist is not public.</h4>
+  <h4>This playlist is not public.</h4>
 </div>
 
 <div id="playlist-display" ng-if="$ctrl.playlistIsPublic">
-
-    <iframe ng-src="{{$ctrl.curExhibitDisplayURL | trusted}}" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%;
-    height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">
-        Your browser doesn't support iframes
-    </iframe>
-
+  <iframe
+    ng-src="{{$ctrl.curExhibitDisplayURL | trusted}}"
+    style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%;
+    height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"
+  >
+    Your browser doesn't support iframes
+  </iframe>
 </div>

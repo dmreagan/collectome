@@ -1,31 +1,38 @@
 <main role="main" class="main-top-margin">
-    <section class="section">
-        <div class="grid-container" id="search">
-          <h1>Does your URL allow <code>iframe</code>embedding?</h1>
-            <form>
-                <div class="form-item">
+  <section class="section">
+    <div class="grid-container" id="search">
+      <h1>Does your URL allow <code>iframe</code>embedding?</h1>
+      <form>
+        <div class="form-item">
+          <div class="form-item-label">
+            <label for="search"
+              >Check if X-Frame-Options is available in a site's HTTP response
+              headers</label
+            >
+          </div>
+          <div class="form-item-input">
+            <input
+              type="text"
+              name="search"
+              id="search"
+              ng-model="$ctrl.searchURL"
+              placeholder="Type Your Website URL"
+            />
+          </div>
 
-                    <div class="form-item-label">
-                        <label for="search">Check if X-Frame-Options is available in a site's HTTP response headers</label>
-                    </div>
-                    <div class="form-item-input">
-                        <input type="text" name="search" id="search" ng-model="$ctrl.searchURL" placeholder="Type Your Website URL">
-                    </div>
-
-                    <div>
-                        <button class="button" ng-click="$ctrl.search()">Test URL</button>
-                    </div>
-
-                </div>
-            </form>
+          <div>
+            <button class="button" ng-click="$ctrl.search()">Test URL</button>
+          </div>
         </div>
-    </section>
+      </form>
+    </div>
+  </section>
 
-    <section class="section">
-        <div class="grid-container">
-            <div ng-class="$ctrl.message_style">
-                <p>{{$ctrl.info_message}}</p>
-            </div>
-        </div>
-    </section>
+  <section class="section">
+    <div class="grid-container">
+      <div ng-class="$ctrl.message_style">
+        <p>{{$ctrl.info_message}}</p>
+      </div>
+    </div>
+  </section>
 </main>

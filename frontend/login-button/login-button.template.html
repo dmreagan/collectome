@@ -1,14 +1,15 @@
 <span ng-if="!$ctrl.authentication.isAuthorized">
-    <button class="button hollow" ng-click="$ctrl.authenticateAsGitHubUser()">
-        <angularjs-feather icon="log-in"></angularjs-feather>
-        Log in with GitHub
-    </button>
+  <button class="button hollow" ng-click="$ctrl.authenticateAsGitHubUser()">
+    <angularjs-feather icon="log-in"></angularjs-feather>
+    Log in with GitHub
+  </button>
 </span>
 <span ng-if="$ctrl.authentication.isAuthorized">
-    <span id="login-name">Logged in as
-      <strong>
-        <angularjs-feather icon="github"></angularjs-feather>
-        {{$ctrl.username}}
-      </strong>
-    </span>
+  <span id="login-name"
+    >Logged in as
+    <strong>
+      <angularjs-feather icon="github"></angularjs-feather>
+      {{$ctrl.username}}
+    </strong>
+  </span>
 </span>

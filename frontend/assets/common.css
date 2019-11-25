@@ -1,95 +1,98 @@
-  #avl-shim {
-    margin-bottom: 1rem;
-  }
-  #avl-preview {
-    transform-origin: top left;
-    position: absolute;
-  }
-  #avl-preview #gridster {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-  #avl-preview #bezels {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-  }
-  #avl-preview #bezels .bezel {
-    position: absolute;
-    background-color: black;
-  }
-  #avl-preview #bezels .horizontal {
-    width: 10px;
-    height: 100%;
-  }
-  #avl-preview #bezels .vertical {
-    width: 100%;
-    height: 10px;
-  }
+#avl-shim {
+  margin-bottom: 1rem;
+}
+#avl-preview {
+  transform-origin: top left;
+  position: absolute;
+}
+#avl-preview #gridster {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+#avl-preview #bezels {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+#avl-preview #bezels .bezel {
+  position: absolute;
+  background-color: black;
+}
+#avl-preview #bezels .horizontal {
+  width: 10px;
+  height: 100%;
+}
+#avl-preview #bezels .vertical {
+  width: 100%;
+  height: 10px;
+}
 
-  body {
-    /* margin: 50px; */
-    padding: 0px;
-    /* overflow: hidden; */
-    background-color: rgb(255, 255, 255);
-  }
+body {
+  /* margin: 50px; */
+  padding: 0px;
+  /* overflow: hidden; */
+  background-color: rgb(255, 255, 255);
+}
 
-  .main-top-margin {
-    margin-top: 1rem;
-  }
+.main-top-margin {
+  margin-top: 1rem;
+}
 
-  /* shadow CSS from http://timnew.me/blog/2014/08/16/material-design-shadow-in-html/ */
-  .shadow-0 {
-      border: 1px solid #eee;
-  }
-  .shadow-1 {
-      box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  }
-  .shadow-2 {
-      box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 8px 17px 0 rgba(0, 0, 0, 0.2);
-  }
-  .shadow-3 {
-      box-shadow: 0 17px 50px 0 rgba(0, 0, 0, 0.19), 0 12px 15px 0 rgba(0, 0, 0, 0.24);
-  }
-  .shadow-4 {
-      box-shadow: 0 25px 55px 0 rgba(0, 0, 0, 0.21), 0 16px 28px 0 rgba(0, 0, 0, 0.22);
-  }
-  .shadow-5 {
-      box-shadow: 0 40px 77px 0 rgba(0, 0, 0, 0.22), 0 27px 24px 0 rgba(0, 0, 0, 0.2);
-  }
+/* shadow CSS from http://timnew.me/blog/2014/08/16/material-design-shadow-in-html/ */
+.shadow-0 {
+  border: 1px solid #eee;
+}
+.shadow-1 {
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+.shadow-2 {
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+}
+.shadow-3 {
+  box-shadow: 0 17px 50px 0 rgba(0, 0, 0, 0.19),
+    0 12px 15px 0 rgba(0, 0, 0, 0.24);
+}
+.shadow-4 {
+  box-shadow: 0 25px 55px 0 rgba(0, 0, 0, 0.21),
+    0 16px 28px 0 rgba(0, 0, 0, 0.22);
+}
+.shadow-5 {
+  box-shadow: 0 40px 77px 0 rgba(0, 0, 0, 0.22),
+    0 27px 24px 0 rgba(0, 0, 0, 0.2);
+}
 
-  iframe, figure {
+iframe,
+figure {
   height: 100%;
   width: 100%;
   border: 0;
   margin: 0;
-  }
+}
 
-  figcaption {
+figcaption {
   width: 100%;
   background-color: rgba(68, 105, 125, 0.75);
-  color:white;
+  color: white;
   position: absolute;
   bottom: 0;
-  }
+}
 
-  /* h1, h2, h3, h4, h5, h6 {
+/* h1, h2, h3, h4, h5, h6 {
   line-height: 1em;
   margin-left: 1em;
   font-family: sans-serif;
   } */
 
-
-.float-alert{
+.float-alert {
   /*position:absolute;
   margin:15% 00% 0% 40%;
   z-index:200;*/
 }
 
 #image-thumbnail {
-  width:  200px;
+  width: 200px;
   height: 200px;
   background-size: contain;
   background-position: center;
@@ -97,15 +100,15 @@
 }
 
 .layout-image-thumbnail {
-  width:  60px;
+  width: 60px;
   height: 60px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.image-thumbnail-detailed{
-  width:100%;
+.image-thumbnail-detailed {
+  width: 100%;
 }
 
 /****************************   IU BRAND OVERRIDE  *******************************/
@@ -125,7 +128,8 @@ div .choices__list--multiple .choices__item {
   border-color: #008264;
 } */
 
-.choices[data-type*="select-multiple"] .choices__button, .choices[data-type*="text"] .choices__button {
+.choices[data-type*="select-multiple"] .choices__button,
+.choices[data-type*="text"] .choices__button {
   border-left: 0px none;
 }
 
@@ -134,7 +138,7 @@ div .choices__list--multiple .choices__item {
   border: 1px solid #ccc;
   font-size: 1rem;
   width: 100% !important;
-  padding: .5rem;
+  padding: 0.5rem;
   margin: 0 0 1rem;
 }
 
@@ -144,70 +148,70 @@ div .choices__inner {
   padding: 0;
 }
 
-.float-center{
-  margin-top:20px;
-  margin-bottom:0px;
-  padding-top:10px;
-  padding-bottom:10px;
-  float:none;
+.float-center {
+  margin-top: 20px;
+  margin-bottom: 0px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  float: none;
 }
 
-.font-white{
-  color:white;
+.font-white {
+  color: white;
 }
 
-.font-smaller{
+.font-smaller {
   font-family: "BentonSansRegular", "Helvetica Neue", Helvetica, sans-serif;
 
-  font-size:.875rem;
+  font-size: 0.875rem;
   text-transform: initial;
 }
 
-.font-normal{
+.font-normal {
   font-weight: 100;
 }
 
-.full-width{
-  width:100%;
+.full-width {
+  width: 100%;
 }
 
 .text-disabled {
-  color: #ACA39A;
+  color: #aca39a;
 }
 
-.featured{
-  border-radius: .5rem;
-  padding:.2rem .4rem;
+.featured {
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.4rem;
   min-height: 1rem;
 }
-.featured .content{
-  padding:.3rem 0rem;
+.featured .content {
+  padding: 0.3rem 0rem;
   transform: translate(0%, 25%);
 }
-.featured h6{
-  margin-bottom:0rem;
+.featured h6 {
+  margin-bottom: 0rem;
 }
-.featured p{
+.featured p {
   font-size: 1rem;
-  margin-bottom:0rem;
+  margin-bottom: 0rem;
 }
-.featured.majestic{
-  background-color:#512A44;
+.featured.majestic {
+  background-color: #512a44;
 }
-.featured.mint{
-  background-color:#008264;
+.featured.mint {
+  background-color: #008264;
 }
-.featured.midnight{
-  background-color:#006298;
+.featured.midnight {
+  background-color: #006298;
 }
-.featured.gold{
-  background-color:#DC8823;
+.featured.gold {
+  background-color: #dc8823;
 }
-.featured img{
-  padding:.5rem 0rem;
-  margin-right:.9rem;
+.featured img {
+  padding: 0.5rem 0rem;
+  margin-right: 0.9rem;
   /* transform: translate(0%, 25%); */
-  max-width:15%;
+  max-width: 15%;
 }
 
 .container {

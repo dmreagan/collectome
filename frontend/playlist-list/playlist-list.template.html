@@ -10,8 +10,15 @@
               <span class="input-group-label">
                 <angularjs-feather icon="search"></angularjs-feather>
               </span>
-              <input type="text" class="input-group-field" name="search" id="search" ng-model="$ctrl.searchString"
-                ng-change="$ctrl.updateSearch()" placeholder="Enter search terms">
+              <input
+                type="text"
+                class="input-group-field"
+                name="search"
+                id="search"
+                ng-model="$ctrl.searchString"
+                ng-change="$ctrl.updateSearch()"
+                placeholder="Enter search terms"
+              />
             </div>
           </div>
           <div class="cell auto"></div>
@@ -19,16 +26,19 @@
       </form>
     </section>
 
-    <br><br>
+    <br /><br />
 
     <section class="section">
       <div class="grid-x grid-margin-x">
         <div class="cell shrink">
           <h2 class="subheader">
             <span ng-show="$ctrl.searchString.length > 0">
-              Search Results: </span>{{ $ctrl.playlists.length }}
-            <ng-pluralize count="$ctrl.playlists.length"
-              when="{'0': 'Playlists', 'one':'Playlist', 'other': 'Playlists'}">
+              Search Results: </span
+            >{{ $ctrl.playlists.length }}
+            <ng-pluralize
+              count="$ctrl.playlists.length"
+              when="{'0': 'Playlists', 'one':'Playlist', 'other': 'Playlists'}"
+            >
             </ng-pluralize>
             <span class="h6" ng-if="$ctrl.authentication.isAuthorized">
               ( your playlists marked with
@@ -50,31 +60,40 @@
           </select>
         </div>
       </div>
-      <div class="callout warning" ng-if="$ctrl.playlists.length === 0 && $ctrl.searchString.length > 0">
+      <div
+        class="callout warning"
+        ng-if="$ctrl.playlists.length === 0 && $ctrl.searchString.length > 0"
+      >
         No playlists found for criteria:
 
-        <div ng-if="$ctrl.searchString.length > 0">search string:
-          "{{$ctrl.searchString}}"</div>
-      </div>
-      <div class="callout" id="playlist-{{playlist.id}}"
-        ng-repeat="playlist in $ctrl.playlists | orderBy:$ctrl.sortBy track by playlist.id">
-        <div class=" media-object stack-for-small">
-
-        <div class="media-object-section">
-          <a href="playlists/{{ playlist.id }}">
-            <h3 class="h4">{{ playlist.title }}
-              <angularjs-feather icon="user"
-                ng-if="playlist.owner === $ctrl.authentication.userProfile.login">
-              </angularjs-feather>
-            </h3>
-          </a>
-          <p>
-            {{ playlist.description | limitTo: 280 }}
-            {{playlist.description.length > 280 ? '...' : ''}}
-          </p>
+        <div ng-if="$ctrl.searchString.length > 0">
+          search string: "{{$ctrl.searchString}}"
         </div>
       </div>
-  </div>
-  </section>
+      <div
+        class="callout"
+        id="playlist-{{playlist.id}}"
+        ng-repeat="playlist in $ctrl.playlists | orderBy:$ctrl.sortBy track by playlist.id"
+      >
+        <div class=" media-object stack-for-small">
+          <div class="media-object-section">
+            <a href="playlists/{{ playlist.id }}">
+              <h3 class="h4">
+                {{ playlist.title }}
+                <angularjs-feather
+                  icon="user"
+                  ng-if="playlist.owner === $ctrl.authentication.userProfile.login"
+                >
+                </angularjs-feather>
+              </h3>
+            </a>
+            <p>
+              {{ playlist.description | limitTo: 280 }}
+              {{playlist.description.length > 280 ? '...' : ''}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </main>

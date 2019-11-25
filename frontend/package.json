@@ -2,12 +2,24 @@
   "name": "collectome",
   "version": "1.0.0",
   "description": "A content sharing platform for high-resolution display walls.",
-  "repository": "https://github.com/dmreagan/collectome",
   "license": "BSD-3-Clause",
+  "repository": "https://github.com/dmreagan/collectome",
   "author": "gruan",
   "main": "index.html",
   "scripts": {
+    "prettier-check": "npx prettier --debug-check './**/*.{css,html,js,json,md}'",
     "serve": "node dev-server.js"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "connect-history-api-fallback": "1.6.0",
+    "eslint": "^6.7.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "1.19.1",
+    "prettier-plugin-package": "^0.3.1"
   },
   "eslintConfig": {
     "env": {
@@ -15,17 +27,13 @@
       "browser": true,
       "jasmine": true
     },
-    "extends": "airbnb-base",
+    "extends": [
+      "airbnb-base",
+      "plugin:prettier/recommended"
+    ],
     "globals": {
       "angular": false,
       "chroma": false
     }
-  },
-  "devDependencies": {
-    "browser-sync": "^2.26.7",
-    "connect-history-api-fallback": "1.6.0",
-    "eslint": "^6.7.1",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2"
   }
 }
