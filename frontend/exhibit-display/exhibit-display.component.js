@@ -13,6 +13,7 @@ angular
         const body = document.querySelector('body');
 
         body.style.margin = '0px';
+        body.style.overflow = 'hidden';
 
         // async initialization of this.config
         // eslint-disable-next-line max-len
