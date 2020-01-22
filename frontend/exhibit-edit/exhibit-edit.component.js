@@ -151,6 +151,6 @@ angular.module('exhibitEdit').component('exhibitEdit', {
           }
         );
       };
-    }
-  ]
+    },
+  ],
 });

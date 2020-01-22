@@ -1,7 +1,7 @@
 angular.module('playlistConfigEditor').component('playlistConfigEditor', {
   bindings: {
     config: '<',
-    onUpdate: '&'
+    onUpdate: '&',
   },
   templateUrl: 'playlist-config-editor/playlist-config-editor.template.html',
   controller: [
@@ -14,12 +14,12 @@ angular.module('playlistConfigEditor').component('playlistConfigEditor', {
         properties: {
           metadata: {
             // $ref: 'metadata',
-            $ref: '#/definitions/metadata'
+            $ref: '#/definitions/metadata',
           },
           collections: {
             // $ref: 'collections',
-            $ref: '#/definitions/collections'
-          }
+            $ref: '#/definitions/collections',
+          },
         },
         required: ['metadata', 'collections'],
 
@@ -28,40 +28,40 @@ angular.module('playlistConfigEditor').component('playlistConfigEditor', {
             type: 'object',
             properties: {
               name: {
-                type: 'string'
+                type: 'string',
               },
               description: {
-                type: 'string'
+                type: 'string',
               },
               authors: {
                 type: 'array',
                 items: {
                   // $ref: 'author',
-                  $ref: '#/definitions/author'
-                }
+                  $ref: '#/definitions/author',
+                },
               },
               institutions: {
                 type: 'array',
                 items: {
-                  type: 'string'
-                }
+                  type: 'string',
+                },
               },
               disciplines: {
                 type: 'array',
                 items: {
-                  type: 'string'
-                }
+                  type: 'string',
+                },
               },
               tags: {
                 type: 'array',
                 items: {
-                  type: 'string'
-                }
+                  type: 'string',
+                },
               },
               public: {
                 type: 'boolean',
-                default: false
-              }
+                default: false,
+              },
             },
             required: [
               'name',
@@ -70,44 +70,44 @@ angular.module('playlistConfigEditor').component('playlistConfigEditor', {
               'institutions',
               'disciplines',
               'tags',
-              'public'
-            ]
+              'public',
+            ],
           },
 
           author: {
             type: 'object',
             properties: {
               first_name: {
-                type: 'string'
+                type: 'string',
               },
               last_name: {
-                type: 'string'
-              }
+                type: 'string',
+              },
             },
-            required: ['first_name', 'last_name']
+            required: ['first_name', 'last_name'],
           },
 
           collections: {
             type: 'array',
             items: {
               // $ref: 'collectionsItem',
-              $ref: '#/definitions/collectionsItem'
-            }
+              $ref: '#/definitions/collectionsItem',
+            },
           },
 
           collectionsItem: {
             type: 'object',
             properties: {
               id: {
-                type: 'string'
+                type: 'string',
               },
               duration: {
-                type: 'number'
-              }
+                type: 'number',
+              },
             },
-            required: ['id', 'duration']
-          }
-        }
+            required: ['id', 'duration'],
+          },
+        },
       };
 
       const ajv = new Ajv({ allErrors: true, verbose: true });
@@ -118,7 +118,7 @@ angular.module('playlistConfigEditor').component('playlistConfigEditor', {
         this.options = {
           schema,
           ajv,
-          mode: 'code'
+          mode: 'code',
         };
       };
 
@@ -146,6 +146,6 @@ angular.module('playlistConfigEditor').component('playlistConfigEditor', {
          */
         this.model = this.config;
       };
-    }
-  ]
+    },
+  ],
 });

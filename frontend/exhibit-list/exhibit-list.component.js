@@ -104,7 +104,7 @@ angular.module('exhibitList').component('exhibitList', {
           query_string: this.searchString,
           row: this.rowSearch,
           col: this.colSearch,
-          gird_layouts: layouts
+          gird_layouts: layouts,
         };
 
         utils.searchExhibits(query).then(
@@ -147,6 +147,6 @@ angular.module('exhibitList').component('exhibitList', {
           init();
         });
       }
-    }
-  ]
+    },
+  ],
 });

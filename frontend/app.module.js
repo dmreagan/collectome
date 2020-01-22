@@ -14,5 +14,5 @@ angular.module('collectomeApp', [
   'playlistDetail',
   'playlistEdit',
   'playlistList',
-  'playlistDisplay'
+  'playlistDisplay',
 ]);

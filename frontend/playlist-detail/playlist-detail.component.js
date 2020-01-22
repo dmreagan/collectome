@@ -135,6 +135,6 @@ angular.module('playlistDetail').component('playlistDetail', {
 
         return localUserIsOwner;
       };
-    }
-  ]
+    },
+  ],
 });

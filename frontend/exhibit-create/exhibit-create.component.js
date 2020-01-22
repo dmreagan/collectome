@@ -53,6 +53,6 @@ angular.module('exhibitCreate').component('exhibitCreate', {
       utils.getConfig(path).then(response => {
         this.config = response.data;
       });
-    }
-  ]
+    },
+  ],
 });

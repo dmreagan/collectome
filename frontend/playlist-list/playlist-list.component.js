@@ -74,7 +74,7 @@ angular.module('playlistList').component('playlistList', {
 
       const searchPlaylists = () => {
         const query = {
-          query_string: this.searchString
+          query_string: this.searchString,
         };
 
         utils.searchPlaylists(query).then(
@@ -116,6 +116,6 @@ angular.module('playlistList').component('playlistList', {
           init();
         });
       }
-    }
-  ]
+    },
+  ],
 });

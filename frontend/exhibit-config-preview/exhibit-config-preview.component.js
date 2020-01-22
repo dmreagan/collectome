@@ -4,7 +4,7 @@ angular
     bindings: {
       config: '<',
       idswitch: '<',
-      livepreview: '<'
+      livepreview: '<',
     },
     templateUrl: 'exhibit-config-preview/exhibit-config-preview.template.html',
     controller: [
@@ -65,8 +65,8 @@ angular
         this.$postLink = () => {
           // console.log('onPostLink');
         };
-      }
-    ]
+      },
+    ],
   })
   .filter('trusted', [
     '$sce',
@@ -74,12 +74,12 @@ angular
       return function(url) {
         return $sce.trustAsResourceUrl(url);
       };
-    }
+    },
   ])
   .directive('scale', () => ({
     restrict: 'A',
     scope: {
-      config: '=scale'
+      config: '=scale',
     },
     link: function(scope, elem, attr) {
       elem.on('load', () => {
@@ -151,5 +151,5 @@ angular
         elem.css('transform-origin', 'top left');
         elem.css('transform', `scale3d(${scale}, ${scale}, 1)`);
       });
-    }
+    },
   }));

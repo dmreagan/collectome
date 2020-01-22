@@ -24,12 +24,12 @@ angular.module('utilities').service('Utilities', [
           pushing: true,
           floating: true,
           draggable: {
-            enabled: true
+            enabled: true,
           },
           resizable: {
             enabled: false,
-            handles: ['n', 'e', 's', 'w', 'se', 'sw']
-          }
+            handles: ['n', 'e', 's', 'w', 'se', 'sw'],
+          },
         };
 
         return opts;
@@ -297,7 +297,7 @@ angular.module('utilities').service('Utilities', [
             config,
             extra,
             createTime,
-            owner
+            owner,
           })
           .then(
             resp => {
@@ -367,7 +367,7 @@ angular.module('utilities').service('Utilities', [
             config,
             extra,
             createTime,
-            owner
+            owner,
           })
           .then(
             resp => {
@@ -436,7 +436,7 @@ angular.module('utilities').service('Utilities', [
             config,
             extra,
             lastModifiedTime,
-            owner
+            owner,
           })
           .then(
             resp => {
@@ -513,7 +513,7 @@ angular.module('utilities').service('Utilities', [
             config,
             extra,
             lastModifiedTime,
-            owner
+            owner,
           })
           .then(
             resp => {
@@ -751,5 +751,5 @@ angular.module('utilities').service('Utilities', [
         return d.promise;
       };
     };
-  }
+  },
 ]);

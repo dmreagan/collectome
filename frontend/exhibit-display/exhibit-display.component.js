@@ -29,6 +29,6 @@ angular.module('exhibitDisplay').component('exhibitDisplay', {
 
         this.tiles = utils.calculateTiles(this.config);
       });
-    }
-  ]
+    },
+  ],
 });

@@ -53,6 +53,6 @@ angular.module('playlistCreate').component('playlistCreate', {
       utils.getConfig(path).then(response => {
         this.config = response.data;
       });
-    }
-  ]
+    },
+  ],
 });

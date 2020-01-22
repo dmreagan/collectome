@@ -48,8 +48,8 @@ angular
             $timeout(refresh, duration * 1000);
           }
         });
-      }
-    ]
+      },
+    ],
   })
   .filter('trusted', [
     '$sce',
@@ -57,5 +57,5 @@ angular
       return function(url) {
         return $sce.trustAsResourceUrl(url);
       };
-    }
+    },
   ]);

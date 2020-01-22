@@ -146,6 +146,6 @@ angular.module('exhibitDetail').component('exhibitDetail', {
 
         return localUserIsOwner;
       };
-    }
-  ]
+    },
+  ],
 });

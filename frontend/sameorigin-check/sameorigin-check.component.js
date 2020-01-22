@@ -57,6 +57,6 @@ angular.module('sameoriginCheck').component('sameoriginCheck', {
           }
         );
       };
-    }
-  ]
+    },
+  ],
 });

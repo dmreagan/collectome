@@ -1,6 +1,6 @@
 angular.module('exhibitConfigDisplay').component('exhibitConfigDisplay', {
   bindings: {
-    config: '<'
+    config: '<',
   },
   templateUrl: 'exhibit-config-display/exhibit-config-display.template.html',
   controller: function exhibitConfigDisplayController() {
@@ -12,7 +12,7 @@ angular.module('exhibitConfigDisplay').component('exhibitConfigDisplay', {
         onEditable: function(node) {
           // this essentially makes the editor in read only mode
           return false;
-        }
+        },
       };
     };
 
@@ -25,5 +25,5 @@ angular.module('exhibitConfigDisplay').component('exhibitConfigDisplay', {
        */
       this.model = this.config;
     };
-  }
+  },
 });

@@ -15,6 +15,6 @@ angular.module('indexHeader').component('indexHeader', {
       ) {
         this.displayMode = true;
       }
-    }
-  ]
+    },
+  ],
 });

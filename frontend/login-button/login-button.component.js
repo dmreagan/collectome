@@ -51,6 +51,6 @@ angular.module('loginButton').component('loginButton', {
       };
 
       if (!this.authentication.isAuthorized) checkForGitHubUserProfile();
-    }
-  ]
+    },
+  ],
 });

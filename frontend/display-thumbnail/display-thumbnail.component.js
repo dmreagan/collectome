@@ -1,7 +1,7 @@
 angular.module('displayThumbnail').component('displayThumbnail', {
   template: '<canvas></canvas>',
   bindings: {
-    config: '<'
+    config: '<',
   },
   controller: function DisplayThumbnailController($element) {
     const ctrl = this;
@@ -71,5 +71,5 @@ angular.module('displayThumbnail').component('displayThumbnail', {
         ctrl.ctx.stroke();
       }
     };
-  }
+  },
 });

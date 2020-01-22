@@ -1,7 +1,7 @@
 angular.module('exhibitConfigEditor').component('exhibitConfigEditor', {
   bindings: {
     config: '<',
-    onUpdate: '&'
+    onUpdate: '&',
   },
   templateUrl: 'exhibit-config-editor/exhibit-config-editor.template.html',
   controller: [
@@ -14,24 +14,24 @@ angular.module('exhibitConfigEditor').component('exhibitConfigEditor', {
         properties: {
           metadata: {
             // $ref: 'metadata',
-            $ref: '#/definitions/metadata'
+            $ref: '#/definitions/metadata',
           },
           content: {
             // $ref: 'content',
-            $ref: '#/definitions/content'
+            $ref: '#/definitions/content',
           },
           display: {
             // $ref: 'display',
-            $ref: '#/definitions/display'
+            $ref: '#/definitions/display',
           },
           layout: {
             // $ref: 'layout',
-            $ref: '#/definitions/layout'
+            $ref: '#/definitions/layout',
           },
           mapping: {
             // $ref: 'mapping',
-            $ref: '#/definitions/mapping'
-          }
+            $ref: '#/definitions/mapping',
+          },
         },
         required: ['metadata', 'content', 'display', 'layout', 'mapping'],
 
@@ -40,40 +40,40 @@ angular.module('exhibitConfigEditor').component('exhibitConfigEditor', {
             type: 'object',
             properties: {
               name: {
-                type: 'string'
+                type: 'string',
               },
               description: {
-                type: 'string'
+                type: 'string',
               },
               authors: {
                 type: 'array',
                 items: {
                   // $ref: 'author',
-                  $ref: '#/definitions/author'
-                }
+                  $ref: '#/definitions/author',
+                },
               },
               institutions: {
                 type: 'array',
                 items: {
-                  type: 'string'
-                }
+                  type: 'string',
+                },
               },
               disciplines: {
                 type: 'array',
                 items: {
-                  type: 'string'
-                }
+                  type: 'string',
+                },
               },
               tags: {
                 type: 'array',
                 items: {
-                  type: 'string'
-                }
+                  type: 'string',
+                },
               },
               public: {
                 type: 'boolean',
-                default: false
-              }
+                default: false,
+              },
             },
             required: [
               'name',
@@ -82,48 +82,48 @@ angular.module('exhibitConfigEditor').component('exhibitConfigEditor', {
               'institutions',
               'disciplines',
               'tags',
-              'public'
-            ]
+              'public',
+            ],
           },
 
           author: {
             type: 'object',
             properties: {
               first_name: {
-                type: 'string'
+                type: 'string',
               },
               last_name: {
-                type: 'string'
-              }
+                type: 'string',
+              },
             },
-            required: ['first_name', 'last_name']
+            required: ['first_name', 'last_name'],
           },
 
           content: {
             type: 'array',
             items: {
               // $ref: 'contentItem',
-              $ref: '#/definitions/contentItem'
-            }
+              $ref: '#/definitions/contentItem',
+            },
           },
 
           contentItem: {
             type: 'object',
             properties: {
               id: {
-                type: 'string'
+                type: 'string',
               },
               title: {
-                type: 'string'
+                type: 'string',
               },
               url: {
-                type: 'string'
+                type: 'string',
               },
               scale: {
-                type: 'number'
-              }
+                type: 'number',
+              },
             },
-            required: ['id', 'title', 'url', 'scale']
+            required: ['id', 'title', 'url', 'scale'],
           },
 
           display: {
@@ -131,27 +131,27 @@ angular.module('exhibitConfigEditor').component('exhibitConfigEditor', {
             properties: {
               columns: {
                 type: 'integer',
-                minimum: 1
+                minimum: 1,
               },
               rows: {
                 type: 'integer',
-                minimum: 1
+                minimum: 1,
               },
               tile_x_resolution: {
                 type: 'integer',
-                minimum: 1
+                minimum: 1,
               },
               tile_y_resolution: {
                 type: 'integer',
-                minimum: 1
-              }
+                minimum: 1,
+              },
             },
             required: [
               'columns',
               'rows',
               'tile_x_resolution',
-              'tile_y_resolution'
-            ]
+              'tile_y_resolution',
+            ],
           },
 
           layout: {
@@ -159,17 +159,17 @@ angular.module('exhibitConfigEditor').component('exhibitConfigEditor', {
             properties: {
               margins: {
                 // $ref: 'margins',
-                $ref: '#/definitions/margins'
+                $ref: '#/definitions/margins',
               },
               containers: {
                 type: 'array',
                 items: {
                   // $ref: 'containerItem',
-                  $ref: '#/definitions/containerItem'
-                }
-              }
+                  $ref: '#/definitions/containerItem',
+                },
+              },
             },
-            required: ['margins', 'containers']
+            required: ['margins', 'containers'],
           },
 
           margins: {
@@ -177,48 +177,48 @@ angular.module('exhibitConfigEditor').component('exhibitConfigEditor', {
             properties: {
               XPercent: {
                 type: 'number',
-                minimum: 0
+                minimum: 0,
               },
               YPercent: {
                 type: 'number',
-                minimum: 0
-              }
+                minimum: 0,
+              },
             },
-            required: ['XPercent', 'YPercent']
+            required: ['XPercent', 'YPercent'],
           },
 
           containerItem: {
             type: 'object',
             properties: {
               id: {
-                type: 'string'
+                type: 'string',
               },
               originX: {
                 type: 'integer',
-                minimum: 0
+                minimum: 0,
               },
               originY: {
                 type: 'integer',
-                minimum: 0
+                minimum: 0,
               },
               sizeX: {
                 type: 'integer',
-                minimum: 1
+                minimum: 1,
               },
               sizeY: {
                 type: 'integer',
-                minimum: 1
-              }
+                minimum: 1,
+              },
             },
-            required: ['id', 'originX', 'originY', 'sizeX', 'sizeY']
+            required: ['id', 'originX', 'originY', 'sizeX', 'sizeY'],
           },
 
           mapping: {
             type: 'array',
             items: {
               // $ref: 'mappingItem',
-              $ref: '#/definitions/mappingItem'
-            }
+              $ref: '#/definitions/mappingItem',
+            },
           },
 
           mappingItem: {
@@ -226,16 +226,16 @@ angular.module('exhibitConfigEditor').component('exhibitConfigEditor', {
             properties: {
               content: {
                 type: 'string',
-                description: 'content id'
+                description: 'content id',
               },
               container: {
                 type: 'string',
-                description: 'container id'
-              }
+                description: 'container id',
+              },
             },
-            required: ['content', 'container']
-          }
-        }
+            required: ['content', 'container'],
+          },
+        },
       };
 
       // const metadata = {
@@ -438,7 +438,7 @@ angular.module('exhibitConfigEditor').component('exhibitConfigEditor', {
           //   mappingItem,
           // },
           ajv,
-          mode: 'code'
+          mode: 'code',
         };
       };
 
@@ -466,6 +466,6 @@ angular.module('exhibitConfigEditor').component('exhibitConfigEditor', {
          */
         this.model = this.config;
       };
-    }
-  ]
+    },
+  ],
 });

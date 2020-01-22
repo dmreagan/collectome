@@ -11,7 +11,7 @@ bs.init({
   watch: true,
   middleware: [
     hf({
-      index: './index.html'
-    })
-  ]
+      index: './index.html',
+    }),
+  ],
 });

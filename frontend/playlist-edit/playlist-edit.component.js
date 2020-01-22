@@ -156,6 +156,6 @@ angular.module('playlistEdit').component('playlistEdit', {
           }
         );
       };
-    }
-  ]
+    },
+  ],
 });
