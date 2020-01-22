@@ -1,1 +1,1 @@
-angular.module("api", ["apiHost"]);
+angular.module('api', ['apiHost']);

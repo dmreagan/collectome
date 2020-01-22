@@ -7,8 +7,8 @@
   "author": "gruan",
   "main": "index.html",
   "scripts": {
-    "prettier-check": "npx prettier --check './**/*.{css,html,js,json,md}'",
-    "prettier-write": "npx prettier --write './**/*.{css,html,js,json,md}'",
+    "prettier-check": "npx prettier --check --single-quote './**/*.{css,html,js,json,md}'",
+    "prettier-write": "npx prettier --write --single-quote './**/*.{css,html,js,json,md}'",
     "serve": "node dev-server.js"
   },
   "devDependencies": {

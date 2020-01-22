@@ -1,9 +1,9 @@
-angular.module("exhibitList").component("exhibitList", {
-  templateUrl: "exhibit-list/exhibit-list.template.html",
+angular.module('exhibitList').component('exhibitList', {
+  templateUrl: 'exhibit-list/exhibit-list.template.html',
   controller: [
-    "Authentication",
-    "Utilities",
-    "apiHost",
+    'Authentication',
+    'Utilities',
+    'apiHost',
     function exhibitCreateController(Authentication, Utilities, apiHost) {
       const utils = new Utilities();
       this.apiHost = apiHost;
@@ -64,7 +64,7 @@ angular.module("exhibitList").component("exhibitList", {
         utils.getExhibits().then(
           response => {
             this.exhibits = response.data.filter(filterExhibit);
-            this.sortBy = "-create_time";
+            this.sortBy = '-create_time';
           },
           e => {
             console.warn(e);
@@ -110,7 +110,7 @@ angular.module("exhibitList").component("exhibitList", {
         utils.searchExhibits(query).then(
           response => {
             this.exhibits = response.data.filter(filterExhibit);
-            this.sortBy = "-_score";
+            this.sortBy = '-_score';
           },
           error => {
             console.warn(error);

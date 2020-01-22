@@ -1,1 +1,1 @@
-angular.module("utilities", ["api"]);
+angular.module('utilities', ['api']);

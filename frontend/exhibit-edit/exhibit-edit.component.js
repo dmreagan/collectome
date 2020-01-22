@@ -1,10 +1,10 @@
-angular.module("exhibitEdit").component("exhibitEdit", {
-  templateUrl: "exhibit-edit/exhibit-edit.template.html",
+angular.module('exhibitEdit').component('exhibitEdit', {
+  templateUrl: 'exhibit-edit/exhibit-edit.template.html',
   controller: [
-    "Authentication",
-    "Utilities",
-    "$location",
-    "$routeParams",
+    'Authentication',
+    'Utilities',
+    '$location',
+    '$routeParams',
     function exhibitEditController(
       Authentication,
       Utilities,
@@ -48,24 +48,24 @@ angular.module("exhibitEdit").component("exhibitEdit", {
 
           // show notifications based on URL params
           if (ctrl.params.status) {
-            if (ctrl.params.status === "success") {
-              ctrl.notificationStyle = "success";
+            if (ctrl.params.status === 'success') {
+              ctrl.notificationStyle = 'success';
               ctrl.notificationMessage =
-                "Collection has been successfully edited.";
+                'Collection has been successfully edited.';
               ctrl.notify = true;
-            } else if (ctrl.params.status === "dupid") {
-              ctrl.notificationStyle = "alert";
-              ctrl.notificationMessage = "Title already in use.";
+            } else if (ctrl.params.status === 'dupid') {
+              ctrl.notificationStyle = 'alert';
+              ctrl.notificationMessage = 'Title already in use.';
               ctrl.notify = true;
             } else {
-              ctrl.notificationStyle = "alert";
-              ctrl.notificationMessage = "Updating the exhibit failed.";
+              ctrl.notificationStyle = 'alert';
+              ctrl.notificationMessage = 'Updating the exhibit failed.';
               ctrl.notify = true;
             }
           }
         } else {
-          ctrl.notificationStyle = "warning";
-          ctrl.notificationMessage = "Please log in to edit.";
+          ctrl.notificationStyle = 'warning';
+          ctrl.notificationMessage = 'Please log in to edit.';
           ctrl.notify = true;
         }
       };
@@ -88,8 +88,8 @@ angular.module("exhibitEdit").component("exhibitEdit", {
       // submit update request
       ctrl.save = () => {
         if (ctrl.authentication.userProfile === null) {
-          ctrl.notificationStyle = "alert";
-          ctrl.notificationMessage = "Cannot obtain GitHub login id.";
+          ctrl.notificationStyle = 'alert';
+          ctrl.notificationMessage = 'Cannot obtain GitHub login id.';
           ctrl.notify = true;
           return;
         }
@@ -117,7 +117,7 @@ angular.module("exhibitEdit").component("exhibitEdit", {
             ctrl.userIsOwner = true;
 
             // ugly hack to get rid of login warning but not status notifications
-            if (ctrl.notificationStyle === "warning") {
+            if (ctrl.notificationStyle === 'warning') {
               ctrl.notify = false;
             }
           } else if (ctrl.exhibitIsPublic) {
@@ -145,7 +145,7 @@ angular.module("exhibitEdit").component("exhibitEdit", {
           e => {
             console.warn(e);
             ctrl.exhibitIdIsValid = false;
-            ctrl.notificationStyle = "alert";
+            ctrl.notificationStyle = 'alert';
             ctrl.notificationMessage = `Cannot obtain exhibit with id ${ctrl.exhibitId}`;
             ctrl.notify = true;
           }

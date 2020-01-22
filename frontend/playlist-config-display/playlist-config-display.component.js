@@ -1,14 +1,14 @@
-angular.module("playlistConfigDisplay").component("playlistConfigDisplay", {
+angular.module('playlistConfigDisplay').component('playlistConfigDisplay', {
   bindings: {
-    config: "<"
+    config: '<'
   },
-  templateUrl: "playlist-config-display/playlist-config-display.template.html",
+  templateUrl: 'playlist-config-display/playlist-config-display.template.html',
   controller: function playlistConfigDisplayController() {
     this.$onInit = () => {
       this.model = this.config;
 
       this.options = {
-        mode: "tree",
+        mode: 'tree',
         onEditable: function(node) {
           // this essentially makes the editor in read only mode
           return false;

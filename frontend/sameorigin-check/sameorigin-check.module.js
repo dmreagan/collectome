@@ -1,1 +1,1 @@
-angular.module("sameoriginCheck", ["utilities"]);
+angular.module('sameoriginCheck', ['utilities']);

@@ -1,3 +1,3 @@
-angular.module("home").component("home", {
-  templateUrl: "home/home.template.html"
+angular.module('home').component('home', {
+  templateUrl: 'home/home.template.html'
 });

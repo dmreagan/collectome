@@ -1,239 +1,239 @@
-angular.module("exhibitConfigEditor").component("exhibitConfigEditor", {
+angular.module('exhibitConfigEditor').component('exhibitConfigEditor', {
   bindings: {
-    config: "<",
-    onUpdate: "&"
+    config: '<',
+    onUpdate: '&'
   },
-  templateUrl: "exhibit-config-editor/exhibit-config-editor.template.html",
+  templateUrl: 'exhibit-config-editor/exhibit-config-editor.template.html',
   controller: [
-    "$scope",
+    '$scope',
     function exhibitConfigEditorController($scope) {
       const schema = {
-        title: "Exhibit configuration",
-        description: "Exhibit configuration details",
-        type: "object",
+        title: 'Exhibit configuration',
+        description: 'Exhibit configuration details',
+        type: 'object',
         properties: {
           metadata: {
             // $ref: 'metadata',
-            $ref: "#/definitions/metadata"
+            $ref: '#/definitions/metadata'
           },
           content: {
             // $ref: 'content',
-            $ref: "#/definitions/content"
+            $ref: '#/definitions/content'
           },
           display: {
             // $ref: 'display',
-            $ref: "#/definitions/display"
+            $ref: '#/definitions/display'
           },
           layout: {
             // $ref: 'layout',
-            $ref: "#/definitions/layout"
+            $ref: '#/definitions/layout'
           },
           mapping: {
             // $ref: 'mapping',
-            $ref: "#/definitions/mapping"
+            $ref: '#/definitions/mapping'
           }
         },
-        required: ["metadata", "content", "display", "layout", "mapping"],
+        required: ['metadata', 'content', 'display', 'layout', 'mapping'],
 
         definitions: {
           metadata: {
-            type: "object",
+            type: 'object',
             properties: {
               name: {
-                type: "string"
+                type: 'string'
               },
               description: {
-                type: "string"
+                type: 'string'
               },
               authors: {
-                type: "array",
+                type: 'array',
                 items: {
                   // $ref: 'author',
-                  $ref: "#/definitions/author"
+                  $ref: '#/definitions/author'
                 }
               },
               institutions: {
-                type: "array",
+                type: 'array',
                 items: {
-                  type: "string"
+                  type: 'string'
                 }
               },
               disciplines: {
-                type: "array",
+                type: 'array',
                 items: {
-                  type: "string"
+                  type: 'string'
                 }
               },
               tags: {
-                type: "array",
+                type: 'array',
                 items: {
-                  type: "string"
+                  type: 'string'
                 }
               },
               public: {
-                type: "boolean",
+                type: 'boolean',
                 default: false
               }
             },
             required: [
-              "name",
-              "description",
-              "authors",
-              "institutions",
-              "disciplines",
-              "tags",
-              "public"
+              'name',
+              'description',
+              'authors',
+              'institutions',
+              'disciplines',
+              'tags',
+              'public'
             ]
           },
 
           author: {
-            type: "object",
+            type: 'object',
             properties: {
               first_name: {
-                type: "string"
+                type: 'string'
               },
               last_name: {
-                type: "string"
+                type: 'string'
               }
             },
-            required: ["first_name", "last_name"]
+            required: ['first_name', 'last_name']
           },
 
           content: {
-            type: "array",
+            type: 'array',
             items: {
               // $ref: 'contentItem',
-              $ref: "#/definitions/contentItem"
+              $ref: '#/definitions/contentItem'
             }
           },
 
           contentItem: {
-            type: "object",
+            type: 'object',
             properties: {
               id: {
-                type: "string"
+                type: 'string'
               },
               title: {
-                type: "string"
+                type: 'string'
               },
               url: {
-                type: "string"
+                type: 'string'
               },
               scale: {
-                type: "number"
+                type: 'number'
               }
             },
-            required: ["id", "title", "url", "scale"]
+            required: ['id', 'title', 'url', 'scale']
           },
 
           display: {
-            type: "object",
+            type: 'object',
             properties: {
               columns: {
-                type: "integer",
+                type: 'integer',
                 minimum: 1
               },
               rows: {
-                type: "integer",
+                type: 'integer',
                 minimum: 1
               },
               tile_x_resolution: {
-                type: "integer",
+                type: 'integer',
                 minimum: 1
               },
               tile_y_resolution: {
-                type: "integer",
+                type: 'integer',
                 minimum: 1
               }
             },
             required: [
-              "columns",
-              "rows",
-              "tile_x_resolution",
-              "tile_y_resolution"
+              'columns',
+              'rows',
+              'tile_x_resolution',
+              'tile_y_resolution'
             ]
           },
 
           layout: {
-            type: "object",
+            type: 'object',
             properties: {
               margins: {
                 // $ref: 'margins',
-                $ref: "#/definitions/margins"
+                $ref: '#/definitions/margins'
               },
               containers: {
-                type: "array",
+                type: 'array',
                 items: {
                   // $ref: 'containerItem',
-                  $ref: "#/definitions/containerItem"
+                  $ref: '#/definitions/containerItem'
                 }
               }
             },
-            required: ["margins", "containers"]
+            required: ['margins', 'containers']
           },
 
           margins: {
-            type: "object",
+            type: 'object',
             properties: {
               XPercent: {
-                type: "number",
+                type: 'number',
                 minimum: 0
               },
               YPercent: {
-                type: "number",
+                type: 'number',
                 minimum: 0
               }
             },
-            required: ["XPercent", "YPercent"]
+            required: ['XPercent', 'YPercent']
           },
 
           containerItem: {
-            type: "object",
+            type: 'object',
             properties: {
               id: {
-                type: "string"
+                type: 'string'
               },
               originX: {
-                type: "integer",
+                type: 'integer',
                 minimum: 0
               },
               originY: {
-                type: "integer",
+                type: 'integer',
                 minimum: 0
               },
               sizeX: {
-                type: "integer",
+                type: 'integer',
                 minimum: 1
               },
               sizeY: {
-                type: "integer",
+                type: 'integer',
                 minimum: 1
               }
             },
-            required: ["id", "originX", "originY", "sizeX", "sizeY"]
+            required: ['id', 'originX', 'originY', 'sizeX', 'sizeY']
           },
 
           mapping: {
-            type: "array",
+            type: 'array',
             items: {
               // $ref: 'mappingItem',
-              $ref: "#/definitions/mappingItem"
+              $ref: '#/definitions/mappingItem'
             }
           },
 
           mappingItem: {
-            type: "object",
+            type: 'object',
             properties: {
               content: {
-                type: "string",
-                description: "content id"
+                type: 'string',
+                description: 'content id'
               },
               container: {
-                type: "string",
-                description: "container id"
+                type: 'string',
+                description: 'container id'
               }
             },
-            required: ["content", "container"]
+            required: ['content', 'container']
           }
         }
       };
@@ -438,7 +438,7 @@ angular.module("exhibitConfigEditor").component("exhibitConfigEditor", {
           //   mappingItem,
           // },
           ajv,
-          mode: "code"
+          mode: 'code'
         };
       };
 

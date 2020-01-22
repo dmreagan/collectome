@@ -1,1 +1,1 @@
-angular.module("exhibitList", ["authentication", "utilities", "apiHost"]);
+angular.module('exhibitList', ['authentication', 'utilities', 'apiHost']);

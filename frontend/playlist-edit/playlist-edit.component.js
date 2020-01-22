@@ -1,10 +1,10 @@
-angular.module("playlistEdit").component("playlistEdit", {
-  templateUrl: "playlist-edit/playlist-edit.template.html",
+angular.module('playlistEdit').component('playlistEdit', {
+  templateUrl: 'playlist-edit/playlist-edit.template.html',
   controller: [
-    "Authentication",
-    "Utilities",
-    "$location",
-    "$routeParams",
+    'Authentication',
+    'Utilities',
+    '$location',
+    '$routeParams',
     function playlistEditController(
       Authentication,
       Utilities,
@@ -47,25 +47,25 @@ angular.module("playlistEdit").component("playlistEdit", {
 
           // show notifications based on URL params
           if (ctrl.params.status) {
-            if (ctrl.params.status === "success") {
-              ctrl.notificationStyle = "callout success";
+            if (ctrl.params.status === 'success') {
+              ctrl.notificationStyle = 'callout success';
               ctrl.notificationMessage =
-                "Playlist has been successfully edited";
+                'Playlist has been successfully edited';
               ctrl.notify = true;
-            } else if (ctrl.params.status === "dupid") {
-              ctrl.notificationStyle = "callout alert";
+            } else if (ctrl.params.status === 'dupid') {
+              ctrl.notificationStyle = 'callout alert';
               ctrl.notificationMessage =
-                "Sanity check failed. title already used";
+                'Sanity check failed. title already used';
               ctrl.notify = true;
             } else {
-              ctrl.notificationStyle = "callout alert";
-              ctrl.notificationMessage = "Updating the playlist failed.";
+              ctrl.notificationStyle = 'callout alert';
+              ctrl.notificationMessage = 'Updating the playlist failed.';
               ctrl.notify = true;
             }
           }
         } else {
-          ctrl.notificationStyle = "warning";
-          ctrl.notificationMessage = "Please log in to edit.";
+          ctrl.notificationStyle = 'warning';
+          ctrl.notificationMessage = 'Please log in to edit.';
           ctrl.notify = true;
         }
       };
@@ -88,8 +88,8 @@ angular.module("playlistEdit").component("playlistEdit", {
       // submit update request
       ctrl.save = () => {
         if (ctrl.authentication.userProfile === null) {
-          ctrl.notificationStyle = "alert";
-          ctrl.notificationMessage = "Cannot obtain github login id.";
+          ctrl.notificationStyle = 'alert';
+          ctrl.notificationMessage = 'Cannot obtain github login id.';
           ctrl.notify = true;
           return;
         }
@@ -122,7 +122,7 @@ angular.module("playlistEdit").component("playlistEdit", {
             ctrl.isOwner = true;
 
             // ugly hack to get rid of login warning but not status notifications
-            if (ctrl.notificationStyle === "warning") {
+            if (ctrl.notificationStyle === 'warning') {
               ctrl.notify = false;
             }
           } else if (ctrl.playlistIsPublic) {
@@ -150,7 +150,7 @@ angular.module("playlistEdit").component("playlistEdit", {
           e => {
             console.warn(e);
             ctrl.playlistIdIsValid = false;
-            ctrl.notificationStyle = "alert";
+            ctrl.notificationStyle = 'alert';
             ctrl.notificationMessage = `Cannot obtain playlist with id ${ctrl.playlistId}`;
             ctrl.notify = true;
           }

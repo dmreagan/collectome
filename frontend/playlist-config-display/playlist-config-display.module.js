@@ -1,1 +1,1 @@
-angular.module("playlistConfigDisplay", ["angular-jsoneditor"]);
+angular.module('playlistConfigDisplay', ['angular-jsoneditor']);

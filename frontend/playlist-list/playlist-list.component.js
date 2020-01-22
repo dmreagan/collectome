@@ -1,9 +1,9 @@
-angular.module("playlistList").component("playlistList", {
-  templateUrl: "playlist-list/playlist-list.template.html",
+angular.module('playlistList').component('playlistList', {
+  templateUrl: 'playlist-list/playlist-list.template.html',
   controller: [
-    "Authentication",
-    "Utilities",
-    "apiHost",
+    'Authentication',
+    'Utilities',
+    'apiHost',
     function playlistCreateController(Authentication, Utilities, apiHost) {
       const utils = new Utilities();
       this.apiHost = apiHost;
@@ -63,7 +63,7 @@ angular.module("playlistList").component("playlistList", {
             this.playlists = response.data.filter(filterPlaylist);
 
             console.log(this.playlists);
-            this.sortBy = "-create_time";
+            this.sortBy = '-create_time';
           },
           e => {
             console.warn(e);
@@ -81,7 +81,7 @@ angular.module("playlistList").component("playlistList", {
           response => {
             this.playlists = response.data.filter(filterPlaylist);
             console.log(this.playlists);
-            this.sortBy = "-_score";
+            this.sortBy = '-_score';
           },
           error => {
             console.warn(error);
@@ -91,19 +91,19 @@ angular.module("playlistList").component("playlistList", {
       };
 
       this.updateSearch = () => {
-        console.log("search string:".concat(this.searchString));
+        console.log('search string:'.concat(this.searchString));
 
         if (!this.searchString) {
-          console.log("loadPlaylists");
+          console.log('loadPlaylists');
           loadPlaylists();
         } else {
-          console.log("searchPlaylists");
+          console.log('searchPlaylists');
           searchPlaylists();
         }
       };
 
       const init = () => {
-        console.log("init loadPlaylists");
+        console.log('init loadPlaylists');
         loadPlaylists();
       };
 

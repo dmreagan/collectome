@@ -1,4 +1,4 @@
-angular.module("authentication").service("Authentication", function() {
+angular.module('authentication').service('Authentication', function() {
   this.isAuthorized = false;
   this.userProfile = null;
 });

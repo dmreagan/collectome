@@ -1,10 +1,10 @@
-angular.module("exhibitCreate").component("exhibitCreate", {
-  templateUrl: "exhibit-create/exhibit-create.template.html",
+angular.module('exhibitCreate').component('exhibitCreate', {
+  templateUrl: 'exhibit-create/exhibit-create.template.html',
   controller: [
-    "Authentication",
-    "Utilities",
-    "$location",
-    "$routeParams",
+    'Authentication',
+    'Utilities',
+    '$location',
+    '$routeParams',
     function exhibitCreateController(
       Authentication,
       Utilities,
@@ -23,21 +23,21 @@ angular.module("exhibitCreate").component("exhibitCreate", {
         this.config = updatedConfig;
       };
 
-      this.goToExhibits = () => $location.url("/exhibits");
+      this.goToExhibits = () => $location.url('/exhibits');
 
       this.containerIdOnOffSwitch = false;
 
       if (this.exhibitId) {
         this.goToCreated = () => $location.url(`/exhibits/${this.exhibitId}`);
-        this.message_success = "callout success";
-        this.message_content = "Exhibit created/forked!";
+        this.message_success = 'callout success';
+        this.message_content = 'Exhibit created/forked!';
       }
 
       this.save = () => {
         // check github login id is available
         if (this.authentication.userProfile.login === undefined) {
-          this.message_style = "callout alert";
-          this.info_message = "Cannot obtain github login id.";
+          this.message_style = 'callout alert';
+          this.info_message = 'Cannot obtain github login id.';
           return;
         }
 
@@ -47,7 +47,7 @@ angular.module("exhibitCreate").component("exhibitCreate", {
         utils.submitExhibit(this.config, this, loginUser, type);
       };
 
-      const path = "./assets/config-default.json";
+      const path = './assets/config-default.json';
 
       // async initialization of this.config
       utils.getConfig(path).then(response => {

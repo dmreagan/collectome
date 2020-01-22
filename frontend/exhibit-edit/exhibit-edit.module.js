@@ -1,6 +1,6 @@
-angular.module("exhibitEdit", [
-  "authentication",
-  "utilities",
-  "exhibitConfigPreview",
-  "exhibitConfigEditor"
+angular.module('exhibitEdit', [
+  'authentication',
+  'utilities',
+  'exhibitConfigPreview',
+  'exhibitConfigEditor'
 ]);

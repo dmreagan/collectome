@@ -1,21 +1,21 @@
 angular
-  .module("exhibitConfigPreview")
-  .component("exhibitConfigPreview", {
+  .module('exhibitConfigPreview')
+  .component('exhibitConfigPreview', {
     bindings: {
-      config: "<",
-      idswitch: "<",
-      livepreview: "<"
+      config: '<',
+      idswitch: '<',
+      livepreview: '<'
     },
-    templateUrl: "exhibit-config-preview/exhibit-config-preview.template.html",
+    templateUrl: 'exhibit-config-preview/exhibit-config-preview.template.html',
     controller: [
-      "Utilities",
+      'Utilities',
       function exhibitConfigPreviewController(Utilities) {
         const utils = new Utilities();
 
         this.idSwitchPreviousValue = null;
 
         const updatePreview = () => {
-          utils.calculateSize("#avl-shim", "#avl-preview", this.config);
+          utils.calculateSize('#avl-shim', '#avl-preview', this.config);
 
           const bezelPos = utils.calculateBezels(this.config);
           this.bezelPosHorizontal = bezelPos.bezelPosHorizontal;
@@ -68,22 +68,22 @@ angular
       }
     ]
   })
-  .filter("trusted", [
-    "$sce",
+  .filter('trusted', [
+    '$sce',
     function($sce) {
       return function(url) {
         return $sce.trustAsResourceUrl(url);
       };
     }
   ])
-  .directive("scale", () => ({
-    restrict: "A",
+  .directive('scale', () => ({
+    restrict: 'A',
     scope: {
-      config: "=scale"
+      config: '=scale'
     },
     link: function(scope, elem, attr) {
-      elem.on("load", () => {
-        const contentId = elem.attr("contentId");
+      elem.on('load', () => {
+        const contentId = elem.attr('contentId');
         // console.log(contentId);
 
         const grids = elem
@@ -93,8 +93,8 @@ angular
         const htmlStr = grids.html();
         const idx = htmlStr.indexOf(contentId);
 
-        let strKey = "width:";
-        const re = new RegExp(strKey, "g");
+        let strKey = 'width:';
+        const re = new RegExp(strKey, 'g');
 
         const matches = [];
         const dist = [];
@@ -108,7 +108,7 @@ angular
 
         // console.log(htmlStr);
 
-        let i = htmlStr.indexOf("px", closestMathIdx + 1 + strKey.length);
+        let i = htmlStr.indexOf('px', closestMathIdx + 1 + strKey.length);
 
         const width = parseInt(
           htmlStr.substring(closestMathIdx + 1 + strKey.length, i),
@@ -117,10 +117,10 @@ angular
 
         // console.log(width);
 
-        strKey = "px; height:";
+        strKey = 'px; height:';
         const startIdx = i + strKey.length + 1;
 
-        i = htmlStr.indexOf("px", startIdx);
+        i = htmlStr.indexOf('px', startIdx);
 
         const height = parseInt(htmlStr.substring(startIdx, i), 10);
 
@@ -146,10 +146,10 @@ angular
         // console.log(scaleWidth);
         // console.log(scaleHeight);
 
-        elem.css("width", `${scaleWidth}px`);
-        elem.css("height", `${scaleHeight}px`);
-        elem.css("transform-origin", "top left");
-        elem.css("transform", `scale3d(${scale}, ${scale}, 1)`);
+        elem.css('width', `${scaleWidth}px`);
+        elem.css('height', `${scaleHeight}px`);
+        elem.css('transform-origin', 'top left');
+        elem.css('transform', `scale3d(${scale}, ${scale}, 1)`);
       });
     }
   }));

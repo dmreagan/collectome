@@ -1,1 +1,1 @@
-angular.module("displayThumbnail", []);
+angular.module('displayThumbnail', []);

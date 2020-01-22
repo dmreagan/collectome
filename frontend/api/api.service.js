@@ -1,4 +1,4 @@
-angular.module("api").service("Api", function(apiHost, $q, $http) {
+angular.module('api').service('Api', function(apiHost, $q, $http) {
   return function(path, config = null) {
     const url = `${apiHost}${path}`;
     this.post = function(data) {

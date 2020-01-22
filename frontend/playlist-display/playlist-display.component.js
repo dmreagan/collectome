@@ -1,12 +1,12 @@
 /* eslint-disable prefer-destructuring */
 angular
-  .module("playlistDisplay")
-  .component("playlistDisplay", {
-    templateUrl: "playlist-display/playlist-display.template.html",
+  .module('playlistDisplay')
+  .component('playlistDisplay', {
+    templateUrl: 'playlist-display/playlist-display.template.html',
     controller: [
-      "Utilities",
-      "$routeParams",
-      "$timeout",
+      'Utilities',
+      '$routeParams',
+      '$timeout',
       function playlistDisplayController(Utilities, $routeParams, $timeout) {
         const utils = new Utilities();
 
@@ -20,7 +20,7 @@ angular
 
         this.collectionURL = null;
 
-        const exhibitDisplayPrefix = "/exhibit-display/";
+        const exhibitDisplayPrefix = '/exhibit-display/';
 
         const refresh = () => {
           curIndex = (curIndex + 1) % collections.length;
@@ -51,8 +51,8 @@ angular
       }
     ]
   })
-  .filter("trusted", [
-    "$sce",
+  .filter('trusted', [
+    '$sce',
     function($sce) {
       return function(url) {
         return $sce.trustAsResourceUrl(url);

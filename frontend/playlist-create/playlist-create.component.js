@@ -1,10 +1,10 @@
-angular.module("playlistCreate").component("playlistCreate", {
-  templateUrl: "playlist-create/playlist-create.template.html",
+angular.module('playlistCreate').component('playlistCreate', {
+  templateUrl: 'playlist-create/playlist-create.template.html',
   controller: [
-    "Authentication",
-    "Utilities",
-    "$location",
-    "$routeParams",
+    'Authentication',
+    'Utilities',
+    '$location',
+    '$routeParams',
     function playlistCreateController(
       Authentication,
       Utilities,
@@ -23,21 +23,21 @@ angular.module("playlistCreate").component("playlistCreate", {
         this.config = updatedConfig;
       };
 
-      this.goToPlaylists = () => $location.url("/playlists");
+      this.goToPlaylists = () => $location.url('/playlists');
 
       this.containerIdOnOffSwitch = false;
 
       if (this.playlistId) {
         this.goToCreated = () => $location.url(`/playlists/${this.playlistId}`);
-        this.message_success = "callout success";
-        this.message_content = "Playlist created/forked!";
+        this.message_success = 'callout success';
+        this.message_content = 'Playlist created/forked!';
       }
 
       this.save = () => {
         // check github login id is available
         if (this.authentication.userProfile.login === undefined) {
-          this.message_style = "callout alert";
-          this.info_message = "Cannot obtain github login id.";
+          this.message_style = 'callout alert';
+          this.info_message = 'Cannot obtain github login id.';
           return;
         }
 
@@ -47,7 +47,7 @@ angular.module("playlistCreate").component("playlistCreate", {
         utils.submitPlaylist(this.config, this, loginUser, type);
       };
 
-      const path = "./assets/playlist-config-default.json";
+      const path = './assets/playlist-config-default.json';
 
       // async initialization of this.config
       utils.getConfig(path).then(response => {

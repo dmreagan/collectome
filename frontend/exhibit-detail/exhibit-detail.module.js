@@ -1,7 +1,7 @@
-angular.module("exhibitDetail", [
-  "ngRoute",
-  "authentication",
-  "utilities",
-  "exhibitConfigPreview",
-  "exhibitConfigDisplay"
+angular.module('exhibitDetail', [
+  'ngRoute',
+  'authentication',
+  'utilities',
+  'exhibitConfigPreview',
+  'exhibitConfigDisplay'
 ]);

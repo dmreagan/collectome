@@ -1,111 +1,111 @@
-angular.module("playlistConfigEditor").component("playlistConfigEditor", {
+angular.module('playlistConfigEditor').component('playlistConfigEditor', {
   bindings: {
-    config: "<",
-    onUpdate: "&"
+    config: '<',
+    onUpdate: '&'
   },
-  templateUrl: "playlist-config-editor/playlist-config-editor.template.html",
+  templateUrl: 'playlist-config-editor/playlist-config-editor.template.html',
   controller: [
-    "$scope",
+    '$scope',
     function playlistConfigEditorController($scope) {
       const schema = {
-        title: "Playlist configuration",
-        description: "Playlist configuration details",
-        type: "object",
+        title: 'Playlist configuration',
+        description: 'Playlist configuration details',
+        type: 'object',
         properties: {
           metadata: {
             // $ref: 'metadata',
-            $ref: "#/definitions/metadata"
+            $ref: '#/definitions/metadata'
           },
           collections: {
             // $ref: 'collections',
-            $ref: "#/definitions/collections"
+            $ref: '#/definitions/collections'
           }
         },
-        required: ["metadata", "collections"],
+        required: ['metadata', 'collections'],
 
         definitions: {
           metadata: {
-            type: "object",
+            type: 'object',
             properties: {
               name: {
-                type: "string"
+                type: 'string'
               },
               description: {
-                type: "string"
+                type: 'string'
               },
               authors: {
-                type: "array",
+                type: 'array',
                 items: {
                   // $ref: 'author',
-                  $ref: "#/definitions/author"
+                  $ref: '#/definitions/author'
                 }
               },
               institutions: {
-                type: "array",
+                type: 'array',
                 items: {
-                  type: "string"
+                  type: 'string'
                 }
               },
               disciplines: {
-                type: "array",
+                type: 'array',
                 items: {
-                  type: "string"
+                  type: 'string'
                 }
               },
               tags: {
-                type: "array",
+                type: 'array',
                 items: {
-                  type: "string"
+                  type: 'string'
                 }
               },
               public: {
-                type: "boolean",
+                type: 'boolean',
                 default: false
               }
             },
             required: [
-              "name",
-              "description",
-              "authors",
-              "institutions",
-              "disciplines",
-              "tags",
-              "public"
+              'name',
+              'description',
+              'authors',
+              'institutions',
+              'disciplines',
+              'tags',
+              'public'
             ]
           },
 
           author: {
-            type: "object",
+            type: 'object',
             properties: {
               first_name: {
-                type: "string"
+                type: 'string'
               },
               last_name: {
-                type: "string"
+                type: 'string'
               }
             },
-            required: ["first_name", "last_name"]
+            required: ['first_name', 'last_name']
           },
 
           collections: {
-            type: "array",
+            type: 'array',
             items: {
               // $ref: 'collectionsItem',
-              $ref: "#/definitions/collectionsItem"
+              $ref: '#/definitions/collectionsItem'
             }
           },
 
           collectionsItem: {
-            type: "object",
+            type: 'object',
             properties: {
               id: {
-                type: "string"
+                type: 'string'
               },
               duration: {
-                type: "number"
+                type: 'number'
               }
             },
-            required: ["id", "duration"]
+            required: ['id', 'duration']
           }
         }
       };
@@ -118,7 +118,7 @@ angular.module("playlistConfigEditor").component("playlistConfigEditor", {
         this.options = {
           schema,
           ajv,
-          mode: "code"
+          mode: 'code'
         };
       };
 

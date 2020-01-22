@@ -1,6 +1,6 @@
-angular.module("playlistDetail", [
-  "ngRoute",
-  "authentication",
-  "utilities",
-  "playlistConfigDisplay"
+angular.module('playlistDetail', [
+  'ngRoute',
+  'authentication',
+  'utilities',
+  'playlistConfigDisplay'
 ]);

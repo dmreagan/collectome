@@ -1,20 +1,20 @@
-angular.module("sameoriginCheck").component("sameoriginCheck", {
-  templateUrl: "sameorigin-check/sameorigin-check.template.html",
+angular.module('sameoriginCheck').component('sameoriginCheck', {
+  templateUrl: 'sameorigin-check/sameorigin-check.template.html',
   controller: [
-    "Utilities",
+    'Utilities',
     function exhibitCreateController(Utilities) {
       const utils = new Utilities();
-      this.searchURL = "";
+      this.searchURL = '';
 
-      const XFrameOptKey = "X-Frame-Options";
+      const XFrameOptKey = 'X-Frame-Options';
 
       this.search = () => {
         this.message_style = null;
         this.info_message = null;
 
-        if (this.searchURL === "") {
-          this.message_style = "callout warning";
-          this.info_message = "URL cannot be empty";
+        if (this.searchURL === '') {
+          this.message_style = 'callout warning';
+          this.info_message = 'URL cannot be empty';
           return;
         }
 
@@ -24,9 +24,9 @@ angular.module("sameoriginCheck").component("sameoriginCheck", {
 
             console.log(data);
 
-            const lines = data.split("\n");
+            const lines = data.split('\n');
 
-            this.message_style = "callout success";
+            this.message_style = 'callout success';
 
             for (let i = 0; i < lines.length; i += 1) {
               if (
@@ -34,7 +34,7 @@ angular.module("sameoriginCheck").component("sameoriginCheck", {
               ) {
                 console.log(lines[i]);
                 this.info_message = `${lines[i]}`;
-                this.message_style = "callout alert";
+                this.message_style = 'callout alert';
 
                 return;
               }
@@ -45,7 +45,7 @@ angular.module("sameoriginCheck").component("sameoriginCheck", {
           error => {
             console.warn(error);
 
-            this.message_style = "callout warning";
+            this.message_style = 'callout warning';
 
             console.log(error.status);
 

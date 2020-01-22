@@ -1,1 +1,1 @@
-angular.module("playlistList", ["authentication", "utilities", "apiHost"]);
+angular.module('playlistList', ['authentication', 'utilities', 'apiHost']);

@@ -1,7 +1,7 @@
-angular.module("displayThumbnail").component("displayThumbnail", {
-  template: "<canvas></canvas>",
+angular.module('displayThumbnail').component('displayThumbnail', {
+  template: '<canvas></canvas>',
   bindings: {
-    config: "<"
+    config: '<'
   },
   controller: function DisplayThumbnailController($element) {
     const ctrl = this;
@@ -33,7 +33,7 @@ angular.module("displayThumbnail").component("displayThumbnail", {
 
     this.$postLink = () => {
       ctrl.canvas = $element.children()[0];
-      ctrl.ctx = ctrl.canvas.getContext("2d");
+      ctrl.ctx = ctrl.canvas.getContext('2d');
 
       for (let k = 0; k < ctrl.sortedContainers.length; k += 1) {
         const container = ctrl.sortedContainers[k];
@@ -45,7 +45,7 @@ angular.module("displayThumbnail").component("displayThumbnail", {
         const gridHeight = container.sizeY * ctrl.rowHeight;
 
         // fetch color from chroma.js library
-        ctrl.ctx.fillStyle = chroma.scale("Blues")(
+        ctrl.ctx.fillStyle = chroma.scale('Blues')(
           k / (ctrl.sortedContainers.length - 1)
         );
         ctrl.ctx.fillRect(originX, originY, gridWidth, gridHeight);

@@ -1,8 +1,8 @@
-angular.module("exhibitDisplay").component("exhibitDisplay", {
-  templateUrl: "exhibit-display/exhibit-display.template.html",
+angular.module('exhibitDisplay').component('exhibitDisplay', {
+  templateUrl: 'exhibit-display/exhibit-display.template.html',
   controller: [
-    "Utilities",
-    "$routeParams",
+    'Utilities',
+    '$routeParams',
     function exhibitDisplayController(Utilities, $routeParams) {
       const utils = new Utilities();
 
@@ -10,10 +10,10 @@ angular.module("exhibitDisplay").component("exhibitDisplay", {
 
       this.exhibitIsPublic = true;
 
-      const body = document.querySelector("body");
+      const body = document.querySelector('body');
 
-        body.style.margin = '0px';
-        body.style.overflow = 'hidden';
+      body.style.margin = '0px';
+      body.style.overflow = 'hidden';
 
       // async initialization of this.config
       // eslint-disable-next-line max-len
@@ -23,7 +23,7 @@ angular.module("exhibitDisplay").component("exhibitDisplay", {
         this.exhibitOwner = response.data.owner;
         this.exhibitIsPublic = response.data.public;
 
-        utils.calculateSize("#avl-shim", "#avl-preview", this.config);
+        utils.calculateSize('#avl-shim', '#avl-preview', this.config);
 
         this.gridsterOpts = utils.calculateGridsterOpts(this.config);
 

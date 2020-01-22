@@ -1,10 +1,10 @@
-angular.module("exhibitDetail").component("exhibitDetail", {
-  templateUrl: "exhibit-detail/exhibit-detail.template.html",
+angular.module('exhibitDetail').component('exhibitDetail', {
+  templateUrl: 'exhibit-detail/exhibit-detail.template.html',
   controller: [
-    "Authentication",
-    "Utilities",
-    "$routeParams",
-    "$location",
+    'Authentication',
+    'Utilities',
+    '$routeParams',
+    '$location',
     function exhibitDetailController(
       Authentication,
       Utilities,
@@ -38,12 +38,12 @@ angular.module("exhibitDetail").component("exhibitDetail", {
       // do some stuff after page has initialized
       ctrl.$postLink = () => {
         // show a success callout if collection was just copied
-        if (ctrl.params.status === "copy") {
+        if (ctrl.params.status === 'copy') {
           // ctrl.copy = true;
           ctrl.notify = true;
-          ctrl.notificationStyle = "success";
+          ctrl.notificationStyle = 'success';
           ctrl.notificationMessage =
-            "This is your own copy of the collection. It is marked private by default.";
+            'This is your own copy of the collection. It is marked private by default.';
         }
 
         ctrl.getExhibit();
@@ -80,14 +80,14 @@ angular.module("exhibitDetail").component("exhibitDetail", {
 
         ctrl.utils.deleteExhibit(ctrl.exhibitId).then(
           () => {
-            ctrl.notificationStyle = "success";
-            ctrl.notificationMessage = "Exhibit deleted!";
+            ctrl.notificationStyle = 'success';
+            ctrl.notificationMessage = 'Exhibit deleted!';
           },
           e => {
             console.warn(e);
             // window.alert('Deleting the post failed.');
-            ctrl.notificationStyle = "alert";
-            ctrl.notificationMessage = "Deleting the exhibit failed.";
+            ctrl.notificationStyle = 'alert';
+            ctrl.notificationMessage = 'Deleting the exhibit failed.';
           }
         );
       };
@@ -119,15 +119,15 @@ angular.module("exhibitDetail").component("exhibitDetail", {
             ctrl.userIsOwner = ctrl.isUserOwner();
 
             if (!ctrl.exhibitIsPublic && !ctrl.userIsOwner) {
-              ctrl.notificationStyle = "alert";
-              ctrl.notificationMessage = "This collection is private.";
+              ctrl.notificationStyle = 'alert';
+              ctrl.notificationMessage = 'This collection is private.';
               ctrl.notify = true;
             }
           },
           e => {
             console.warn(e);
             ctrl.exhibitIdIsValid = false;
-            ctrl.notificationStyle = "alert";
+            ctrl.notificationStyle = 'alert';
             ctrl.notificationMessage = `Cannot obtain exhibit with id ${ctrl.exhibitId}`;
             ctrl.notify = true;
           }

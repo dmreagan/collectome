@@ -1,10 +1,10 @@
-angular.module("loginButton").component("loginButton", {
-  templateUrl: "login-button/login-button.template.html",
+angular.module('loginButton').component('loginButton', {
+  templateUrl: 'login-button/login-button.template.html',
   controller: [
-    "Authentication",
-    "$window",
-    "$location",
-    "Utilities",
+    'Authentication',
+    '$window',
+    '$location',
+    'Utilities',
     function LoginButtonController(
       Authentication,
       $window,
@@ -13,9 +13,9 @@ angular.module("loginButton").component("loginButton", {
     ) {
       this.authentication = Authentication;
       const utils = new Utilities();
-      const gitOAuthURL = "https://github.com/login/oauth/authorize";
-      const githubScope = "user:email";
-      const baseURL = "http://127.0.0.1:3000"; // dev
+      const gitOAuthURL = 'https://github.com/login/oauth/authorize';
+      const githubScope = 'user:email';
+      const baseURL = 'http://127.0.0.1:3000'; // dev
       // const baseURL = 'https://showcase.avl.iu.edu/collectome/frontend'; // production
 
       this.authenticateAsGitHubUser = () => {
@@ -34,7 +34,7 @@ angular.module("loginButton").component("loginButton", {
 
       const checkForGitHubUserProfile = () => {
         if ($window.location.search) {
-          const code = $window.location.search.substring("?code=".length);
+          const code = $window.location.search.substring('?code='.length);
 
           utils.getUserGitHubProfile(code).then(
             response => {

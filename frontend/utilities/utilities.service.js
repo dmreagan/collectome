@@ -1,11 +1,11 @@
 /* eslint-disable func-names */
-angular.module("utilities").service("Utilities", [
-  "Api",
-  "$window",
-  "$q",
-  "$location",
-  "$http",
-  "$route",
+angular.module('utilities').service('Utilities', [
+  'Api',
+  '$window',
+  '$q',
+  '$location',
+  '$http',
+  '$route',
   function(Api, $window, $q, $location, $http, $route) {
     return function() {
       this.getConfig = path => {
@@ -20,7 +20,7 @@ angular.module("utilities").service("Utilities", [
       this.initGridsterOpts = () => {
         const opts = {
           outerMargin: false,
-          width: "auto",
+          width: 'auto',
           pushing: true,
           floating: true,
           draggable: {
@@ -28,7 +28,7 @@ angular.module("utilities").service("Utilities", [
           },
           resizable: {
             enabled: false,
-            handles: ["n", "e", "s", "w", "se", "sw"]
+            handles: ['n', 'e', 's', 'w', 'se', 'sw']
           }
         };
 
@@ -99,9 +99,9 @@ angular.module("utilities").service("Utilities", [
           item.sizeX = layout.containers[i].sizeX;
           item.sizeY = layout.containers[i].sizeY;
           // following default values are used when no matching can be found
-          item.title = "";
-          item.url = "";
-          item.contentId = "";
+          item.title = '';
+          item.url = '';
+          item.contentId = '';
 
           id = layout.containers[i].id;
 
@@ -197,7 +197,7 @@ angular.module("utilities").service("Utilities", [
        */
       const uploadSnapshot = snapshot => {
         const d = $q.defer();
-        const api = new Api("/snapshots");
+        const api = new Api('/snapshots');
         api.post({ snapshot }).then(
           response => {
             d.resolve(response);
@@ -247,13 +247,13 @@ angular.module("utilities").service("Utilities", [
             if (snapshotCount === 0) {
               this.deleteSnapshot(snapshotRef);
 
-              self.message_style = "alert error one-third float-center";
+              self.message_style = 'alert error one-third float-center';
               self.info_message = msg;
             }
           },
           e => {
             console.warn(e);
-            self.message_style = "alert error one-third float-center";
+            self.message_style = 'alert error one-third float-center';
             self.info_message = msg;
           }
         );
@@ -266,7 +266,7 @@ angular.module("utilities").service("Utilities", [
        */
       this.submitExhibit = (config, self, owner, type) => {
         const snapshotRef =
-          "-1"; /* reserved for future use, e.g., logo or user uplodaed image file */
+          '-1'; /* reserved for future use, e.g., logo or user uplodaed image file */
         const extra = {};
 
         // eslint-disable-next-line max-len
@@ -276,19 +276,19 @@ angular.module("utilities").service("Utilities", [
         const filteredAuthors = authors.map(
           name => `${name.first_name}--${name.last_name}`
         );
-        extra.authors = filteredAuthors.join(";");
+        extra.authors = filteredAuthors.join(';');
 
         extra.institutions = config.metadata.institutions
           .filter(name => name)
-          .join(";");
+          .join(';');
 
-        extra.disciplines = config.metadata.disciplines.join(";");
+        extra.disciplines = config.metadata.disciplines.join(';');
 
-        extra.tags = config.metadata.tags.join(";");
+        extra.tags = config.metadata.tags.join(';');
 
         extra.snapshotRef = snapshotRef;
 
-        const api = new Api("/exhibits");
+        const api = new Api('/exhibits');
 
         const createTime = new Date();
 
@@ -305,12 +305,12 @@ angular.module("utilities").service("Utilities", [
 
               if (type === 0) {
                 // create from scratch
-                const path = "/exhibit-create";
+                const path = '/exhibit-create';
                 $location.url(`${path}/${assignedId}`);
               } else if (type === 1) {
                 // update, i.e., delete first and then create
-                self.message_style = "callout success";
-                self.info_message = "Collection has been successfully edited";
+                self.message_style = 'callout success';
+                self.info_message = 'Collection has been successfully edited';
                 self.success = true;
                 $location.url(`/exhibits/${assignedId}/edit?status=success`);
               } else if (type === 2) {
@@ -325,7 +325,7 @@ angular.module("utilities").service("Utilities", [
               // this.snapshotRollback = (snapshotRef, self, msg);
 
               console.warn(e.data.status);
-              self.message_style = "callout alert";
+              self.message_style = 'callout alert';
               self.info_message = e.data.error;
             }
           );
@@ -346,19 +346,19 @@ angular.module("utilities").service("Utilities", [
         const filteredAuthors = authors.map(
           name => `${name.first_name}--${name.last_name}`
         );
-        extra.authors = filteredAuthors.join(";");
+        extra.authors = filteredAuthors.join(';');
 
         extra.institutions = config.metadata.institutions
           .filter(name => name)
-          .join(";");
+          .join(';');
 
-        extra.disciplines = config.metadata.disciplines.join(";");
+        extra.disciplines = config.metadata.disciplines.join(';');
 
-        extra.tags = config.metadata.tags.join(";");
+        extra.tags = config.metadata.tags.join(';');
 
-        extra.collections = config.collections.map(entry => entry.id).join(";");
+        extra.collections = config.collections.map(entry => entry.id).join(';');
 
-        const api = new Api("/playlists");
+        const api = new Api('/playlists');
 
         const createTime = new Date();
 
@@ -375,12 +375,12 @@ angular.module("utilities").service("Utilities", [
 
               if (type === 0) {
                 // create from scratch
-                const path = "/playlist-create";
+                const path = '/playlist-create';
                 $location.url(`${path}/${assignedId}`);
               } else if (type === 1) {
                 // update, i.e., delete first and then create
-                self.message_style = "alert success one-third float-center";
-                self.info_message = "Playlist has been successfully edited";
+                self.message_style = 'alert success one-third float-center';
+                self.info_message = 'Playlist has been successfully edited';
                 self.success = true;
                 $location.url(`/playlists/${assignedId}/edit?status=success`);
               }
@@ -393,7 +393,7 @@ angular.module("utilities").service("Utilities", [
               // this.snapshotRollback = (snapshotRef, self, msg);
 
               console.warn(e.data.status);
-              self.message_style = "callout alert";
+              self.message_style = 'callout alert';
               self.info_message = e.data.error;
             }
           );
@@ -406,7 +406,7 @@ angular.module("utilities").service("Utilities", [
        */
       this.updateExhibit = (exhibitId, config, self, owner) => {
         const snapshotRef =
-          "-1"; /* reserved for future use, e.g., logo or user uplodaed image file */
+          '-1'; /* reserved for future use, e.g., logo or user uplodaed image file */
         const extra = {};
 
         const authors = config.metadata.authors.filter(
@@ -415,15 +415,15 @@ angular.module("utilities").service("Utilities", [
         const filteredAuthors = authors.map(
           name => `${name.first_name}--${name.last_name}`
         );
-        extra.authors = filteredAuthors.join(";");
+        extra.authors = filteredAuthors.join(';');
 
         extra.institutions = config.metadata.institutions
           .filter(name => name)
-          .join(";");
+          .join(';');
 
-        extra.disciplines = config.metadata.disciplines.join(";");
+        extra.disciplines = config.metadata.disciplines.join(';');
 
-        extra.tags = config.metadata.tags.join(";");
+        extra.tags = config.metadata.tags.join(';');
 
         extra.snapshotRef = snapshotRef;
 
@@ -440,8 +440,8 @@ angular.module("utilities").service("Utilities", [
           })
           .then(
             resp => {
-              self.message_style = "callout success";
-              self.info_message = "Exhibit has been successfully edited";
+              self.message_style = 'callout success';
+              self.info_message = 'Exhibit has been successfully edited';
               self.success = true;
 
               // console.warn(resp);
@@ -449,7 +449,7 @@ angular.module("utilities").service("Utilities", [
               const params = $location.search();
 
               if (params.status) {
-                if (params.status === "success") {
+                if (params.status === 'success') {
                   /**
                    * come from a previous successful edit page
                    */
@@ -460,7 +460,7 @@ angular.module("utilities").service("Utilities", [
                  * come from a plain edit page
                  */
                 // add paramter and then reload
-                $location.search("status", "success");
+                $location.search('status', 'success');
               }
             },
             e => {
@@ -470,7 +470,7 @@ angular.module("utilities").service("Utilities", [
               // const msg = 'Update exhibit failed.';
               // this.snapshotRollback = (snapshotRef, self, msg);
 
-              self.message_style = "callout alert";
+              self.message_style = 'callout alert';
               self.info_message = e.data.error;
             }
           );
@@ -483,7 +483,7 @@ angular.module("utilities").service("Utilities", [
        */
       this.updatePlaylist = (playlistId, config, self, owner) => {
         const snapshotRef =
-          "-1"; /* reserved for future use, e.g., logo or user uplodaed image file */
+          '-1'; /* reserved for future use, e.g., logo or user uplodaed image file */
         const extra = {};
 
         const authors = config.metadata.authors.filter(
@@ -492,15 +492,15 @@ angular.module("utilities").service("Utilities", [
         const filteredAuthors = authors.map(
           name => `${name.first_name}--${name.last_name}`
         );
-        extra.authors = filteredAuthors.join(";");
+        extra.authors = filteredAuthors.join(';');
 
         extra.institutions = config.metadata.institutions
           .filter(name => name)
-          .join(";");
+          .join(';');
 
-        extra.disciplines = config.metadata.disciplines.join(";");
+        extra.disciplines = config.metadata.disciplines.join(';');
 
-        extra.tags = config.metadata.tags.join(";");
+        extra.tags = config.metadata.tags.join(';');
 
         extra.snapshotRef = snapshotRef;
 
@@ -517,8 +517,8 @@ angular.module("utilities").service("Utilities", [
           })
           .then(
             resp => {
-              self.message_style = "callout success";
-              self.info_message = "Playlist has been successfully edited";
+              self.message_style = 'callout success';
+              self.info_message = 'Playlist has been successfully edited';
               self.success = true;
 
               // console.warn(resp);
@@ -526,7 +526,7 @@ angular.module("utilities").service("Utilities", [
               const params = $location.search();
 
               if (params.status) {
-                if (params.status === "success") {
+                if (params.status === 'success') {
                   /**
                    * come from a previous successful edit page
                    */
@@ -537,7 +537,7 @@ angular.module("utilities").service("Utilities", [
                  * come from a plain edit page
                  */
                 // add paramter and then reload
-                $location.search("status", "success");
+                $location.search('status', 'success');
               }
             },
             e => {
@@ -547,7 +547,7 @@ angular.module("utilities").service("Utilities", [
               // const msg = 'Update exhibit failed.';
               // this.snapshotRollback = (snapshotRef, self, msg);
 
-              self.message_style = "callout alert";
+              self.message_style = 'callout alert';
               self.info_message = e.data.error;
             }
           );
@@ -596,7 +596,7 @@ angular.module("utilities").service("Utilities", [
       this.getAppGitHubClientId = () => {
         const d = $q.defer();
 
-        const api = new Api("/github");
+        const api = new Api('/github');
         api.get().then(
           response => {
             d.resolve(response);
@@ -612,7 +612,7 @@ angular.module("utilities").service("Utilities", [
       this.checkExhibitId = (title, owner) => {
         const d = $q.defer();
 
-        const api = new Api("/exhibitIdcheck");
+        const api = new Api('/exhibitIdcheck');
         api.post({ title, owner }).then(
           response => {
             d.resolve(response);
@@ -628,7 +628,7 @@ angular.module("utilities").service("Utilities", [
       this.checkPlaylistId = (title, owner) => {
         const d = $q.defer();
 
-        const api = new Api("/playlistIdcheck");
+        const api = new Api('/playlistIdcheck');
         api.post({ title, owner }).then(
           response => {
             d.resolve(response);
@@ -644,7 +644,7 @@ angular.module("utilities").service("Utilities", [
       this.getUserGitHubProfile = code => {
         const d = $q.defer();
 
-        const api = new Api("/github");
+        const api = new Api('/github');
         api.post({ code }).then(
           response => {
             d.resolve(response);
@@ -678,7 +678,7 @@ angular.module("utilities").service("Utilities", [
 
       this.getExhibits = () => {
         const d = $q.defer();
-        const api = new Api("/exhibits");
+        const api = new Api('/exhibits');
         api.get().then(
           response => {
             d.resolve(response);
@@ -693,7 +693,7 @@ angular.module("utilities").service("Utilities", [
 
       this.getPlaylists = () => {
         const d = $q.defer();
-        const api = new Api("/playlists");
+        const api = new Api('/playlists');
         api.get().then(
           response => {
             d.resolve(response);
@@ -708,7 +708,7 @@ angular.module("utilities").service("Utilities", [
 
       this.searchExhibits = query => {
         const d = $q.defer();
-        const api = new Api("/searchExhibits");
+        const api = new Api('/searchExhibits');
         api.post(query).then(
           response => {
             d.resolve(response);
@@ -723,7 +723,7 @@ angular.module("utilities").service("Utilities", [
 
       this.searchPlaylists = query => {
         const d = $q.defer();
-        const api = new Api("/searchPlaylists");
+        const api = new Api('/searchPlaylists');
         api.post(query).then(
           response => {
             d.resolve(response);
@@ -738,7 +738,7 @@ angular.module("utilities").service("Utilities", [
 
       this.getSiteHeader = url => {
         const d = $q.defer();
-        const api = new Api("/header");
+        const api = new Api('/header');
         api.post({ url }).then(
           response => {
             d.resolve(response);

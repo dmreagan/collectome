@@ -1,1 +1,1 @@
-angular.module("exhibitConfigFactory", []);
+angular.module('exhibitConfigFactory', []);

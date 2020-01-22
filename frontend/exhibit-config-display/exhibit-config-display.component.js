@@ -1,14 +1,14 @@
-angular.module("exhibitConfigDisplay").component("exhibitConfigDisplay", {
+angular.module('exhibitConfigDisplay').component('exhibitConfigDisplay', {
   bindings: {
-    config: "<"
+    config: '<'
   },
-  templateUrl: "exhibit-config-display/exhibit-config-display.template.html",
+  templateUrl: 'exhibit-config-display/exhibit-config-display.template.html',
   controller: function exhibitConfigDisplayController() {
     this.$onInit = () => {
       this.model = this.config;
 
       this.options = {
-        mode: "tree",
+        mode: 'tree',
         onEditable: function(node) {
           // this essentially makes the editor in read only mode
           return false;

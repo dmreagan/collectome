@@ -1,1 +1,1 @@
-angular.module("exhibitConfigPreview", ["gridster", "utilities"]);
+angular.module('exhibitConfigPreview', ['gridster', 'utilities']);

@@ -128,8 +128,8 @@ div .choices__list--multiple .choices__item {
   border-color: #008264;
 } */
 
-.choices[data-type*="select-multiple"] .choices__button,
-.choices[data-type*="text"] .choices__button {
+.choices[data-type*='select-multiple'] .choices__button,
+.choices[data-type*='text'] .choices__button {
   border-left: 0px none;
 }
 
@@ -161,7 +161,7 @@ div .choices__inner {
 }
 
 .font-smaller {
-  font-family: "BentonSansRegular", "Helvetica Neue", Helvetica, sans-serif;
+  font-family: 'BentonSansRegular', 'Helvetica Neue', Helvetica, sans-serif;
 
   font-size: 0.875rem;
   text-transform: initial;

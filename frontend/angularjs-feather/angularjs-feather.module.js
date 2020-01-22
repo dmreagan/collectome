@@ -1,1 +1,1 @@
-angular.module("angularjsFeather", []);
+angular.module('angularjsFeather', []);

@@ -1,10 +1,10 @@
-angular.module("playlistDetail").component("playlistDetail", {
-  templateUrl: "playlist-detail/playlist-detail.template.html",
+angular.module('playlistDetail').component('playlistDetail', {
+  templateUrl: 'playlist-detail/playlist-detail.template.html',
   controller: [
-    "Authentication",
-    "Utilities",
-    "$routeParams",
-    "$location",
+    'Authentication',
+    'Utilities',
+    '$routeParams',
+    '$location',
     function playlistDetailController(
       Authentication,
       Utilities,
@@ -70,14 +70,14 @@ angular.module("playlistDetail").component("playlistDetail", {
 
         ctrl.utils.deletePlaylist(ctrl.playlistId).then(
           () => {
-            ctrl.notificationStyle = "success";
-            ctrl.notificationMessage = "Playlist deleted!";
+            ctrl.notificationStyle = 'success';
+            ctrl.notificationMessage = 'Playlist deleted!';
           },
           e => {
             console.warn(e);
             // window.alert('Deleting the post failed.');
-            ctrl.notificationStyle = "alert";
-            ctrl.notificationMessage = "Deleting the playlist failed.";
+            ctrl.notificationStyle = 'alert';
+            ctrl.notificationMessage = 'Deleting the playlist failed.';
           }
         );
       };
@@ -108,15 +108,15 @@ angular.module("playlistDetail").component("playlistDetail", {
             ctrl.userIsOwner = ctrl.isUserOwner();
 
             if (!ctrl.playlistIsPublic && !ctrl.userIsOwner) {
-              ctrl.notificationStyle = "alert";
-              ctrl.notificationMessage = "This playlist is private.";
+              ctrl.notificationStyle = 'alert';
+              ctrl.notificationMessage = 'This playlist is private.';
               ctrl.notify = true;
             }
           },
           e => {
             console.warn(e);
             ctrl.playlistIdIsValid = false;
-            ctrl.notificationStyle = "alert";
+            ctrl.notificationStyle = 'alert';
             ctrl.notificationMessage = `Cannot obtain playlist with id ${ctrl.playlistId}`;
             ctrl.notify = true;
           }
