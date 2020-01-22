@@ -16,7 +16,6 @@ angular.module('exhibitDisplay').component('exhibitDisplay', {
       body.style.overflow = 'hidden';
 
       // async initialization of this.config
-      // eslint-disable-next-line max-len
       utils.getExhibit(this.exhibitId).then(response => {
         this.config = JSON.parse(response.data.config);
         this.snapshotRef = response.data.snapshot_ref;
@@ -27,7 +26,9 @@ angular.module('exhibitDisplay').component('exhibitDisplay', {
 
         this.gridsterOpts = utils.calculateGridsterOpts(this.config);
 
-        this.tiles = utils.calculateTiles(this.config);
+        this.content = utils.calculateTiles(this.config);
+        this.tiles = this.content.tiles;
+        this.backgroundUrl = this.content.background.url;
       });
     },
   ],

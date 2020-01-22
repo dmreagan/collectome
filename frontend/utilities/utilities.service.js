@@ -133,7 +133,24 @@ angular.module('utilities').service('Utilities', [
         };
 
         const sortedTiles = tiles.sort(compare);
-        return sortedTiles;
+
+        // check if background content is defined
+        let backgroundContent = {};
+        const backgroundMapping = mapping.find(
+          element => element.container === 'background'
+        );
+        if (backgroundMapping) {
+          backgroundContent = content.find(
+            element => element.id === backgroundMapping.content
+          );
+        }
+
+        const returnObject = {
+          tiles: sortedTiles,
+          background: backgroundContent,
+        };
+
+        return returnObject;
       };
 
       /**

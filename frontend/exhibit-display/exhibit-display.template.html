@@ -1,6 +1,13 @@
 <style>
-  #gridster {
+  exhibit-display #gridster {
     margin: 50px;
+  }
+
+  exhibit-display #background {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
   }
 </style>
 
@@ -10,6 +17,9 @@
 
 <div id="avl-shim" ng-if="$ctrl.exhibitIsPublic">
   <div id="avl-preview">
+    <div id="background">
+      <iframe ng-src="{{ $ctrl.backgroundUrl | trusted }}"></iframe>
+    </div>
     <div id="gridster" gridster="$ctrl.gridsterOpts">
       <ul id="tiles">
         <li

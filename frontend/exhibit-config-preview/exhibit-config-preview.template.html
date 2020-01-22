@@ -1,9 +1,9 @@
 <style>
-  #gridster {
+  exhibit-config-preview #gridster {
     margin: 50px;
   }
 
-  .container-identity {
+  exhibit-config-preview .container-identity {
     position: absolute;
     top: 0rem;
     left: 0rem;
@@ -17,14 +17,24 @@
     font-size: 15rem;
   }
 
-  .gridlist {
+  exhibit-config-preview .gridlist {
     background: white;
+    z-index: -1;
+  }
+
+  exhibit-config-preview #background {
+    width: 100%;
+    height: 100%;
+    position: absolute;
     z-index: -1;
   }
 </style>
 
 <div id="avl-shim">
   <div id="avl-preview">
+    <div id="background">
+      <iframe ng-src="{{ $ctrl.backgroundUrl | trusted }}"></iframe>
+    </div>
     <div id="gridster" gridster="$ctrl.gridsterOpts">
       <ul id="tiles">
         <li

@@ -22,7 +22,9 @@ angular
           this.bezelPosVertical = bezelPos.bezelPosVertical;
 
           this.gridsterOpts = utils.calculateGridsterOpts(this.config);
-          this.tiles = utils.calculateTiles(this.config);
+          this.content = utils.calculateTiles(this.config);
+          this.tiles = this.content.tiles;
+          this.backgroundUrl = this.content.background.url;
         };
 
         this.$onInit = () => {
