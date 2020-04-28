@@ -41,7 +41,19 @@ angular.module('loginButton').component('loginButton', {
               this.authentication.isAuthorized = true;
               const data = JSON.parse(response.data);
               this.authentication.userProfile = data;
+
               this.username = data.name;
+
+              // github usernames that are on admin role
+              const adminList = [
+                'guangchen',
+                'dmreagan'
+              ];
+
+              if (adminList.includes(data.login)) {
+                this.authentication.isAdmin = true;
+              }
+
             },
             e => {
               console.warn(e);

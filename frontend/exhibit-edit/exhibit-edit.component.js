@@ -94,9 +94,14 @@ angular.module('exhibitEdit').component('exhibitEdit', {
           return;
         }
 
-        const loginUser = ctrl.authentication.userProfile.login;
+        // const loginUser = ctrl.authentication.userProfile.login;
+        // ctrl.utils.updateExhibit(ctrl.exhibitId, ctrl.config, this, loginUser);
 
-        ctrl.utils.updateExhibit(ctrl.exhibitId, ctrl.config, this, loginUser);
+        /**
+         * instead of using loginUser, we use 'exhibitOwner' since admin can also do
+         * editing of others' exhibits and we should keep original owner as the author
+         */
+        ctrl.utils.updateExhibit(ctrl.exhibitId, ctrl.config, this, ctrl.exhibitOwner);
       };
 
       /**
@@ -123,9 +128,11 @@ angular.module('exhibitEdit').component('exhibitEdit', {
           } else if (ctrl.exhibitIsPublic) {
             /**
              * login user is not the owner, however since the exhibit is set
-             * to be public, login user can still view the exhibit but just
+             * to be public, regular login user can still view the exhibit but just
              * not allowed to make any edit.
              */
+
+            /* we note however, admin can still edit the exhibit */
             ctrl.exhibitEditPageCanbeDisplayed = true;
           } else {
             /* not the owner and the exhibit is not public */

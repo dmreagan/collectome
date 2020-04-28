@@ -131,6 +131,8 @@ angular.module('playlistEdit').component('playlistEdit', {
              * to be public, login user can still view the playlist but just
              * not allowed to make any edit.
              */
+
+            /* we note however, admin can still edit the exhibit */
             ctrl.playlistEditPageCanbeDisplayed = true;
           } else {
             /* not the owner and the playlist is not public */

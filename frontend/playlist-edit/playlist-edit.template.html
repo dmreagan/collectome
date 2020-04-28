@@ -23,15 +23,17 @@
         </div>
 
         <div class="content">
-          <div class="text-center callout secondary" ng-if="$ctrl.isOwner">
-            <h4>Update this playlist</h4>
+          <div class="text-center callout secondary" ng-if="$ctrl.isOwner || $ctrl.authentication.isAdmin">
+            <h4 ng-if="$ctrl.userIsOwner">Update this playlist</h4>
+            <h4 style="color:red" ng-if="!$ctrl.userIsOwner">Update this playlist as admin</h4>
+
             <button class="button warning" ng-click="$ctrl.save()">
               <angularjs-feather icon="save"></angularjs-feather>
               Save changes
             </button>
           </div>
 
-          <div class="text-center section bg-gray" ng-if="!$ctrl.isOwner">
+          <div class="text-center section bg-gray" ng-if="!$ctrl.isOwner && !$ctrl.authentication.isAdmin">
             <h4>You are not the owner of this playlist</h4>
           </div>
 
