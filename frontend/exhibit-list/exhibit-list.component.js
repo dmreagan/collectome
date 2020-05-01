@@ -55,6 +55,11 @@ angular.module('exhibitList').component('exhibitList', {
           if (e.owner === loginUser) {
             return true;
           }
+
+          // also show exhibit if user is admin
+          if (this.authentication.isAdmin && !this.ownedOnlyToggle && e.public) {
+            return true;
+          }
         }
 
         return false;

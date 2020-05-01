@@ -87,11 +87,12 @@
 
           <div class="content">
             <div
-              class="text-center callout secondary"
+              class="text-center callout"
+              ng-class="$ctrl.authentication.isAdmin && !$ctrl.userIsOwner ? 'warning' : 'secondary'"
               ng-if="$ctrl.userIsOwner || $ctrl.authentication.isAdmin"
             >
               <h4 ng-if="$ctrl.userIsOwner">Update this exhibit</h4>
-              <h4 style="color:red" ng-if="!$ctrl.userIsOwner">Update this exhibit as admin</h4>
+              <h4 ng-if="!$ctrl.userIsOwner">Update this exhibit <em>as admin</em></h4>
 
               <button class="button warning" ng-click="$ctrl.save()">
                 <angularjs-feather icon="save"></angularjs-feather>
