@@ -39,10 +39,15 @@
           </button>
         </div>
 
-        <div ng-if="$ctrl.userIsOwner || $ctrl.authentication.isAdmin" class="text-center callout"
-          ng-class="$ctrl.authentication.isAdmin && !$ctrl.userIsOwner ? 'warning': 'secondary'">
+        <div
+          ng-if="$ctrl.userIsOwner || $ctrl.authentication.isAdmin"
+          class="text-center callout"
+          ng-class="$ctrl.authentication.isAdmin && !$ctrl.userIsOwner ? 'warning': 'secondary'"
+        >
           <h4 ng-if="$ctrl.userIsOwner">Modify this playlist</h4>
-          <h4 ng-if="!$ctrl.userIsOwner">Modify this playlist <em>as admin</em></h4>
+          <h4 ng-if="!$ctrl.userIsOwner">
+            Modify this playlist <em>as admin</em>
+          </h4>
 
           <div class="button-group float-center">
             <a

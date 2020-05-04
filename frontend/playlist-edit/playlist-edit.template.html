@@ -23,11 +23,15 @@
         </div>
 
         <div class="content">
-          <div class="text-center callout"
+          <div
+            class="text-center callout"
             ng-class="$ctrl.authentication.isAdmin && !$ctrl.isOwner ? 'warning' : 'secondary'"
-            ng-if="$ctrl.isOwner || $ctrl.authentication.isAdmin">
+            ng-if="$ctrl.isOwner || $ctrl.authentication.isAdmin"
+          >
             <h4 ng-if="$ctrl.isOwner">Update this playlist</h4>
-            <h4 ng-if="!$ctrl.isOwner">Update this playlist <em>as admin</em></h4>
+            <h4 ng-if="!$ctrl.isOwner">
+              Update this playlist <em>as admin</em>
+            </h4>
 
             <button class="button warning" ng-click="$ctrl.save()">
               <angularjs-feather icon="save"></angularjs-feather>
@@ -35,7 +39,10 @@
             </button>
           </div>
 
-          <div class="text-center section bg-gray" ng-if="!$ctrl.isOwner && !$ctrl.authentication.isAdmin">
+          <div
+            class="text-center section bg-gray"
+            ng-if="!$ctrl.isOwner && !$ctrl.authentication.isAdmin"
+          >
             <h4>You are not the owner of this playlist</h4>
           </div>
 

@@ -71,14 +71,17 @@
             <angularjs-feather icon="copy"></angularjs-feather>
             Copy this collection
           </button>
-
         </div>
 
-        <div ng-if="$ctrl.userIsOwner || $ctrl.authentication.isAdmin" class="text-center callout"
-          ng-class="$ctrl.authentication.isAdmin && !$ctrl.userIsOwner ? 'warning' : 'secondary'">
-
+        <div
+          ng-if="$ctrl.userIsOwner || $ctrl.authentication.isAdmin"
+          class="text-center callout"
+          ng-class="$ctrl.authentication.isAdmin && !$ctrl.userIsOwner ? 'warning' : 'secondary'"
+        >
           <h4 ng-if="$ctrl.userIsOwner">Modify this exhibit</h4>
-          <h4 ng-if="!$ctrl.userIsOwner">Modify this exhibit <em>as admin</em></h4>
+          <h4 ng-if="!$ctrl.userIsOwner">
+            Modify this exhibit <em>as admin</em>
+          </h4>
 
           <div class="button-group float-center">
             <a
