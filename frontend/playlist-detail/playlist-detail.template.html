@@ -39,9 +39,10 @@
           </button>
         </div>
 
-        <div ng-if="$ctrl.userIsOwner || $ctrl.authentication.isAdmin" class="text-center callout secondary">
+        <div ng-if="$ctrl.userIsOwner || $ctrl.authentication.isAdmin" class="text-center callout"
+          ng-class="$ctrl.authentication.isAdmin && !$ctrl.userIsOwner ? 'warning': 'secondary'">
           <h4 ng-if="$ctrl.userIsOwner">Modify this playlist</h4>
-          <h4 style="color:red" ng-if="!$ctrl.userIsOwner">Modify this playlist as admin</h4>
+          <h4 ng-if="!$ctrl.userIsOwner">Modify this playlist <em>as admin</em></h4>
 
           <div class="button-group float-center">
             <a
@@ -56,7 +57,7 @@
               Delete
             </button>
           </div>
-          <div ng-if="$ctrl.confirmDelete" class="callout warning">
+          <div ng-if="$ctrl.confirmDelete" class="callout alert">
             <p class="text-center h5">
               Are you sure you want to delete this playlist?
             </p>

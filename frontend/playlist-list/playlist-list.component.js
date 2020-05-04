@@ -47,8 +47,6 @@ angular.module('playlistList').component('playlistList', {
         if (this.authentication.userProfile) {
           const loginUser = this.authentication.userProfile.login;
 
-          console.log(loginUser);
-
           if (e.owner === loginUser) {
             return true;
           }
@@ -61,8 +59,6 @@ angular.module('playlistList').component('playlistList', {
         utils.getPlaylists().then(
           response => {
             this.playlists = response.data.filter(filterPlaylist);
-
-            console.log(this.playlists);
             this.sortBy = '-create_time';
           },
           e => {
@@ -103,7 +99,6 @@ angular.module('playlistList').component('playlistList', {
       };
 
       const init = () => {
-        console.log('init loadPlaylists');
         loadPlaylists();
       };
 
