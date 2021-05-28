@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  db:
+    image: collectome-db
+    build:
+      context: .
+      dockerfile: ./Dockerfile-crate
+    ports:
+      - "4200:4200"
+  app:
+    image: collectome-app
+    build:
+      context: .
+      dockerfile: ./Dockerfile-app
+    volumes:
+      - ./frontend/:/var/www/html
+    ports:
+      - "80:80"

@@ -1,0 +1,5 @@
+FROM php:7.2-apache
+LABEL Name=collectome-app Version=0.0.1
+# COPY ./sql/schemas.sql /config/schemas.sql
+# RUN apt-get -y update && apt-get install -y fortunes
+# CMD ["sh", "-c", "/usr/games/fortune -a | cowsay"]

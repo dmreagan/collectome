@@ -1,0 +1,6 @@
+FROM crate:4.1.4
+LABEL Name=collectome-db Version=0.0.1
+COPY ./sql/schemas.sql /config/schemas.sql
+# RUN apt-get -y update && apt-get install -y fortunes
+RUN crash --version
+# CMD ["sh", "-c", "/usr/games/fortune -a | cowsay"]
